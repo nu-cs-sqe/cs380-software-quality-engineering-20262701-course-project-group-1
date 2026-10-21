@@ -2,8 +2,9 @@
 # YOUR PROJECT NAME
 
 ## Contributors
-- PERSON
-- PERSON
+- Ethan Pan
+- Yutong Chen
+- Connor Gonzalez
 
 ## Dependencies
 - JDK 11
