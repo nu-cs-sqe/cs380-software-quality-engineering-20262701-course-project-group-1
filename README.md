@@ -1,3 +1,4 @@
+![Gradle Build](https://github.com/nu-cssqe/cs380-software-quality-engineering-20262701-course-project-group-1/actions/workflows/main.yml/badge.svg) 
 # YOUR PROJECT NAME
 
 ## Contributors
