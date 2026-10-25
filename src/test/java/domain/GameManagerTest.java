@@ -35,4 +35,14 @@ class GameManagerTest {
 				() -> manager.startNewGame(List.of()));
 		assertEquals("gameManager.playerCount.outOfRange", ex.getMessage());
 	}
+
+	@Test
+	void startNewGame_fivePlayers_throwsIllegalArgumentException() {
+		GameManager manager = new GameManager();
+
+		IllegalArgumentException ex = assertThrows(
+				IllegalArgumentException.class,
+				() -> manager.startNewGame(List.of("A", "B", "C", "D", "E")));
+		assertEquals("gameManager.playerCount.outOfRange", ex.getMessage());
+	}
 }

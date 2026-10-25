@@ -27,7 +27,7 @@ Made with assistance from GenAI.
 | TC2 | `startNewGame(List.of("A", "B"))` | 2 alive players named `"A"`, `"B"`; each hand is 6 cards (1 Defuse + 5 GENERIC, no EK); pile has 1 EK and 4 Defuse | no |
 | TC3 | `startNewGame(List.of("A", "B", "C", "D"))` | 4 alive players; each hand same as TC2; pile has 3 EK and 2 Defuse | no |
 | TC4 | `startNewGame(List.of("A"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
-| TC5 | `startNewGame(List.of("A", "B", "C", "D", "E"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | no |
+| TC5 | `startNewGame(List.of("A", "B", "C", "D", "E"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC7 | `startNewGame(List.of("", "B"))` | names are `""`, `"B"`; hand/pile same as TC2 | no |
 

@@ -8,7 +8,7 @@ public class GameManager {
 	private static final String PLAYER_COUNT_OUT_OF_RANGE = "gameManager.playerCount.outOfRange";
 
 	public void startNewGame(List<String> playerNames) {
-		if (playerNames.size() < 2) {
+		if (playerNames.size() < 2 || playerNames.size() > 4) {
 			throw new IllegalArgumentException(PLAYER_COUNT_OUT_OF_RANGE);
 		}
 	}
