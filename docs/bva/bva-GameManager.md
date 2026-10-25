@@ -14,7 +14,7 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC1 | `new GameManager()` | `getPlayers()` is empty | no |
+| TC1 | `new GameManager()` | `getPlayers()` is empty | yes |
 
 ---
 
@@ -39,7 +39,7 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC8 | `new GameManager().getPlayers()` | empty list | no (implemented in TC1) |
+| TC8 | `new GameManager().getPlayers()` | empty list | yes (implemented in TC1) |
 | TC9 | `getPlayers()` after `startNewGame(List.of("A", "B"))` | `["A", "B"]` | no (implemented in TC2) |
 | TC10 | `getPlayers()` after `startNewGame(List.of("A", "B", "C", "D"))` | `["A", "B", "C", "D"]` | no (implemented in TC3) |
 | TC11 | `getPlayers().clear()` after start | later `getPlayers()` size unchanged | no |
