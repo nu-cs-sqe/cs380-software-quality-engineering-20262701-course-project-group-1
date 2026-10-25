@@ -65,11 +65,13 @@ class GameManagerTest {
 	}
 
 	@Test
-	void startNewGame_blankName_storesNames() {
+	void startNewGame_blankName_throwsIllegalArgumentException() {
 		GameManager manager = new GameManager();
 
-		manager.startNewGame(List.of("", "B"));
-
-		assertEquals(List.of("", "B"), manager.getPlayers());
+		IllegalArgumentException ex = assertThrows(
+				IllegalArgumentException.class,
+				() -> manager.startNewGame(List.of("", "B")));
+		assertEquals("gameManager.playerName.blank", ex.getMessage());
+		assertTrue(manager.getPlayers().isEmpty());
 	}
 }
