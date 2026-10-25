@@ -8,32 +8,31 @@ Made with assistance from GenAI.
 
 ---
 
-## Method 1: `public TurnManager(List<Player> players, Random random)`
+## Method 1: `public void pickStart(int playerCount, Random random)`
 
 ##### All-combination or each-choice: each-choice
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC1 | `new TurnManager(List.of(A, B), random)`, `Random` always `0` | `getCurrentPlayer()` is `"A"` | no |
-| TC2 | `new TurnManager(List.of(A, B), random)`, `Random` always `bound - 1` | `getCurrentPlayer()` is `"B"` | no |
-| TC3 | `new TurnManager(List.of(A, B, C, D), random)`, `Random` always `0` | `getCurrentPlayer()` is `"A"` | no |
-| TC4 | `new TurnManager(List.of(A, B, C, D), random)`, `Random` always `bound - 1` | `getCurrentPlayer()` is `"D"` | no |
-| TC5 | `new TurnManager(List.of(A), random)` | throws `IllegalArgumentException` with message `"turnManager.playerCount.outOfRange"` | no |
-| TC6 | `new TurnManager(List.of(A, B, C, D, E), random)` | throws `IllegalArgumentException` with message `"turnManager.playerCount.outOfRange"` | no |
-| TC7 | `new TurnManager(List.of(), random)` | throws `IllegalArgumentException` with message `"turnManager.playerCount.outOfRange"` | no |
-| TC8 | `new TurnManager(null, random)` | throws `IllegalArgumentException` with message `"turnManager.players.null"` | no |
-| TC9 | `new TurnManager(List.of(A, A), random)` | throws `IllegalArgumentException` with message `"turnManager.players.duplicate"` | no |
-| TC10 | `new TurnManager(List.of(A, B), null)` | throws `IllegalArgumentException` with message `"turnManager.random.null"` | no |
-| TC11 | original list `.clear()` after construction, `Random` always `bound - 1` | `getCurrentPlayer()` is still `"B"` | no |
+| TC1 | `pickStart(2, random)`, `Random` always `0` | `getCurrentIndex()` is `0` | yes |
+| TC2 | `pickStart(2, random)`, `Random` always `bound - 1` | `getCurrentIndex()` is `1` | yes |
+| TC3 | `pickStart(4, random)`, `Random` always `0` | `getCurrentIndex()` is `0` | yes |
+| TC4 | `pickStart(4, random)`, `Random` always `bound - 1` | `getCurrentIndex()` is `3` | yes |
+| TC5 | `pickStart(1, random)` | throws `IllegalArgumentException` with message `"turnManager.playerCount.outOfRange"` | yes |
+| TC6 | `pickStart(5, random)` | throws `IllegalArgumentException` with message `"turnManager.playerCount.outOfRange"` | yes |
+| TC7 | `pickStart(0, random)` | throws `IllegalArgumentException` with message `"turnManager.playerCount.outOfRange"` | yes |
+| TC8 | `pickStart(2, null)` | throws `IllegalArgumentException` with message `"turnManager.random.null"` | yes |
+| TC9 | `pickStart(4, random)` with `Random` always `bound - 1`, then `pickStart(2, random)` with `Random` always `0` | `getCurrentIndex()` is `0` | yes |
 
 ---
 
-## Method 2: `public Player getCurrentPlayer()`
+## Method 2: `public int getCurrentIndex()`
 
 ##### All-combination or each-choice: each-choice
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC12 | `getCurrentPlayer()` after construction with 2 players, `Random` always `0` | `"A"` | no (implemented in TC1) |
-| TC13 | `getCurrentPlayer()` after construction with 4 players, `Random` always `bound - 1` | `"D"` | no (implemented in TC4) |
-| TC14 | `getCurrentPlayer()` called twice with 3 players | same player both times | no |
+| TC10 | `new TurnManager().getCurrentIndex()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | yes |
+| TC11 | `getCurrentIndex()` after `pickStart(2, random)`, `Random` always `0` | `0` | yes (implemented in TC1) |
+| TC12 | `getCurrentIndex()` after `pickStart(4, random)`, `Random` always `bound - 1` | `3` | yes (implemented in TC4) |
+| TC13 | `getCurrentIndex()` after `pickStart(1, random)` was rejected | throws `IllegalStateException` with message `"turnManager.notStarted"` | yes |
