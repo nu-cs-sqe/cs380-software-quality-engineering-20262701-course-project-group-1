@@ -45,4 +45,13 @@ class GameManagerTest {
 				() -> manager.startNewGame(List.of("A", "B", "C", "D", "E")));
 		assertEquals("gameManager.playerCount.outOfRange", ex.getMessage());
 	}
+
+	@Test
+	void startNewGame_twoPlayers_storesNames() {
+		GameManager manager = new GameManager();
+
+		manager.startNewGame(List.of("A", "B"));
+
+		assertEquals(List.of("A", "B"), manager.getPlayers());
+	}
 }
