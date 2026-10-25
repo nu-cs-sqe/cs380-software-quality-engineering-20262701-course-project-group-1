@@ -26,7 +26,7 @@ Made with assistance from GenAI.
 |-------------|-------------------|-----------------|--------------|
 | TC2 | `startNewGame(List.of("A", "B"))` | 2 alive players named `"A"`, `"B"`; each hand is 6 cards (1 Defuse + 5 GENERIC, no EK); pile has 1 EK and 4 Defuse | no |
 | TC3 | `startNewGame(List.of("A", "B", "C", "D"))` | 4 alive players; each hand same as TC2; pile has 3 EK and 2 Defuse | no |
-| TC4 | `startNewGame(List.of("A"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | no |
+| TC4 | `startNewGame(List.of("A"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC5 | `startNewGame(List.of("A", "B", "C", "D", "E"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | no |
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | no |
 | TC7 | `startNewGame(List.of("", "B"))` | names are `""`, `"B"`; hand/pile same as TC2 | no |
@@ -43,7 +43,7 @@ Made with assistance from GenAI.
 | TC9 | `getPlayers()` after `startNewGame(List.of("A", "B"))` | `["A", "B"]` | no (implemented in TC2) |
 | TC10 | `getPlayers()` after `startNewGame(List.of("A", "B", "C", "D"))` | `["A", "B", "C", "D"]` | no (implemented in TC3) |
 | TC11 | `getPlayers().clear()` after start | later `getPlayers()` size unchanged | no |
-| TC12 | `getPlayers()` after `startNewGame(List.of("A"))` | empty list | no (implemented in TC4) |
+| TC12 | `getPlayers()` after `startNewGame(List.of("A"))` | empty list | yes (implemented in TC4) |
 
 ---
 
