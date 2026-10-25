@@ -42,7 +42,7 @@ Made with assistance from GenAI.
 | TC8 | `new GameManager().getPlayers()` | empty list | yes (implemented in TC1) |
 | TC9 | `getPlayers()` after `startNewGame(List.of("A", "B"))` | `["A", "B"]` | yes |
 | TC10 | `getPlayers()` after `startNewGame(List.of("A", "B", "C", "D"))` | `["A", "B", "C", "D"]` | yes |
-| TC11 | `getPlayers().clear()` after start | later `getPlayers()` size unchanged | no |
+| TC11 | `getPlayers().clear()` after start | later `getPlayers()` size unchanged | yes |
 | TC12 | `getPlayers()` after `startNewGame(List.of("A"))` | empty list | yes (implemented in TC4) |
 
 ---

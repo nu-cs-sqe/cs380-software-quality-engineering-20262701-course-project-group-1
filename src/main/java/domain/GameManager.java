@@ -24,6 +24,6 @@ public class GameManager {
 	}
 
 	public List<String> getPlayers() {
-		return players;
+		return new ArrayList<>(players);
 	}
 }

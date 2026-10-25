@@ -74,4 +74,14 @@ class GameManagerTest {
 		assertEquals("gameManager.playerName.blank", ex.getMessage());
 		assertTrue(manager.getPlayers().isEmpty());
 	}
+
+	@Test
+	void getPlayers_returnedListIsDefensiveCopy() {
+		GameManager manager = new GameManager();
+		manager.startNewGame(List.of("A", "B"));
+
+		manager.getPlayers().clear();
+
+		assertEquals(List.of("A", "B"), manager.getPlayers());
+	}
 }
