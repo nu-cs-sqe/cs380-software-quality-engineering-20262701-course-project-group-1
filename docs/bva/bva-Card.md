@@ -26,6 +26,6 @@
 
 |              | State of the System | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
-| Test Case 1  |          new Card(Exploding_Kitten)           |      Exploding_Kitten           | :x: or :white_check_mark: |
-| Test Case 2  |          new Card(Defuse)             |        Defuse         | :x: or :white_check_mark: |
-| Test Case 3  |         new Card(See_The_Future              |         See_The_Future        | :x: or :white_check_mark: |
+| Test Case 1  |          new Card(Exploding_Kitten)           |      Exploding_Kitten           | :white_check_mark: |
+| Test Case 2  |          new Card(Defuse)             |        Defuse         | :white_check_mark: |
+| Test Case 3  |         new Card(See_The_Future              |         See_The_Future        | :white_check_mark: |
