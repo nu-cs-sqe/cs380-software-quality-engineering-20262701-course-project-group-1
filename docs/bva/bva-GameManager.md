@@ -29,7 +29,7 @@ Made with assistance from GenAI.
 | TC4 | `startNewGame(List.of("A"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC5 | `startNewGame(List.of("A", "B", "C", "D", "E"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
-| TC7 | `startNewGame(List.of("", "B"))` | names are `""`, `"B"`; hand/pile same as TC2 | no |
+| TC7 | `startNewGame(List.of("", "B"))` | names are `""`, `"B"`; hand/pile same as TC2 | yes |
 
 ---
 
@@ -41,7 +41,7 @@ Made with assistance from GenAI.
 |-------------|-------------------|-----------------|--------------|
 | TC8 | `new GameManager().getPlayers()` | empty list | yes (implemented in TC1) |
 | TC9 | `getPlayers()` after `startNewGame(List.of("A", "B"))` | `["A", "B"]` | yes |
-| TC10 | `getPlayers()` after `startNewGame(List.of("A", "B", "C", "D"))` | `["A", "B", "C", "D"]` | no (implemented in TC3) |
+| TC10 | `getPlayers()` after `startNewGame(List.of("A", "B", "C", "D"))` | `["A", "B", "C", "D"]` | yes |
 | TC11 | `getPlayers().clear()` after start | later `getPlayers()` size unchanged | no |
 | TC12 | `getPlayers()` after `startNewGame(List.of("A"))` | empty list | yes (implemented in TC4) |
 

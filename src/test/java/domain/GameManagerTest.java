@@ -54,4 +54,22 @@ class GameManagerTest {
 
 		assertEquals(List.of("A", "B"), manager.getPlayers());
 	}
+
+	@Test
+	void startNewGame_fourPlayers_storesNames() {
+		GameManager manager = new GameManager();
+
+		manager.startNewGame(List.of("A", "B", "C", "D"));
+
+		assertEquals(List.of("A", "B", "C", "D"), manager.getPlayers());
+	}
+
+	@Test
+	void startNewGame_blankName_storesNames() {
+		GameManager manager = new GameManager();
+
+		manager.startNewGame(List.of("", "B"));
+
+		assertEquals(List.of("", "B"), manager.getPlayers());
+	}
 }
