@@ -1,5 +1,7 @@
 package domain;
 
 public enum CardType {
-    Defuse
+    Defuse,
+    Exploding_Kitten,
+    See_The_Future
 }

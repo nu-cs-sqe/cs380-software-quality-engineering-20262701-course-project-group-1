@@ -12,8 +12,8 @@
 
 |              | System under Test | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
-| Test Case 1  |        new Card(DEFUSE)        |       constructor returns normally, getTypeofCard() == DEFUSE          | :x: or :white_check_mark: |
-| Test Case 2  |         new Card(null)        |        IllegalArgumentException thrown; no Card produced       | :x: or :white_check_mark: |
+| Test Case 1  |        new Card(DEFUSE)        |       constructor returns normally, getTypeofCard() == DEFUSE          | white_check_mark: |
+| Test Case 2  |         new Card(null)        |        IllegalArgumentException thrown; no Card produced       | :white_check_mark: |
 
 
 ### Method under test: `getTypeofCard()`

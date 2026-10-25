@@ -1,5 +1,10 @@
 package domain;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -16,5 +21,12 @@ public class CardTests {
                 () -> new Card(null)
         );
         assertEquals("Not a valid Card Type, Card Type cannot be null", e.getMessage());
+    }
+
+    @ParameterizedTest
+    @EnumSource(CardType.class)
+    public void getTypeofCard_ReturnsCorrectType_GivenatConstruction(CardType type) {
+        Card card = new Card(type);
+        assertEquals(type, card.getTypeofCard());
     }
 }
