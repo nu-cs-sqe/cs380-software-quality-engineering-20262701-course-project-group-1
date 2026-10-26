@@ -21,7 +21,7 @@
 **Item Progress**:
 1. [done] Setup rules decided
 2. [done] User Story #1 split into issues #5–#8
-3. [in progress] Card ([#11](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/11)) and GameManager player validation ([#9](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/9)) merged; TurnManager in review ([#10](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/10)); Deck, Player, TerminalPrinting and dealing not started
+3. [in progress] Card ([#11](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/11)), GameManager player validation ([#9](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/9)) and TurnManager ([#10](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/10)) merged; Deck, Player, TerminalPrinting and dealing not started
 4. [done] CI runs on every PR ([#1](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/1)–[#3](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/3))
 
 **Other**: Mentor meeting on 10/19 about the setup phase, user stories, the project board and draft PRs
