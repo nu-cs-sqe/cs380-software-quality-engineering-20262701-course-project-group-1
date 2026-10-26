@@ -9,4 +9,11 @@ public class DeckTests {
         Deck deck = new Deck();
         assertEquals(56, deck.getDeckSize());
     }
+
+    @Test
+    public void constructor_firstCardIsExplodingKitten() {
+        Deck deck = new Deck();
+        assertEquals(56, deck.getDeckSize());
+        assertEquals(CardType.Exploding_Kitten, deck.getCardAt(0).getTypeofCard());
+    }
 }
