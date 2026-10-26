@@ -53,10 +53,10 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC13 | `getCurrentPlayer()` after start with 2 players, `Random` always `0` | `"A"` | no |
-| TC14 | `getCurrentPlayer()` after start with 2 players, `Random` always `bound - 1` | `"B"` | no |
-| TC15 | `getCurrentPlayer()` after start with 4 players, `Random` always `0` | `"A"` | no |
-| TC16 | `getCurrentPlayer()` after start with 4 players, `Random` always `bound - 1` | `"D"` | no |
+| TC13 | `getCurrentPlayer()` after start with 2 players, `Random` always `0` | `"A"` | yes          |
+| TC14 | `getCurrentPlayer()` after start with 2 players, `Random` always `bound - 1` | `"B"` | yes          |
+| TC15 | `getCurrentPlayer()` after start with 4 players, `Random` always `0` | `"A"` | yes          |
+| TC16 | `getCurrentPlayer()` after start with 4 players, `Random` always `bound - 1` | `"D"` | yes          |
 
 ---
 

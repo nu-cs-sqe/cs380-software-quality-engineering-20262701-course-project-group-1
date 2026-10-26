@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Random;
 import org.junit.jupiter.api.Test;
 
 class GameManagerTest {
@@ -83,5 +84,59 @@ class GameManagerTest {
 		manager.getPlayers().clear();
 
 		assertEquals(List.of("A", "B"), manager.getPlayers());
+	}
+
+	private static Random alwaysFirst() {
+		return new Random() {
+			@Override
+			public int nextInt(int bound) {
+				return 0;
+			}
+		};
+	}
+
+	private static Random alwaysLast() {
+		return new Random() {
+			@Override
+			public int nextInt(int bound) {
+				return bound - 1;
+			}
+		};
+	}
+
+	@Test
+	void getCurrentPlayer_twoPlayers_randomFirst_returnsA() {
+		GameManager manager = new GameManager(alwaysFirst());
+
+		manager.startNewGame(List.of("A", "B"));
+
+		assertEquals("A", manager.getCurrentPlayer());
+	}
+
+	@Test
+	void getCurrentPlayer_twoPlayers_randomLast_returnsB() {
+		GameManager manager = new GameManager(alwaysLast());
+
+		manager.startNewGame(List.of("A", "B"));
+
+		assertEquals("B", manager.getCurrentPlayer());
+	}
+
+	@Test
+	void getCurrentPlayer_fourPlayers_randomFirst_returnsA() {
+		GameManager manager = new GameManager(alwaysFirst());
+
+		manager.startNewGame(List.of("A", "B", "C", "D"));
+
+		assertEquals("A", manager.getCurrentPlayer());
+	}
+
+	@Test
+	void getCurrentPlayer_fourPlayers_randomLast_returnsD() {
+		GameManager manager = new GameManager(alwaysLast());
+
+		manager.startNewGame(List.of("A", "B", "C", "D"));
+
+		assertEquals("D", manager.getCurrentPlayer());
 	}
 }
