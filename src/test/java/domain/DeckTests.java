@@ -16,4 +16,11 @@ public class DeckTests {
         assertEquals(56, deck.getDeckSize());
         assertEquals(CardType.Exploding_Kitten, deck.getCardAt(0).getTypeofCard());
     }
+
+    @Test
+    public void constructor_lastCardIsDefuse() {
+        Deck deck = new Deck();
+        assertEquals(56, deck.getDeckSize());
+        assertEquals(CardType.Defuse, deck.getCardAt(55).getTypeofCard());
+    }
 }
