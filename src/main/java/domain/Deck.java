@@ -54,7 +54,7 @@ public class Deck {
         if (cards.isEmpty()) {
             throw new IllegalStateException("Cannot peek at an empty deck");
         }
-        return new ArrayList<>();
+        return new ArrayList<>(cards.subList(0, numberOfCards));
     }
 
 }

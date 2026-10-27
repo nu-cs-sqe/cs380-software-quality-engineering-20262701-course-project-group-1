@@ -210,4 +210,15 @@ public class DeckTests {
         assertTrue(peeked.isEmpty());
         assertEquals(1, deck.getDeckSize());
     }
+
+    @Test
+    public void peekTopofDeck_twoCardsPeekOne_returnsTopCard() {
+        List<Card> cards = defuseCards(2);
+        Deck deck = new Deck(cards);
+
+        List<Card> peeked = deck.peekTopofDeck(1);
+
+        assertTopCards(cards, peeked, 1);
+        assertEquals(2, deck.getDeckSize());
+    }
 }
