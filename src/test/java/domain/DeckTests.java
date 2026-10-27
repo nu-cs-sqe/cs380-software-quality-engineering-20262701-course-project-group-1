@@ -285,4 +285,15 @@ public class DeckTests {
         assertSame(kitten, deck.getCardAt(1));
         assertSame(original.get(1), deck.getCardAt(2));
     }
+
+    @Test
+    public void insertCardAt_index56_cardIsOnBottom() {
+        Deck deck = new Deck(defuseCards(56), new Random());
+        Card kitten = new Card(CardType.Exploding_Kitten);
+
+        deck.insertCardAt(kitten, 56);
+
+        assertEquals(57, deck.getDeckSize());
+        assertSame(kitten, deck.getCardAt(56));
+    }
 }
