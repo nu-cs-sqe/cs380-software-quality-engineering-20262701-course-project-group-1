@@ -447,4 +447,21 @@ public class DeckTests {
         }
         assertSame(defuse, deck.getCardAt(3));
     }
+
+    @Test
+    public void addCard_fullDeckDuplicateType_bothCopiesPresent() {
+        Card existingKitten = new Card(CardType.Exploding_Kitten);
+        List<Card> original = defuseCards(55);
+        original.add(existingKitten);
+        Deck deck = new Deck(original, new Random());
+        Card newKitten = new Card(CardType.Exploding_Kitten);
+
+        deck.addCard(newKitten);
+
+        assertEquals(57, deck.getDeckSize());
+        List<Card> kittens = deck.removeAllCardsofType(CardType.Exploding_Kitten);
+        assertEquals(2, kittens.size());
+        assertSame(existingKitten, kittens.get(0));
+        assertSame(newKitten, kittens.get(1));
+    }
 }
