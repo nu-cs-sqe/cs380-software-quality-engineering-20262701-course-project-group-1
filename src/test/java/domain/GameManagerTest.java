@@ -173,4 +173,14 @@ class GameManagerTest {
 		assertEquals(3, countType(pile, CardType.Exploding_Kitten));
 		assertEquals(2, countType(pile, CardType.Defuse));
 	}
+
+	@Test
+	void getDrawPile_returnedListIsDefensiveCopy() {
+		GameManager manager = new GameManager();
+		manager.startNewGame(List.of("A", "B"));
+
+		manager.getDrawPile().clear();
+
+		assertEquals(5, manager.getDrawPile().size());
+	}
 }
