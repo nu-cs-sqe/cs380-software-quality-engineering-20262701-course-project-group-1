@@ -260,4 +260,29 @@ public class DeckTests {
         Deck deck = new Deck(defuseCards(56));
         assertThrows(IllegalStateException.class, () -> deck.peekTopofDeck(57));
     }
+
+    @Test
+    public void insertCardAt_indexZero_cardIsOnTop() {
+        Deck deck = new Deck(defuseCards(56), new Random());
+        Card kitten = new Card(CardType.Exploding_Kitten);
+
+        deck.insertCardAt(kitten, 0);
+
+        assertEquals(57, deck.getDeckSize());
+        assertSame(kitten, deck.getCardAt(0));
+    }
+
+    @Test
+    public void insertCardAt_indexOne_cardIsSecond() {
+        List<Card> original = defuseCards(56);
+        Deck deck = new Deck(original, new Random());
+        Card kitten = new Card(CardType.Exploding_Kitten);
+
+        deck.insertCardAt(kitten, 1);
+
+        assertEquals(57, deck.getDeckSize());
+        assertSame(original.get(0), deck.getCardAt(0));
+        assertSame(kitten, deck.getCardAt(1));
+        assertSame(original.get(1), deck.getCardAt(2));
+    }
 }

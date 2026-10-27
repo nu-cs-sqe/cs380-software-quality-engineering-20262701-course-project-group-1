@@ -62,4 +62,8 @@ public class Deck {
         return new ArrayList<>(cards.subList(0, numberOfCards));
     }
 
+    public void insertCardAt(Card card, int index) {
+        cards.add(index, card);
+    }
+
 }
