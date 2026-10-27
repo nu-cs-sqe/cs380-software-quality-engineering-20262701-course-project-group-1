@@ -212,7 +212,7 @@ public class DeckTests {
     }
 
     @Test
-    public void peekTopofDeck_twoCardsPeekOne_returnsTopCard() {
+    public void peekTopofDeck_twoCardsPeekOne_returnsTopCard(){
         List<Card> cards = defuseCards(2);
         Deck deck = new Deck(cards);
 
@@ -220,5 +220,17 @@ public class DeckTests {
 
         assertTopCards(cards, peeked, 1);
         assertEquals(2, deck.getDeckSize());
+    }
+
+
+    @Test
+    public void peekTopofDeck_fullDeckPeekThree_returnsTopThree() {
+        List<Card> cards = defuseCards(56);
+        Deck deck = new Deck(cards);
+
+        List<Card> peeked = deck.peekTopofDeck(3);
+
+        assertTopCards(cards, peeked, 3);
+        assertEquals(56, deck.getDeckSize());
     }
 }
