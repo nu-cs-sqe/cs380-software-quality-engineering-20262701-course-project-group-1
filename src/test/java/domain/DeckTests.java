@@ -484,4 +484,10 @@ public class DeckTests {
         Deck deck = new Deck(defuseCards(56), new Random());
         assertFalse(deck.isEmpty());
     }
+
+    @Test
+    public void isEmpty_oneCard_returnsFalse() {
+        Deck deck = new Deck(defuseCards(1), new Random());
+        assertFalse(deck.isEmpty());
+    }
 }
