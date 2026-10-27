@@ -478,4 +478,10 @@ public class DeckTests {
         Deck deck = new Deck(new ArrayList<>(), new Random());
         assertTrue(deck.isEmpty());
     }
+
+    @Test
+    public void isEmpty_fullDeck_returnsFalse() {
+        Deck deck = new Deck(defuseCards(56), new Random());
+        assertFalse(deck.isEmpty());
+    }
 }
