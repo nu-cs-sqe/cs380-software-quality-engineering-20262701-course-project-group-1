@@ -296,4 +296,13 @@ public class DeckTests {
         assertEquals(57, deck.getDeckSize());
         assertSame(kitten, deck.getCardAt(56));
     }
+
+    @Test
+    public void insertCardAt_negativeIndex_throwsAndDeckUnchanged() {
+        Deck deck = new Deck(defuseCards(56), new Random());
+
+        assertThrows(IllegalArgumentException.class,
+                () -> deck.insertCardAt(new Card(CardType.Exploding_Kitten), -1));
+        assertEquals(56, deck.getDeckSize());
+    }
 }
