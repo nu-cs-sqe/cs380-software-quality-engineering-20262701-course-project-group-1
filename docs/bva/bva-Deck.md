@@ -119,6 +119,6 @@
 
 |              | State of the System | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
-| Test Case 1  |          empty deck      |      True     | :x: or :white_check_mark: |
-| Test Case 2  |          deck w/ 56 cards          |        False     |:x: or :white_check_mark:  |
-| Test Case 3 |          deck w/ 1 cards          |        False     |:x: or :white_check_mark:  |
+| Test Case 1  |          empty deck      |      True     | :white_check_mark: |
+| Test Case 2  |          deck w/ 56 cards          |        False     | :white_check_mark:  |
+| Test Case 3 |          deck w/ 1 cards          |        False     | :white_check_mark:  |
