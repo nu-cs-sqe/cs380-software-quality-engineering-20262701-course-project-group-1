@@ -305,4 +305,13 @@ public class DeckTests {
                 () -> deck.insertCardAt(new Card(CardType.Exploding_Kitten), -1));
         assertEquals(56, deck.getDeckSize());
     }
+
+    @Test
+    public void insertCardAt_nullCard_throwsAndDeckUnchanged() {
+        Deck deck = new Deck(defuseCards(56), new Random());
+
+        assertThrows(IllegalArgumentException.class,
+                () -> deck.insertCardAt(null, 1));
+        assertEquals(56, deck.getDeckSize());
+    }
 }

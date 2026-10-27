@@ -63,6 +63,10 @@ public class Deck {
     }
 
     public void insertCardAt(Card card, int index) {
+        if (card == null) {
+            throw new IllegalArgumentException("Card cannot be null");
+        }
+
         if (index < 0) {
             throw new IllegalArgumentException("Index out of range: " + index);
         }
