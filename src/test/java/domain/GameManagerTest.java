@@ -139,4 +139,26 @@ class GameManagerTest {
 
 		assertEquals("D", manager.getCurrentPlayer());
 	}
+
+
+	private static int countType(List<Card> cards, CardType type) {
+		int count = 0;
+		for (Card card : cards) {
+			if (card.getTypeofCard() == type) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	@Test
+	void getDrawPile_twoPlayers_hasOneKittenAndFourDefuse() {
+		GameManager manager = new GameManager();
+
+		manager.startNewGame(List.of("A", "B"));
+
+		List<Card> pile = manager.getDrawPile();
+		assertEquals(1, countType(pile, CardType.Exploding_Kitten));
+		assertEquals(4, countType(pile, CardType.Defuse));
+	}
 }
