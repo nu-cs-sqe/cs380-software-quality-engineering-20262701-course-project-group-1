@@ -64,8 +64,8 @@ Made with assistance from GenAI.
 
 ##### All-combination or each-choice: each-choice
 
-| Test Case # | System under test | Expected output | Implemented? |
-|-------------|-------------------|-----------------|--------------|
-| TC17 | `getDrawPile()` after `startNewGame(List.of("A", "B"))` | 1 EK and 4 Defuse | no (implemented in TC2) |
+| Test Case # | System under test | Expected output | Implemented?            |
+|-------------|-------------------|-----------------|-------------------------|
+| TC17 | `getDrawPile()` after `startNewGame(List.of("A", "B"))` | 1 EK and 4 Defuse | yes                     |
 | TC18 | `getDrawPile()` after `startNewGame(List.of("A", "B", "C", "D"))` | 3 EK and 2 Defuse | no (implemented in TC3) |
-| TC19 | `getDrawPile().clear()` after start | later `getDrawPile()` unchanged | no |
+| TC19 | `getDrawPile().clear()` after start | later `getDrawPile()` unchanged | no                      |
