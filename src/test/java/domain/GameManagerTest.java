@@ -161,4 +161,16 @@ class GameManagerTest {
 		assertEquals(1, countType(pile, CardType.Exploding_Kitten));
 		assertEquals(4, countType(pile, CardType.Defuse));
 	}
+
+
+	@Test
+	void getDrawPile_fourPlayers_hasThreeKittensAndTwoDefuse() {
+		GameManager manager = new GameManager();
+
+		manager.startNewGame(List.of("A", "B", "C", "D"));
+
+		List<Card> pile = manager.getDrawPile();
+		assertEquals(3, countType(pile, CardType.Exploding_Kitten));
+		assertEquals(2, countType(pile, CardType.Defuse));
+	}
 }
