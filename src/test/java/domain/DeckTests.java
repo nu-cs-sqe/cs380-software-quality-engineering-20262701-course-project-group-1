@@ -99,4 +99,15 @@ public class DeckTests {
         assertDoesNotThrow(deck::shuffleDeck);
         assertEquals(0, deck.getDeckSize());
     }
+
+    @Test
+    public void shuffleDeck_oneCard_sameCardRemains() {
+        Card defuse = new Card(CardType.Defuse);
+        Deck deck = new Deck(List.of(defuse));
+
+        deck.shuffleDeck();
+
+        assertEquals(1, deck.getDeckSize());
+        assertSame(defuse, deck.getCardAt(0));
+    }
 }
