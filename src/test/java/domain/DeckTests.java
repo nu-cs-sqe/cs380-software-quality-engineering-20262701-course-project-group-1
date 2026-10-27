@@ -333,4 +333,21 @@ public class DeckTests {
         assertTrue(removed.isEmpty());
         assertEquals(0, deck.getDeckSize());
     }
+
+    @Test
+    public void removeAllCardsofType_noMatches_returnsEmptyListDeckUnchanged() {
+        List<Card> original = List.of(
+                new Card(CardType.Exploding_Kitten),
+                new Card(CardType.Exploding_Kitten),
+                new Card(CardType.Exploding_Kitten));
+        Deck deck = new Deck(original, new Random());
+
+        List<Card> removed = deck.removeAllCardsofType(CardType.Defuse);
+
+        assertTrue(removed.isEmpty());
+        assertEquals(3, deck.getDeckSize());
+        for (int i = 0; i < 3; i++) {
+            assertSame(original.get(i), deck.getCardAt(i));
+        }
+    }
 }
