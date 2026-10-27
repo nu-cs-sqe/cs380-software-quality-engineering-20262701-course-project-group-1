@@ -177,4 +177,10 @@ public class DeckTests {
         Deck deck = new Deck(new ArrayList<>());
         assertThrows(IllegalStateException.class, () -> deck.peekTopofDeck(0));
     }
+
+    @Test
+    public void peekTopofDeck_negativePeek_throwsIllegalArgumentException() {
+        Deck deck = new Deck(new ArrayList<>());
+        assertThrows(IllegalArgumentException.class, () -> deck.peekTopofDeck(-1));
+    }
 }

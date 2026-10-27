@@ -48,6 +48,9 @@ public class Deck {
     }
 
     public List<Card> peekTopofDeck(int numberOfCards) {
+        if (numberOfCards < 0) {
+            throw new IllegalArgumentException("Cannot peek at a negative number of cards");
+        }
         throw new IllegalStateException("Cannot peek at an empty deck");
     }
 
