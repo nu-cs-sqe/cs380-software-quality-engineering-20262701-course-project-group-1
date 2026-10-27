@@ -366,4 +366,13 @@ public class DeckTests {
         assertSame(kitten1, deck.getCardAt(0));
         assertSame(kitten2, deck.getCardAt(1));
     }
+
+    @Test
+    public void removeAllCardsofType_nullType_throwsAndDeckUnchanged() {
+        Deck deck = new Deck(defuseCards(3), new Random());
+
+        assertThrows(IllegalArgumentException.class,
+                () -> deck.removeAllCardsofType(null));
+        assertEquals(3, deck.getDeckSize());
+    }
 }

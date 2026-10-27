@@ -72,6 +72,10 @@ public class Deck {
     }
 
     public List<Card> removeAllCardsofType(CardType type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Card type cannot be null");
+        }
+
         List<Card> removed = new ArrayList<>();
         Iterator<Card> iterator = cards.iterator();
         while (iterator.hasNext()) {
