@@ -54,6 +54,11 @@ public class Deck {
         if (cards.isEmpty()) {
             throw new IllegalStateException("Cannot peek at an empty deck");
         }
+
+        if (numberOfCards > cards.size()) {
+            throw new IllegalStateException("Not enough cards in the deck to peek at" + numberOfCards);
+        }
+
         return new ArrayList<>(cards.subList(0, numberOfCards));
     }
 

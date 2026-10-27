@@ -254,4 +254,10 @@ public class DeckTests {
         assertTopCards(cards, peeked, 56);
         assertEquals(56, deck.getDeckSize());
     }
+
+    @Test
+    public void peekTopofDeck_peekMoreThanDeckSize_throwsIllegalStateException() {
+        Deck deck = new Deck(defuseCards(56));
+        assertThrows(IllegalStateException.class, () -> deck.peekTopofDeck(57));
+    }
 }

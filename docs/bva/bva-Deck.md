@@ -72,14 +72,14 @@
 
 |              | State of the System | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
-| Test Case 1  |          deck size: 0, Peek: 0          |      Illegal State Exception         | :x: or :white_check_mark: |
-| Test Case 2  |          deck size: 0, Peek: -1           |       Illegal Argument Exception       | :x: or :white_check_mark:  |
-| Test Case 3  |         deck size: 1, Peek: 0          |         Empty List       | :x: or :white_check_mark:  |
-| Test Case 4  |         deck size: 2, Peek: 1           |         List of 1 Top Card       | :x: or :white_check_mark:  |
-| Test Case 5  |         deck size: 56, Peek: 3             |         List of 3 Top Cards     | :x: or :white_check_mark:  |
-| Test Case 6  |         deck size: 56,Peek: 55       |         List of 55 Top Cards      | :x: or :white_check_mark:  |
-| Test Case 7  |         deck size: 56,Peek: 56       |         List of 56 Top Cards      | :x: or :white_check_mark:  |
-| Test Case 8  |        deck size: 56, Peek: 57            |         Illegal State Exception        | :x: or :white_check_mark:  |
+| Test Case 1  |          deck size: 0, Peek: 0          |      Illegal State Exception         | :white_check_mark: |
+| Test Case 2  |          deck size: 0, Peek: -1           |       Illegal Argument Exception       |  :white_check_mark:  |
+| Test Case 3  |         deck size: 1, Peek: 0          |         Empty List       |  :white_check_mark: |
+| Test Case 4  |         deck size: 2, Peek: 1           |         List of 1 Top Card       | :white_check_mark:  |
+| Test Case 5  |         deck size: 56, Peek: 3             |         List of 3 Top Cards     |  :white_check_mark:  |
+| Test Case 6  |         deck size: 56,Peek: 55       |         List of 55 Top Cards      | :white_check_mark: |
+| Test Case 7  |         deck size: 56,Peek: 56       |         List of 56 Top Cards      |  :white_check_mark:  |
+| Test Case 8  |        deck size: 56, Peek: 57            |         Illegal State Exception        |  :white_check_mark:  |
 
 
 
