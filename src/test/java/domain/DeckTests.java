@@ -464,4 +464,12 @@ public class DeckTests {
         assertSame(existingKitten, kittens.get(0));
         assertSame(newKitten, kittens.get(1));
     }
+
+    @Test
+    public void addCard_nullCard_throwsAndDeckUnchanged() {
+        Deck deck = new Deck(defuseCards(3), new Random());
+
+        assertThrows(IllegalArgumentException.class, () -> deck.addCard(null));
+        assertEquals(3, deck.getDeckSize());
+    }
 }
