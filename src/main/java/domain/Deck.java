@@ -88,4 +88,7 @@ public class Deck {
         return removed;
     }
 
+    public void addCard(Card card) {
+        cards.add(card);
+    }
 }
