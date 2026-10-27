@@ -6,7 +6,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import org.easymock.EasyMock;
+
+import static org.easymock.EasyMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DeckTests {
@@ -109,5 +113,23 @@ public class DeckTests {
 
         assertEquals(1, deck.getDeckSize());
         assertSame(defuse, deck.getCardAt(0));
+    }
+
+    @Test
+    public void shuffleDeck_twoCards_reordersUsingRandom() {
+        Card defuse = new Card(CardType.Defuse);
+        Card kitten = new Card(CardType.Exploding_Kitten);
+
+        Random random = createMock(Random.class);
+        expect(random.nextInt(2)).andReturn(0);
+        replay(random);
+
+        Deck deck = new Deck(List.of(defuse, kitten), random);
+        deck.shuffleDeck();
+
+        assertEquals(2, deck.getDeckSize());
+        assertSame(kitten, deck.getCardAt(0));
+        assertSame(defuse, deck.getCardAt(1));
+        verify(random);
     }
 }

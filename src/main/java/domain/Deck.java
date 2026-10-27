@@ -1,12 +1,17 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Deck {
     private final List<Card> cards;
 
+    private final Random random;
+
     public Deck() {
+        this.random = new Random();
         cards = new ArrayList<>();
         cards.add(new Card(CardType.Exploding_Kitten));
         for (int i = 0; i < 55; i++) {
@@ -15,7 +20,12 @@ public class Deck {
     }
 
     Deck(List<Card> cards) {
+        this(cards, new Random());
+    }
+
+    Deck(List<Card> cards, Random random) {
         this.cards = new ArrayList<>(cards);
+        this.random = random;
     }
 
     public int getDeckSize() {
@@ -34,6 +44,7 @@ public class Deck {
     }
 
     public void shuffleDeck() {
+        Collections.shuffle(cards, random);
     }
 
 
