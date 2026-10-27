@@ -28,9 +28,9 @@
 |              | State of the System | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
 | Test Case 1  |          empty Deck          |      empty deck unchanged      | :white_check_mark: |
-| Test Case 2  |          Deck w/ 1 card             |        same single card         | :x: or :white_check_mark: |
-| Test Case 3  |         Deck w/ 2 cards          |         same cards, potentially different order       | :x: or :white_check_mark: |
-| Test Case 4  |         Deck w/ 37 cards containing duplicate cards       |         same cards, different order, duplicates present        | :x: or :white_check_mark: |
+| Test Case 2  |          Deck w/ 1 card             |        same single card         | :white_check_mark: |
+| Test Case 3  |         Deck w/ 2 cards          |         same cards, potentially different order       | :white_check_mark: |
+| Test Case 4  |         Deck w/ 56 cards containing duplicate cards       |         same cards, different order, duplicates present        | :white_check_mark: |
 
 ### Method under test: `drawCard()`
 

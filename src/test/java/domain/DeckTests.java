@@ -132,4 +132,43 @@ public class DeckTests {
         assertSame(defuse, deck.getCardAt(1));
         verify(random);
     }
+
+
+    @Test
+    public void shuffleDeck_fullDeck_sameCardsNewOrder() {
+        List<Card> original = new ArrayList<>();
+        original.add(new Card(CardType.Exploding_Kitten));
+        for (int i = 0; i < 55; i++) {
+            original.add(new Card(CardType.Defuse));
+        }
+
+        Random random = createMock(Random.class);
+        for (int i = 56; i > 1; i--) {
+            expect(random.nextInt(i)).andReturn(0);
+        }
+        replay(random);
+
+        Deck deck = new Deck(original, random);
+        deck.shuffleDeck();
+
+        // same size
+        assertEquals(56, deck.getDeckSize());
+
+        // new order: rotated by one, top card moved to the bottom
+        for (int i = 0; i < 55; i++) {
+            assertSame(original.get(i + 1), deck.getCardAt(i));
+        }
+        assertSame(original.get(0), deck.getCardAt(55));
+
+        // duplicates still present
+        int defuseCount = 0;
+        for (int i = 0; i < deck.getDeckSize(); i++) {
+            if (deck.getCardAt(i).getTypeofCard() == CardType.Defuse) {
+                defuseCount++;
+            }
+        }
+        assertEquals(55, defuseCount);
+
+        verify(random);
+    }
 }
