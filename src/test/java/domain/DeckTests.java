@@ -14,6 +14,23 @@ import static org.easymock.EasyMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DeckTests {
+
+    // helpers for Testing
+    private List<Card> defuseCards(int count) {
+        List<Card> cards = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            cards.add(new Card(CardType.Defuse));
+        }
+        return cards;
+    }
+
+    private void assertTopCards(List<Card> original, List<Card> peeked, int count) {
+        assertEquals(count, peeked.size());
+        for (int i = 0; i < count; i++) {
+            assertSame(original.get(i), peeked.get(i));
+        }
+    }
+
     @Test
     public void constructor_createsDeckOf56Cards() {
         Deck deck = new Deck();
@@ -182,5 +199,15 @@ public class DeckTests {
     public void peekTopofDeck_negativePeek_throwsIllegalArgumentException() {
         Deck deck = new Deck(new ArrayList<>());
         assertThrows(IllegalArgumentException.class, () -> deck.peekTopofDeck(-1));
+    }
+
+    @Test
+    public void peekTopofDeck_oneCardPeekZero_returnsEmptyList() {
+        Deck deck = new Deck(defuseCards(1));
+
+        List<Card> peeked = deck.peekTopofDeck(0);
+
+        assertTrue(peeked.isEmpty());
+        assertEquals(1, deck.getDeckSize());
     }
 }

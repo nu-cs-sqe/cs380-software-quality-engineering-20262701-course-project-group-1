@@ -51,7 +51,10 @@ public class Deck {
         if (numberOfCards < 0) {
             throw new IllegalArgumentException("Cannot peek at a negative number of cards");
         }
-        throw new IllegalStateException("Cannot peek at an empty deck");
+        if (cards.isEmpty()) {
+            throw new IllegalStateException("Cannot peek at an empty deck");
+        }
+        return new ArrayList<>();
     }
 
 }
