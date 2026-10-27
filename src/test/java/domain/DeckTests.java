@@ -375,4 +375,27 @@ public class DeckTests {
                 () -> deck.removeAllCardsofType(null));
         assertEquals(3, deck.getDeckSize());
     }
+
+    @Test
+    public void removeAllCardsofType_fullDeckKittensAtTopAndBottom_removesBoth() {
+        Card kitten1 = new Card(CardType.Exploding_Kitten);
+        Card kitten2 = new Card(CardType.Exploding_Kitten);
+        List<Card> defuses = defuseCards(54);
+
+        List<Card> original = new ArrayList<>();
+        original.add(kitten1);
+        original.addAll(defuses);
+        original.add(kitten2);
+        Deck deck = new Deck(original, new Random());
+
+        List<Card> removed = deck.removeAllCardsofType(CardType.Exploding_Kitten);
+
+        assertEquals(2, removed.size());
+        assertSame(kitten1, removed.get(0));
+        assertSame(kitten2, removed.get(1));
+        assertEquals(54, deck.getDeckSize());
+        for (int i = 0; i < 54; i++) {
+            assertSame(defuses.get(i), deck.getCardAt(i));
+        }
+    }
 }
