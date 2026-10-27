@@ -91,4 +91,8 @@ public class Deck {
     public void addCard(Card card) {
         insertCardAt(card, cards.size());
     }
+
+    public boolean isEmpty() {
+        return true;
+    }
 }

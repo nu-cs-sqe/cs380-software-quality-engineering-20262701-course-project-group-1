@@ -98,10 +98,10 @@
 
 |              | State of the System | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
-| Test Case 1  |          empty deck, addCard(new Card(Defuse))       |      Deck Size == 1          | :x: or :white_check_mark: |
-| Test Case 2  |          deck w/ 3 cards, addCard(new Card(Defuse))            |        Deck Size == 4, added card present all original cards remain         |:x: or :white_check_mark:  |
-| Test Case 3  |         deck w/ 56 and a Exploding Kitten Present, addCard(new Card(Exploding Kitten))               |         Deck Size == 16, removeAllCardsofType.size() == 2       | :x: or :white_check_mark: |
-| Test Case 4  |          deck w/ 3 cards, addCard(null)            |        IllegalArgumentException        |:x: or :white_check_mark:  |
+| Test Case 1  |          empty deck, addCard(new Card(Defuse))       |      Deck Size == 1          | :white_check_mark: |
+| Test Case 2  |          deck w/ 3 cards, addCard(new Card(Defuse))            |        Deck Size == 4, added card present all original cards remain         |:white_check_mark:|
+| Test Case 3  |         deck w/ 56 and a Exploding Kitten Present, addCard(new Card(Exploding Kitten))               |         Deck Size == 16, removeAllCardsofType.size() == 2       | :white_check_mark: |
+| Test Case 4  |          deck w/ 3 cards, addCard(null)            |        IllegalArgumentException        |:white_check_mark: |
 
 
 ### Method under test: `removeAllCardsofType()`
@@ -121,3 +121,4 @@
 |--------------|---------------------|-----------------|---------------------------|
 | Test Case 1  |          empty deck      |      True     | :x: or :white_check_mark: |
 | Test Case 2  |          deck w/ 56 cards          |        False     |:x: or :white_check_mark:  |
+| Test Case 3 |          deck w/ 1 cards          |        False     |:x: or :white_check_mark:  |

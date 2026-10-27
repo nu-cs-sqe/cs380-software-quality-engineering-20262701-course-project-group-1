@@ -472,4 +472,10 @@ public class DeckTests {
         assertThrows(IllegalArgumentException.class, () -> deck.addCard(null));
         assertEquals(3, deck.getDeckSize());
     }
+
+    @Test
+    public void isEmpty_emptyDeck_returnsTrue() {
+        Deck deck = new Deck(new ArrayList<>(), new Random());
+        assertTrue(deck.isEmpty());
+    }
 }
