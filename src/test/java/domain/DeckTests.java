@@ -91,4 +91,12 @@ public class DeckTests {
 
         assertEquals(size, deck.getDeckSize());
     }
+
+    @Test
+    public void shuffleDeck_emptyDeck_remainsEmpty() {
+        Deck deck = new Deck(new ArrayList<>());
+
+        assertDoesNotThrow(deck::shuffleDeck);
+        assertEquals(0, deck.getDeckSize());
+    }
 }

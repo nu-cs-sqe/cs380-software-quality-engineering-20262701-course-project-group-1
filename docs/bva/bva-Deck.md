@@ -27,7 +27,7 @@
 
 |              | State of the System | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
-| Test Case 1  |          empty Deck          |      empty deck unchanged      | :x: or :white_check_mark: |
+| Test Case 1  |          empty Deck          |      empty deck unchanged      | :white_check_mark: |
 | Test Case 2  |          Deck w/ 1 card             |        same single card         | :x: or :white_check_mark: |
 | Test Case 3  |         Deck w/ 2 cards          |         same cards, potentially different order       | :x: or :white_check_mark: |
 | Test Case 4  |         Deck w/ 37 cards containing duplicate cards       |         same cards, different order, duplicates present        | :x: or :white_check_mark: |
@@ -57,10 +57,10 @@
 
 |              | State of the System | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
-| Test Case 1  |          Deck is empty          |      0           | :x: or :white_check_mark:|
-| Test Case 2  |          Deck w/ 1 card           |        1         | :x: or :white_check_mark: |
-| Test Case 3  |         Deck w/ 3 cards           |         16        | :x: or :white_check_mark: |
-| Test Case 4  |         Deck w/ 56 cards     |         37      | :x: or :white_check_mark:|
+| Test Case 1  |          Deck is empty          |      0           |:white_check_mark:|
+| Test Case 2  |          Deck w/ 1 card           |        1         |  :white_check_mark: |
+| Test Case 3  |         Deck w/ 3 cards           |         16        | :white_check_mark: |
+| Test Case 4  |         Deck w/ 56 cards     |         37      | :white_check_mark:|
 
 ### Method under test: `peekTopofDeck()`
 
