@@ -47,5 +47,8 @@ public class Deck {
         Collections.shuffle(cards, random);
     }
 
+    public List<Card> peekTopofDeck(int numberOfCards) {
+        throw new IllegalStateException("Cannot peek at an empty deck");
+    }
 
 }

@@ -171,4 +171,10 @@ public class DeckTests {
 
         verify(random);
     }
+
+    @Test
+    public void peekTopofDeck_emptyDeckPeekZero_throwsIllegalStateException() {
+        Deck deck = new Deck(new ArrayList<>());
+        assertThrows(IllegalStateException.class, () -> deck.peekTopofDeck(0));
+    }
 }
