@@ -66,8 +66,7 @@ public class Deck {
         if (card == null) {
             throw new IllegalArgumentException("Card cannot be null");
         }
-
-        if (index < 0) {
+        if (index < 0 || index > cards.size()) {
             throw new IllegalArgumentException("Index out of range: " + index);
         }
         cards.add(index, card);
