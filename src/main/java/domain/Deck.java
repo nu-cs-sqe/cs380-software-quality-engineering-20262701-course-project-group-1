@@ -1,9 +1,6 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Deck {
     private final List<Card> cards;
@@ -75,7 +72,16 @@ public class Deck {
     }
 
     public List<Card> removeAllCardsofType(CardType type) {
-        return new ArrayList<>();
+        List<Card> removed = new ArrayList<>();
+        Iterator<Card> iterator = cards.iterator();
+        while (iterator.hasNext()) {
+            Card card = iterator.next();
+            if (card.getTypeofCard() == type) {
+                removed.add(card);
+                iterator.remove();
+            }
+        }
+        return removed;
     }
 
 }
