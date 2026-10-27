@@ -1,7 +1,11 @@
 package domain;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DeckTests {
     @Test
@@ -22,5 +26,11 @@ public class DeckTests {
         Deck deck = new Deck();
         assertEquals(56, deck.getDeckSize());
         assertEquals(CardType.Defuse, deck.getCardAt(55).getTypeofCard());
+    }
+
+    @Test
+    public void drawCard_emptyDeck_throwsIllegalStateException() {
+        Deck deck = new Deck(new ArrayList<>());
+        assertThrows(IllegalStateException.class, deck::drawCard);
     }
 }

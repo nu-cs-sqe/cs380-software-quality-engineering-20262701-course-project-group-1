@@ -12,9 +12,9 @@
 
 |              | System under Test | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
-| Test Case 1  |        new Deck()        |      Deck Size == 56 cards         | :x: or :white_check_mark: |
-| Test Case 2  |         new Deck()        |        Deck Size == 56 cards, First Card Exploding Kitten   | :x: or :white_check_mark: |
-| Test Case 3  |         new Deck()        |        Deck Size == 56 cards, Last Card Defuse      | :x: or :white_check_mark: |
+| Test Case 1  |        new Deck()        |      Deck Size == 56 cards         | :white_check_mark: |
+| Test Case 2  |         new Deck()        |        Deck Size == 56 cards, First Card Exploding Kitten   | :white_check_mark: |
+| Test Case 3  |         new Deck()        |        Deck Size == 56 cards, Last Card Defuse      | :white_check_mark: |
 
 
 ### Method under test: `shuffleDeck()`
