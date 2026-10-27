@@ -44,4 +44,17 @@ public class DeckTests {
         assertSame(defuse, drawn);
         assertEquals(0, deck.getDeckSize());
     }
+
+    @Test
+    public void drawCard_twoCardDeck_returnsTopCardAndLeavesRemaining() {
+        Card defuse = new Card(CardType.Defuse);
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        Deck deck = new Deck(List.of(defuse, kitten));
+
+        Card drawn = deck.drawCard();
+
+        assertSame(defuse, drawn);
+        assertEquals(1, deck.getDeckSize());
+        assertSame(kitten, deck.getCardAt(0));
+    }
 }
