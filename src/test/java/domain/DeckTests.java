@@ -432,4 +432,19 @@ public class DeckTests {
         assertEquals(1, deck.getDeckSize());
         assertSame(defuse, deck.getCardAt(0));
     }
+
+    @Test
+    public void addCard_nonEmptyDeck_cardOnBottomAndOriginalsRemain() {
+        List<Card> original = defuseCards(3);
+        Deck deck = new Deck(original, new Random());
+        Card defuse = new Card(CardType.Defuse);
+
+        deck.addCard(defuse);
+
+        assertEquals(4, deck.getDeckSize());
+        for (int i = 0; i < 3; i++) {
+            assertSame(original.get(i), deck.getCardAt(i));
+        }
+        assertSame(defuse, deck.getCardAt(3));
+    }
 }

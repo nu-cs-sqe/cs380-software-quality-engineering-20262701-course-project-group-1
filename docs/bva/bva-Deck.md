@@ -110,10 +110,10 @@
 |--------------|---------------------|-----------------|---------------------------|
 | Test Case 1  |          empty deck, Defuse      |      empty list      | :white_check_mark: |
 | Test Case 2  |          deck w/ 3 cards but no Defuse, Defuse          |        empty list       | :white_check_mark:  |
-| Test Case 3  |         deck containing a defuse, Defuse            |        List of a Single Defuse Card      | :x: or :white_check_mark: |
-| Test Case 4  |          deck w/ 3 cards, removeAllCardsofType(null)            |        IllegalArgumentException        |:x: or :white_check_mark:  |
-| Test Case 5  |          deck w/ 56 cards contains two exploding kittens top and bottom of deck, Exploding_Kitten       |       List of two exploding kittens       |:x: or :white_check_mark:  |
-| Test Case 6  |          deck w/ 56 cards contains two exploding kittens next to each other at top, Exploding_Kitten       |       List of two exploding kittens       |:x: or :white_check_mark:  |
+| Test Case 3  |         deck containing a defuse, Defuse            |        List of a Single Defuse Card      | :white_check_mark:|
+| Test Case 4  |          deck w/ 3 cards, removeAllCardsofType(null)            |        IllegalArgumentException        |:white_check_mark:  |
+| Test Case 5  |          deck w/ 56 cards contains two exploding kittens top and bottom of deck, Exploding_Kitten       |       List of two exploding kittens       |:white_check_mark:  |
+| Test Case 6  |          deck w/ 56 cards contains two exploding kittens next to each other at top, Exploding_Kitten       |       List of two exploding kittens       |:white_check_mark:  |
 
 ### Method under test: `isEmpty()`
 
