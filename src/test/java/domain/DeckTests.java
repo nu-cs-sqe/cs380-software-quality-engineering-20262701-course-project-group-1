@@ -3,9 +3,9 @@ package domain;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DeckTests {
     @Test
@@ -32,5 +32,16 @@ public class DeckTests {
     public void drawCard_emptyDeck_throwsIllegalStateException() {
         Deck deck = new Deck(new ArrayList<>());
         assertThrows(IllegalStateException.class, deck::drawCard);
+    }
+
+    @Test
+    public void drawCard_oneCardDeck_returnsDefuseAndDeckIsEmpty() {
+        Card defuse = new Card(CardType.Defuse);
+        Deck deck = new Deck(List.of(defuse));
+
+        Card drawn = deck.drawCard();
+
+        assertSame(defuse, drawn);
+        assertEquals(0, deck.getDeckSize());
     }
 }

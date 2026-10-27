@@ -42,7 +42,7 @@
 
 |              | State of the System | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
-| Test Case 1  |          Empty Deck         |     Illegal State Exception        | :x: or :white_check_mark: |
+| Test Case 1  |          Empty Deck         |     Illegal State Exception        | :white_check_mark: |
 | Test Case 2  |          Deck w/ 1 card, Top Card Defuse            |        Defuse, Deck is now empty         | :x: or :white_check_mark: |
 | Test Case 3  |         Deck w/ 2 card, [Defuse, Exploding_Kitten], Top Card Defuse             |         Defuse, Deck [Exploding_Kitten]        | :x: or :white_check_mark:|
 | Test Case 4  |         Deck w/ 37 cards, Defuse at top              |         Defuse, Deck remains same w/ Defuse removed       | :x: or :white_check_mark:|

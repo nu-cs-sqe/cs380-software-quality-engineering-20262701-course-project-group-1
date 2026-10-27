@@ -27,6 +27,9 @@ public class Deck {
     }
 
     public Card drawCard() {
-        throw new IllegalStateException("Cannot draw from an empty deck");
+        if (cards.isEmpty()) {
+            throw new IllegalStateException("Cannot draw from an empty deck");
+        }
+        return cards.remove(0);
     }
 }
