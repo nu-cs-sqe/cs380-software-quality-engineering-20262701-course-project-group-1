@@ -59,8 +59,8 @@
 |--------------|---------------------|-----------------|---------------------------|
 | Test Case 1  |          Deck is empty          |      0           | :x: or :white_check_mark:|
 | Test Case 2  |          Deck w/ 1 card           |        1         | :x: or :white_check_mark: |
-| Test Case 3  |         Deck w/ 16 cards           |         16        | :x: or :white_check_mark: |
-| Test Case 4  |         Deck w/ 37 cards     |         37      | :x: or :white_check_mark:|
+| Test Case 3  |         Deck w/ 3 cards           |         16        | :x: or :white_check_mark: |
+| Test Case 4  |         Deck w/ 56 cards     |         37      | :x: or :white_check_mark:|
 
 ### Method under test: `peekTopofDeck()`
 

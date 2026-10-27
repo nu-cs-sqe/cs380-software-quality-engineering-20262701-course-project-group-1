@@ -1,6 +1,8 @@
 package domain;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,5 +78,17 @@ public class DeckTests {
         for (int i = 0; i < expectedRemaining.size(); i++) {
             assertSame(expectedRemaining.get(i), deck.getCardAt(i));
         }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 3, 56})
+    public void getDeckSize_returnsNumberOfCardsInDeck(int size) {
+        List<Card> cards = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            cards.add(new Card(CardType.Defuse));
+        }
+        Deck deck = new Deck(cards);
+
+        assertEquals(size, deck.getDeckSize());
     }
 }
