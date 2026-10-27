@@ -57,4 +57,24 @@ public class DeckTests {
         assertEquals(1, deck.getDeckSize());
         assertSame(kitten, deck.getCardAt(0));
     }
+
+    @Test
+    public void drawCard_fullDeck_returnsTopCardAndLeavesRestInOrder() {
+        Deck deck = new Deck();
+
+        Card expectedTop = deck.getCardAt(0);
+        List<Card> expectedRemaining = new ArrayList<>();
+        for (int i = 1; i < deck.getDeckSize(); i++) {
+            expectedRemaining.add(deck.getCardAt(i));
+        }
+
+        Card drawn = deck.drawCard();
+
+        assertSame(expectedTop, drawn);
+        assertEquals(CardType.Exploding_Kitten, drawn.getTypeofCard());
+        assertEquals(55, deck.getDeckSize());
+        for (int i = 0; i < expectedRemaining.size(); i++) {
+            assertSame(expectedRemaining.get(i), deck.getCardAt(i));
+        }
+    }
 }

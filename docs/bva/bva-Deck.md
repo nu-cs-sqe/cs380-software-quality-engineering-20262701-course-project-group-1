@@ -45,7 +45,7 @@
 | Test Case 1  |          Empty Deck         |     Illegal State Exception        | :white_check_mark: |
 | Test Case 2  |          Deck w/ 1 card, Top Card Defuse            |        Defuse, Deck is now empty         | :white_check_mark: |
 | Test Case 3  |         Deck w/ 2 card, [Defuse, Exploding_Kitten], Top Card Defuse             |         Defuse, Deck [Exploding_Kitten]        | :white_check_mark:|
-| Test Case 4  |         Deck w/ 37 cards, Defuse at top              |         Defuse, Deck remains same w/ Defuse removed       | :x: or :white_check_mark:|
+| Test Case 4  |         Deck w/ 56 cards, Defuse at top              |         Defuse, Deck remains same w/ Defuse removed       | :white_check_mark:|
 
 ### Method under test: `getDeckSize()`
 
