@@ -87,12 +87,12 @@
 
 |              | State of the System | Expected output | Implemented?              |
 |--------------|---------------------|-----------------|---------------------------|
-| Test Case 1  |          Deck Size: 56 cards, Exploding Kitten Card at index 0         |      Deck with Exploding Kitten at Index 0          | :x: or :white_check_mark: |
-| Test Case 2  |          Deck Size: 56 cards, Exploding Kitten Card at index 1         |      Deck with Exploding Kitten at Index 1          | :x: or :white_check_mark: |
-| Test Case 3 |          Deck Size: 56 cards, Exploding Kitten Card at index 56         |      Deck with Exploding Kitten at Index 55          | :x: or :white_check_mark: |
-| Test Case 4 |          Deck Size: 56 cards, Exploding Kitten Card at index 57         |      Illegal Argument Exception      | :x: or :white_check_mark: |
-| Test Case 5  |          Deck Size: 56 cards, Exploding Kitten Card at index -1        |      Illegal Argument Exception      | :x: or :white_check_mark: |
-| Test Case 6  |          Deck Size: 56 cards, Null Card at index 1         |      Illegal Argument Exception          | :x: or :white_check_mark: |
+| Test Case 1  |          Deck Size: 56 cards, Exploding Kitten Card at index 0         |      Deck with Exploding Kitten at Index 0          | :white_check_mark: |
+| Test Case 2  |          Deck Size: 56 cards, Exploding Kitten Card at index 1         |      Deck with Exploding Kitten at Index 1          | :white_check_mark:|
+| Test Case 3 |          Deck Size: 56 cards, Exploding Kitten Card at index 56         |      Deck with Exploding Kitten at Index 55          | :white_check_mark: |
+| Test Case 4 |          Deck Size: 56 cards, Exploding Kitten Card at index 57         |      Illegal Argument Exception      | :white_check_mark: |
+| Test Case 5  |          Deck Size: 56 cards, Exploding Kitten Card at index -1        |      Illegal Argument Exception      | :white_check_mark: |
+| Test Case 6  |          Deck Size: 56 cards, Null Card at index 1         |      Illegal Argument Exception          | :white_check_mark:|
 
 ### Method under test: `addCard()`
 
@@ -100,7 +100,7 @@
 |--------------|---------------------|-----------------|---------------------------|
 | Test Case 1  |          empty deck, addCard(new Card(Defuse))       |      Deck Size == 1          | :x: or :white_check_mark: |
 | Test Case 2  |          deck w/ 3 cards, addCard(new Card(Defuse))            |        Deck Size == 4, added card present all original cards remain         |:x: or :white_check_mark:  |
-| Test Case 3  |         deck w/ 15 and a Exploding Kitten Present, addCard(new Card(Exploding Kitten))               |         Deck Size == 16, removeAllCardsofType.size() == 2       | :x: or :white_check_mark: |
+| Test Case 3  |         deck w/ 56 and a Exploding Kitten Present, addCard(new Card(Exploding Kitten))               |         Deck Size == 16, removeAllCardsofType.size() == 2       | :x: or :white_check_mark: |
 | Test Case 4  |          deck w/ 3 cards, addCard(null)            |        IllegalArgumentException        |:x: or :white_check_mark:  |
 
 
@@ -112,7 +112,7 @@
 | Test Case 2  |          deck w/ 3 cards but no Defuse, Defuse          |        empty list       |:x: or :white_check_mark:  |
 | Test Case 3  |         deck containing a defuse, Defuse            |        List of a Single Defuse Card      | :x: or :white_check_mark: |
 | Test Case 4  |          deck w/ 3 cards, removeAllCardsofType(null)            |        IllegalArgumentException        |:x: or :white_check_mark:  |
-| Test Case 5  |          deck w/ 4 cards contains two exploding kittens, Exploding_Kitten       |       List of two exploding kittens       |:x: or :white_check_mark:  |
+| Test Case 5  |          deck w/ 56 cards contains two exploding kittens, Exploding_Kitten       |       List of two exploding kittens       |:x: or :white_check_mark:  |
 
 ### Method under test: `isEmpty()`
 

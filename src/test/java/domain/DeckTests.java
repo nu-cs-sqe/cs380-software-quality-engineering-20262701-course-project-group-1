@@ -323,4 +323,14 @@ public class DeckTests {
                 () -> deck.insertCardAt(new Card(CardType.Exploding_Kitten), 57));
         assertEquals(56, deck.getDeckSize());
     }
+
+    @Test
+    public void removeAllCardsofType_emptyDeck_returnsEmptyList() {
+        Deck deck = new Deck(new ArrayList<>(), new Random());
+
+        List<Card> removed = deck.removeAllCardsofType(CardType.Defuse);
+
+        assertTrue(removed.isEmpty());
+        assertEquals(0, deck.getDeckSize());
+    }
 }

@@ -19,6 +19,7 @@ public class Deck {
         }
     }
 
+    // DeckTest Constructors
     Deck(List<Card> cards) {
         this(cards, new Random());
     }
@@ -32,6 +33,7 @@ public class Deck {
         return cards.size();
     }
 
+    // Used in DeckTests to ensure proper Deck State
     Card getCardAt(int index) {
         return cards.get(index);
     }
@@ -70,6 +72,10 @@ public class Deck {
             throw new IllegalArgumentException("Index out of range: " + index);
         }
         cards.add(index, card);
+    }
+
+    public List<Card> removeAllCardsofType(CardType type) {
+        return new ArrayList<>();
     }
 
 }
