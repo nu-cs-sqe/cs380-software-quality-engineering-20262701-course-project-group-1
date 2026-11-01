@@ -43,7 +43,7 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC5 | `addCard(new Card(CardType.GENERIC))` on empty hand | `getHand()` size is `1` | no |
+| TC5 | `addCard(new Card(CardType.See_The_Future))` on empty hand | `getHand()` size is `1` | yes |
 
 ---
 
@@ -54,5 +54,5 @@ Made with assistance from GenAI.
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
 | TC6 | `new Player("A").getHand()` | empty list | yes (implemented in TC1) |
-| TC7 | `getHand()` after one `addCard` | size `1` | no (implemented in TC5) |
+| TC7 | `getHand()` after one `addCard` | size `1` | yes (implemented in TC5) |
 | TC8 | `getHand().clear()` after one `addCard` | later `getHand()` size unchanged | no |

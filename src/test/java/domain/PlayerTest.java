@@ -22,4 +22,13 @@ class PlayerTest {
 
 		assertEquals("B", player.getName());
 	}
+
+	@Test
+	void addCard_onEmptyHand_handSizeIsOne() {
+		Player player = new Player("A");
+
+		player.addCard(new Card(CardType.See_The_Future));
+
+		assertEquals(1, player.getHand().size());
+	}
 }
