@@ -15,4 +15,11 @@ class PlayerTest {
 		assertTrue(player.isAlive());
 		assertTrue(player.getHand().isEmpty());
 	}
+
+	@Test
+	void getName_returnsNameGivenAtConstruction() {
+		Player player = new Player("B");
+
+		assertEquals("B", player.getName());
+	}
 }

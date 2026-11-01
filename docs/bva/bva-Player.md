@@ -23,7 +23,7 @@ Made with assistance from GenAI.
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
 | TC2 | `new Player("A").getName()` | `"A"` | yes (implemented in TC1) |
-| TC3 | `new Player("B").getName()` | `"B"` | no |
+| TC3 | `new Player("B").getName()` | `"B"` | yes |
 
 ---
 
