@@ -93,6 +93,17 @@ class GameManagerTest {
 		assertEquals(List.of("A", "B"), namesOf(manager.getPlayers()));
 	}
 
+	@Test
+	void getDrawPile_returnedListIsDefensiveCopy() {
+		GameManager manager = new GameManager();
+		manager.startNewGame(List.of("A", "B"));
+		int pileSize = manager.getDrawPile().size();
+
+		manager.getDrawPile().clear();
+
+		assertEquals(pileSize, manager.getDrawPile().size());
+	}
+
 	private static Random alwaysFirst() {
 		return new Random() {
 			@Override
