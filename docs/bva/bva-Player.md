@@ -12,7 +12,7 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC1 | `new Player("A")` | `getName()` is `"A"`; `isAlive()` is `true`; `getHand()` is empty | no |
+| TC1 | `new Player("A")` | `getName()` is `"A"`; `isAlive()` is `true`; `getHand()` is empty | yes |
 
 ---
 
@@ -22,7 +22,7 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC2 | `new Player("A").getName()` | `"A"` | no (implemented in TC1) |
+| TC2 | `new Player("A").getName()` | `"A"` | yes (implemented in TC1) |
 | TC3 | `new Player("B").getName()` | `"B"` | no |
 
 ---
@@ -33,7 +33,7 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC4 | `new Player("A").isAlive()` | `true` | no (implemented in TC1) |
+| TC4 | `new Player("A").isAlive()` | `true` | yes (implemented in TC1) |
 
 ---
 
@@ -53,6 +53,6 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC6 | `new Player("A").getHand()` | empty list | no (implemented in TC1) |
+| TC6 | `new Player("A").getHand()` | empty list | yes (implemented in TC1) |
 | TC7 | `getHand()` after one `addCard` | size `1` | no (implemented in TC5) |
 | TC8 | `getHand().clear()` after one `addCard` | later `getHand()` size unchanged | no |
