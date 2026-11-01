@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,10 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B"));
 
-		assertEquals(List.of("A", "B"), manager.getPlayers());
+		assertEquals(List.of("A", "B"), namesOf(manager.getPlayers()));
+		assertPlayersAlive(manager.getPlayers());
+		assertStartingHands(manager.getPlayers());
+		assertDrawPile(manager, 1, 4);
 	}
 
 	@Test
@@ -62,7 +66,10 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B", "C", "D"));
 
-		assertEquals(List.of("A", "B", "C", "D"), manager.getPlayers());
+		assertEquals(List.of("A", "B", "C", "D"), namesOf(manager.getPlayers()));
+		assertPlayersAlive(manager.getPlayers());
+		assertStartingHands(manager.getPlayers());
+		assertDrawPile(manager, 3, 2);
 	}
 
 	@Test
@@ -83,7 +90,18 @@ class GameManagerTest {
 
 		manager.getPlayers().clear();
 
-		assertEquals(List.of("A", "B"), manager.getPlayers());
+		assertEquals(List.of("A", "B"), namesOf(manager.getPlayers()));
+	}
+
+	@Test
+	void getDrawPile_returnedListIsDefensiveCopy() {
+		GameManager manager = new GameManager();
+		manager.startNewGame(List.of("A", "B"));
+		int pileSize = manager.getDrawPile().size();
+
+		manager.getDrawPile().clear();
+
+		assertEquals(pileSize, manager.getDrawPile().size());
 	}
 
 	private static Random alwaysFirst() {
@@ -110,7 +128,7 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B"));
 
-		assertEquals("A", manager.getCurrentPlayer());
+		assertEquals("A", manager.getCurrentPlayer().getName());
 	}
 
 	@Test
@@ -119,7 +137,7 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B"));
 
-		assertEquals("B", manager.getCurrentPlayer());
+		assertEquals("B", manager.getCurrentPlayer().getName());
 	}
 
 	@Test
@@ -128,7 +146,7 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B", "C", "D"));
 
-		assertEquals("A", manager.getCurrentPlayer());
+		assertEquals("A", manager.getCurrentPlayer().getName());
 	}
 
 	@Test
@@ -137,7 +155,47 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B", "C", "D"));
 
-		assertEquals("D", manager.getCurrentPlayer());
+		assertEquals("D", manager.getCurrentPlayer().getName());
+	}
+
+	private static List<String> namesOf(List<Player> players) {
+		List<String> names = new ArrayList<>();
+		for (Player player : players) {
+			names.add(player.getName());
+		}
+		return names;
+	}
+
+	private static void assertPlayersAlive(List<Player> players) {
+		for (Player player : players) {
+			assertTrue(player.isAlive());
+		}
+	}
+
+	private static void assertStartingHands(List<Player> players) {
+		for (Player player : players) {
+			List<Card> hand = player.getHand();
+			assertEquals(6, hand.size());
+			assertEquals(1, countType(hand, CardType.Defuse));
+			assertEquals(5, countType(hand, CardType.See_The_Future));
+			assertEquals(0, countType(hand, CardType.Exploding_Kitten));
+		}
+	}
+
+	private static void assertDrawPile(GameManager manager, int explodingKittens, int defuses) {
+		List<Card> pile = manager.getDrawPile();
+		assertEquals(explodingKittens, countType(pile, CardType.Exploding_Kitten));
+		assertEquals(defuses, countType(pile, CardType.Defuse));
+	}
+
+	private static int countType(List<Card> cards, CardType type) {
+		int count = 0;
+		for (Card card : cards) {
+			if (card.getTypeofCard() == type) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 

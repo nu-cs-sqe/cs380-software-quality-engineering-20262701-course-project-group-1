@@ -24,8 +24,8 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC2 | `startNewGame(List.of("A", "B"))` | 2 alive players named `"A"`, `"B"`; each hand is 6 cards (1 Defuse + 5 GENERIC, no EK); pile has 1 EK and 4 Defuse | no |
-| TC3 | `startNewGame(List.of("A", "B", "C", "D"))` | 4 alive players; each hand same as TC2; pile has 3 EK and 2 Defuse | no |
+| TC2 | `startNewGame(List.of("A", "B"))` | 2 alive players named `"A"`, `"B"`; each hand is 6 cards (1 Defuse + 5 See_The_Future, no EK); pile has 1 EK and 4 Defuse | yes |
+| TC3 | `startNewGame(List.of("A", "B", "C", "D"))` | 4 alive players; each hand same as TC2; pile has 3 EK and 2 Defuse | yes |
 | TC4 | `startNewGame(List.of("A"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC5 | `startNewGame(List.of("A", "B", "C", "D", "E"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
@@ -64,8 +64,8 @@ Made with assistance from GenAI.
 
 ##### All-combination or each-choice: each-choice
 
-| Test Case # | System under test                                                 | Expected output                 | Implemented? |
-|-------------|-------------------------------------------------------------------|---------------------------------|---------|
-| TC17 | `getDrawPile()` after `startNewGame(List.of("A", "B"))`           | 1 EK and 4 Defuse               | yes     |
-| TC18 | `getDrawPile()` after `startNewGame(List.of("A", "B", "C", "D"))` | 3 EK and 2 Defuse               | yes     |
-| TC19 | `getDrawPile().clear()` after start                               | later `getDrawPile()` unchanged | yes     |
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC17 | `getDrawPile()` after `startNewGame(List.of("A", "B"))` | 1 EK and 4 Defuse | yes (implemented in TC2) |
+| TC18 | `getDrawPile()` after `startNewGame(List.of("A", "B", "C", "D"))` | 3 EK and 2 Defuse | yes (implemented in TC3) |
+| TC19 | `getDrawPile().clear()` after start | later `getDrawPile()` unchanged | yes |
