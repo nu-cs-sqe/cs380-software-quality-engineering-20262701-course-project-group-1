@@ -9,7 +9,7 @@ public class GameManager {
 	private static final String PLAYER_COUNT_OUT_OF_RANGE = "gameManager.playerCount.outOfRange";
 	private static final String PLAYER_NAME_BLANK = "gameManager.playerName.blank";
 
-	private final List<String> players = new ArrayList<>();
+	private final List<Player> players = new ArrayList<>();
 	private final TurnManager turnManager = new TurnManager();
 	private final Random random;
 
@@ -31,15 +31,17 @@ public class GameManager {
 			}
 		}
 		players.clear();
-		players.addAll(playerNames);
+		for (String name : playerNames) {
+			players.add(new Player(name));
+		}
 		turnManager.pickStart(players.size(), random);
 	}
 
-	public String getCurrentPlayer() {
+	public Player getCurrentPlayer() {
 		return players.get(turnManager.getCurrentIndex());
 	}
 
-	public List<String> getPlayers() {
+	public List<Player> getPlayers() {
 		return new ArrayList<>(players);
 	}
 }

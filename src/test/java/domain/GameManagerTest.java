@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,8 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B"));
 
-		assertEquals(List.of("A", "B"), manager.getPlayers());
+		assertEquals(List.of("A", "B"), namesOf(manager.getPlayers()));
+		assertPlayersAlive(manager.getPlayers());
 	}
 
 	@Test
@@ -62,7 +64,8 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B", "C", "D"));
 
-		assertEquals(List.of("A", "B", "C", "D"), manager.getPlayers());
+		assertEquals(List.of("A", "B", "C", "D"), namesOf(manager.getPlayers()));
+		assertPlayersAlive(manager.getPlayers());
 	}
 
 	@Test
@@ -83,7 +86,7 @@ class GameManagerTest {
 
 		manager.getPlayers().clear();
 
-		assertEquals(List.of("A", "B"), manager.getPlayers());
+		assertEquals(List.of("A", "B"), namesOf(manager.getPlayers()));
 	}
 
 	private static Random alwaysFirst() {
@@ -110,7 +113,7 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B"));
 
-		assertEquals("A", manager.getCurrentPlayer());
+		assertEquals("A", manager.getCurrentPlayer().getName());
 	}
 
 	@Test
@@ -119,7 +122,7 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B"));
 
-		assertEquals("B", manager.getCurrentPlayer());
+		assertEquals("B", manager.getCurrentPlayer().getName());
 	}
 
 	@Test
@@ -128,7 +131,7 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B", "C", "D"));
 
-		assertEquals("A", manager.getCurrentPlayer());
+		assertEquals("A", manager.getCurrentPlayer().getName());
 	}
 
 	@Test
@@ -137,6 +140,20 @@ class GameManagerTest {
 
 		manager.startNewGame(List.of("A", "B", "C", "D"));
 
-		assertEquals("D", manager.getCurrentPlayer());
+		assertEquals("D", manager.getCurrentPlayer().getName());
+	}
+
+	private static List<String> namesOf(List<Player> players) {
+		List<String> names = new ArrayList<>();
+		for (Player player : players) {
+			names.add(player.getName());
+		}
+		return names;
+	}
+
+	private static void assertPlayersAlive(List<Player> players) {
+		for (Player player : players) {
+			assertTrue(player.isAlive());
+		}
 	}
 }
