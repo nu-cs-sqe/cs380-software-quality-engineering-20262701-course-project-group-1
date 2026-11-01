@@ -55,4 +55,4 @@ Made with assistance from GenAI.
 |-------------|-------------------|-----------------|--------------|
 | TC6 | `new Player("A").getHand()` | empty list | yes (implemented in TC1) |
 | TC7 | `getHand()` after one `addCard` | size `1` | yes (implemented in TC5) |
-| TC8 | `getHand().clear()` after one `addCard` | later `getHand()` size unchanged | no |
+| TC8 | `getHand().clear()` after one `addCard` | later `getHand()` size unchanged | yes |

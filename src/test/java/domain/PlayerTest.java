@@ -31,4 +31,14 @@ class PlayerTest {
 
 		assertEquals(1, player.getHand().size());
 	}
+
+	@Test
+	void getHand_returnedListIsDefensiveCopy() {
+		Player player = new Player("A");
+		player.addCard(new Card(CardType.See_The_Future));
+
+		player.getHand().clear();
+
+		assertEquals(1, player.getHand().size());
+	}
 }
