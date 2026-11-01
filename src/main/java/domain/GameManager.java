@@ -12,6 +12,7 @@ public class GameManager {
 	private final List<String> players = new ArrayList<>();
 	private final TurnManager turnManager = new TurnManager();
 	private final Random random;
+	private Deck drawPile;
 
 	public GameManager() {
 		this(new Random());
@@ -32,11 +33,27 @@ public class GameManager {
 		}
 		players.clear();
 		players.addAll(playerNames);
+
 		turnManager.pickStart(players.size(), random);
+
+		List<Card> pileCards = new ArrayList<>();
+		for (int i = 0; i < players.size() - 1; i++) {
+			pileCards.add(new Card(CardType.Exploding_Kitten));
+		}
+		for (int i = 0; i < 6 - players.size(); i++) {
+			pileCards.add(new Card(CardType.Defuse));
+		}
+		drawPile = new Deck(pileCards, random);
+		drawPile.shuffleDeck();
 	}
 
 	public String getCurrentPlayer() {
 		return players.get(turnManager.getCurrentIndex());
+	}
+
+
+	public List<Card> getDrawPile() {
+		return drawPile.peekTopofDeck(drawPile.getDeckSize());
 	}
 
 	public List<String> getPlayers() {
