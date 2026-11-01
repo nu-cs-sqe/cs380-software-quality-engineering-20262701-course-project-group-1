@@ -56,6 +56,8 @@ class GameManagerTest {
 
 		assertEquals(List.of("A", "B"), namesOf(manager.getPlayers()));
 		assertPlayersAlive(manager.getPlayers());
+		assertStartingHands(manager.getPlayers());
+		assertDrawPile(manager, 1, 4);
 	}
 
 	@Test
@@ -66,6 +68,8 @@ class GameManagerTest {
 
 		assertEquals(List.of("A", "B", "C", "D"), namesOf(manager.getPlayers()));
 		assertPlayersAlive(manager.getPlayers());
+		assertStartingHands(manager.getPlayers());
+		assertDrawPile(manager, 3, 2);
 	}
 
 	@Test
@@ -155,5 +159,31 @@ class GameManagerTest {
 		for (Player player : players) {
 			assertTrue(player.isAlive());
 		}
+	}
+
+	private static void assertStartingHands(List<Player> players) {
+		for (Player player : players) {
+			List<Card> hand = player.getHand();
+			assertEquals(6, hand.size());
+			assertEquals(1, countType(hand, CardType.Defuse));
+			assertEquals(5, countType(hand, CardType.See_The_Future));
+			assertEquals(0, countType(hand, CardType.Exploding_Kitten));
+		}
+	}
+
+	private static void assertDrawPile(GameManager manager, int explodingKittens, int defuses) {
+		List<Card> pile = manager.getDrawPile();
+		assertEquals(explodingKittens, countType(pile, CardType.Exploding_Kitten));
+		assertEquals(defuses, countType(pile, CardType.Defuse));
+	}
+
+	private static int countType(List<Card> cards, CardType type) {
+		int count = 0;
+		for (Card card : cards) {
+			if (card.getTypeofCard() == type) {
+				count++;
+			}
+		}
+		return count;
 	}
 }
