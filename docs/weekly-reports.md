@@ -32,11 +32,11 @@
 - **Yutong**: TurnManager BVA + implementation, random first player in GameManager ([#10](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/10)); reviewed #9 and #11
 
 # Week 5 (10/26/2026-11/01/2026)
-**Planning and Progress Tracking**:
-1. [done] Person: Task (Links to PR)
-2. [not started] Person: Task (Links to PR)
-3. [80% done] Person: Task (Links to PR)
-4. etc.
+1. [50% done] Ethan: Player + TerminalPrinting, fix merge conflict with Yutong GameManager PR ([#20](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/20), [#24](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/24))
+2. [in progress] Connor: Implementation of Shuffle, Exploding Kitten, Draw
+3. [80% done] Yutong: Help review PRs ([#20](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/20))
+
+**Other**: Alternative win condition still being considered, base game cards all decided, custom cards are still tbd. 
 
 # One section per week until the last week of class (the week before the Finals week)
 
