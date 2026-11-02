@@ -1,5 +1,5 @@
 ![Gradle Build](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/actions/workflows/main.yml/badge.svg) 
-# YOUR PROJECT NAME
+# Exploding Kittens
 
 ## Contributors
 - Ethan Pan
@@ -9,6 +9,7 @@
 ## Dependencies
 - JDK 11
 - JUnit 5.10
+- EasyMock 5.4
 - Gradle 8.10
 
 ## Exceptions
