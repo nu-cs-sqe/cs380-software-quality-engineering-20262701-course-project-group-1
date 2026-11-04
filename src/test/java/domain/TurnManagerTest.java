@@ -173,4 +173,15 @@ class TurnManagerTest {
                 turnManager::endTurn);
         assertEquals("turnManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void endTurn_twoPlayersIndexZero_advancesToIndexOne() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
 }

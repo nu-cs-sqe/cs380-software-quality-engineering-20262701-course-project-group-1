@@ -10,6 +10,7 @@ public class TurnManager {
     private static final int MIN_PLAYERS = 2;
     private static final int MAX_PLAYERS = 4;
     private static final int NOT_STARTED_INDEX = -1;
+    private int playerCount;
 
     private int currentIndex = NOT_STARTED_INDEX;
 
@@ -20,6 +21,7 @@ public class TurnManager {
         if (random == null) {
             throw new IllegalArgumentException(RANDOM_NULL);
         }
+        this.playerCount = playerCount;
         currentIndex = random.nextInt(playerCount);
     }
 
@@ -37,6 +39,7 @@ public class TurnManager {
 
     public void endTurn() {
         requireStarted();
+        currentIndex = (currentIndex + 1) % playerCount;
     }
 
     private void requireStarted() {
