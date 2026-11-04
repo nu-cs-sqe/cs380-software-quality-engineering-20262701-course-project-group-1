@@ -10,6 +10,10 @@ public class TurnManager {
     private static final int MIN_PLAYERS = 2;
     private static final int MAX_PLAYERS = 4;
     private static final int NOT_STARTED_INDEX = -1;
+    private static final int TURNS_FROM_ATTACK = 2;
+    private static final int NORMAL_TURNS = 1;
+
+    private int turnsRemaining = NORMAL_TURNS;
     private int playerCount;
 
     private int currentIndex = NOT_STARTED_INDEX;
@@ -23,6 +27,7 @@ public class TurnManager {
         }
         this.playerCount = playerCount;
         currentIndex = random.nextInt(playerCount);
+        turnsRemaining = NORMAL_TURNS;
     }
 
     public int getCurrentIndex() {
@@ -30,11 +35,14 @@ public class TurnManager {
         return currentIndex;
     }
 
+    public void attackNextPlayer() {
+        currentIndex = (currentIndex + 1) % playerCount;
+        turnsRemaining = TURNS_FROM_ATTACK;
+    }
+
     public int getTurnsRemaining() {
         requireStarted();
-        return 1;
-    }
-    public void attackNextPlayer() {
+        return turnsRemaining;
     }
 
     public void endTurn() {
