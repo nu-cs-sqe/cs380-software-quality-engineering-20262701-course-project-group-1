@@ -184,4 +184,15 @@ class TurnManagerTest {
         assertEquals(1, turnManager.getCurrentIndex());
         assertEquals(1, turnManager.getTurnsRemaining());
     }
+
+    @Test
+    void endTurn_fourPlayersLastSeat_wrapsToIndexZero() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(4, alwaysLast());
+
+        turnManager.endTurn();
+
+        assertEquals(0, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
 }
