@@ -23,7 +23,7 @@ Made with assistance from GenAI.
 | TC7 | `pickStart(0, random)` | throws `IllegalArgumentException` with message `"turnManager.playerCount.outOfRange"` | yes |
 | TC8 | `pickStart(2, null)` | throws `IllegalArgumentException` with message `"turnManager.random.null"` | yes |
 | TC9 | `pickStart(4, random)` with `Random` always `bound - 1`, then `pickStart(2, random)` with `Random` always `0` | `getCurrentIndex()` is `0` | yes |
-| TC14 | `pickStart(2, random)` after `attackNextPlayer()` left 2 turns owed | `getTurnsRemaining()` is `1` | no |
+| TC14 | `pickStart(2, random)` after `attackNextPlayer()` left 2 turns owed | `getTurnsRemaining()` is `1` | yes |
 
 ---
 

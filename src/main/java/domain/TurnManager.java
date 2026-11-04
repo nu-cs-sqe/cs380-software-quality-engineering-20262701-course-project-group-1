@@ -29,4 +29,11 @@ public class TurnManager {
         }
         return currentIndex;
     }
+
+    public void attackNextPlayer() {
+    }
+
+    public int getTurnsRemaining() {
+        return 1;
+    }
 }
