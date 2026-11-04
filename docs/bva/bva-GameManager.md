@@ -69,3 +69,17 @@ Made with assistance from GenAI.
 | TC17 | `getDrawPile()` after `startNewGame(List.of("A", "B"))`           | 1 EK and 4 Defuse               | yes     |
 | TC18 | `getDrawPile()` after `startNewGame(List.of("A", "B", "C", "D"))` | 3 EK and 2 Defuse               | yes     |
 | TC19 | `getDrawPile().clear()` after start                               | later `getDrawPile()` unchanged | yes     |
+
+---
+
+## Method 6: `public void playAttack()`
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC20 | `playAttack()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
+| TC21 | 2 players, current player has no Attack, `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand and current player unchanged | no |
+| TC22 | 2 players, current player holds 1 Attack, `playAttack()` | Attack removed from hand and on top of discard pile; current player is the other player; turns remaining is `2` | no |
+| TC23 | 2 players, current player holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in hand | no |
+| TC24 | 2 players, A attacks B, then B plays Attack | current player is A; turns remaining is `4` | no |
