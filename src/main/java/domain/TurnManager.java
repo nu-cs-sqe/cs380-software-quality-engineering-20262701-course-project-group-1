@@ -24,16 +24,21 @@ public class TurnManager {
     }
 
     public int getCurrentIndex() {
-        if (currentIndex == NOT_STARTED_INDEX) {
-            throw new IllegalStateException(NOT_STARTED);
-        }
+        requireStarted();
         return currentIndex;
     }
 
+    public int getTurnsRemaining() {
+        requireStarted();
+        return 1;
+    }
     public void attackNextPlayer() {
     }
 
-    public int getTurnsRemaining() {
-        return 1;
+
+    private void requireStarted() {
+        if (currentIndex == NOT_STARTED_INDEX) {
+            throw new IllegalStateException(NOT_STARTED);
+        }
     }
 }

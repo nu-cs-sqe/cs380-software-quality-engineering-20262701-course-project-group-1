@@ -144,4 +144,14 @@ class TurnManagerTest {
 
         assertEquals(1, turnManager.getTurnsRemaining());
     }
+
+    @Test
+    void getTurnsRemaining_beforePickStart_throwsIllegalStateException() {
+        TurnManager turnManager = new TurnManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                turnManager::getTurnsRemaining);
+        assertEquals("turnManager.notStarted", ex.getMessage());
+    }
 }

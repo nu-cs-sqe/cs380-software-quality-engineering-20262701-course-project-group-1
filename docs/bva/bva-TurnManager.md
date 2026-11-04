@@ -47,7 +47,7 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC15 | `new TurnManager().getTurnsRemaining()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | no |
+| TC15 | `new TurnManager().getTurnsRemaining()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | yes |
 | TC16 | `getTurnsRemaining()` after `pickStart(2, random)` | `1` | no |
 
 ---
