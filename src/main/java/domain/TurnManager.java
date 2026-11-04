@@ -35,6 +35,9 @@ public class TurnManager {
     public void attackNextPlayer() {
     }
 
+    public void endTurn() {
+        requireStarted();
+    }
 
     private void requireStarted() {
         if (currentIndex == NOT_STARTED_INDEX) {
