@@ -72,6 +72,8 @@ Made with assistance from GenAI.
 
 ---
 
+---
+
 ## Method 6: `public void playAttack()`
 
 ##### All-combination or each-choice: each-choice
@@ -79,7 +81,9 @@ Made with assistance from GenAI.
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
 | TC20 | `playAttack()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
-| TC21 | 2 players, current player has no Attack, `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand and current player unchanged | no |
-| TC22 | 2 players, current player holds 1 Attack, `playAttack()` | Attack removed from hand and on top of discard pile; current player is the other player; turns remaining is `2` | no |
-| TC23 | 2 players, current player holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in hand | no |
-| TC24 | 2 players, A attacks B, then B plays Attack | current player is A; turns remaining is `4` | no |
+| TC21 | 3 players, current player `"A"` has no Attack, `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand and current player unchanged | no |
+| TC22 | 2 players, `"A"` holds 1 Attack, `playAttack()` | Attack removed from `"A"`'s hand and on top of discard pile; current player is `"B"`; turns remaining is `2` | no |
+| TC23 | 4 players, `Random` always `0` (`"A"` starts), `"A"` holds 1 Attack, `playAttack()` | current player is `"B"` (next seat, not `"C"` or `"D"`); turns remaining is `2` | no |
+| TC24 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Attack, `playAttack()` | current player is `"A"` (wraps from last seat); turns remaining is `2` | no |
+| TC25 | 3 players, `"A"` holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in `"A"`'s hand | no |
+| TC26 | 3 players, `"A"` attacks `"B"`, then `"B"` plays Attack | current player is `"C"` (not back to `"A"`); turns remaining is `4` | no |

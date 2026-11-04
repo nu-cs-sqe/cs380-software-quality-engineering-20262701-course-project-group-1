@@ -154,4 +154,13 @@ class TurnManagerTest {
                 turnManager::getTurnsRemaining);
         assertEquals("turnManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void getTurnsRemaining_afterPickStart_isOne() {
+        TurnManager turnManager = new TurnManager();
+
+        turnManager.pickStart(2, alwaysFirst());
+
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
 }
