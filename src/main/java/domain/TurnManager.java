@@ -10,8 +10,12 @@ public class TurnManager {
     private static final int MIN_PLAYERS = 2;
     private static final int MAX_PLAYERS = 4;
     private static final int NOT_STARTED_INDEX = -1;
-
+    private static final int TURNS_FROM_ATTACK = 2;
+    private static final int NORMAL_TURNS = 1;
+    private int turnsRemaining = NORMAL_TURNS;
+    private int playerCount;
     private int currentIndex = NOT_STARTED_INDEX;
+    private boolean underAttack = false;
 
     public void pickStart(int playerCount, Random random) {
         if (playerCount < MIN_PLAYERS || playerCount > MAX_PLAYERS) {
@@ -20,13 +24,51 @@ public class TurnManager {
         if (random == null) {
             throw new IllegalArgumentException(RANDOM_NULL);
         }
+        this.playerCount = playerCount;
         currentIndex = random.nextInt(playerCount);
+        turnsRemaining = NORMAL_TURNS;
+        underAttack = false;
     }
 
     public int getCurrentIndex() {
+        requireStarted();
+        return currentIndex;
+    }
+
+    public void attackNextPlayer() {
+        requireStarted();
+        int transferred = turnsToTransfer();
+        advanceToNextPlayer();
+        turnsRemaining = transferred + TURNS_FROM_ATTACK;
+        underAttack = true;
+    }
+
+    public int getTurnsRemaining() {
+        requireStarted();
+        return turnsRemaining;
+    }
+
+    public void endTurn() {
+        requireStarted();
+        turnsRemaining--;
+        if (turnsRemaining == 0) {
+            advanceToNextPlayer();
+            turnsRemaining = NORMAL_TURNS;
+            underAttack = false;
+        }
+    }
+
+    private void requireStarted() {
         if (currentIndex == NOT_STARTED_INDEX) {
             throw new IllegalStateException(NOT_STARTED);
         }
-        return currentIndex;
+    }
+
+    private void advanceToNextPlayer() {
+        currentIndex = (currentIndex + 1) % playerCount;
+    }
+
+    private int turnsToTransfer() {
+        return underAttack ? turnsRemaining : 0;
     }
 }
