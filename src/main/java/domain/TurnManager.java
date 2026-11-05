@@ -53,6 +53,7 @@ public class TurnManager {
         if (turnsRemaining == 0) {
             advanceToNextPlayer();
             turnsRemaining = NORMAL_TURNS;
+            underAttack = false;
         }
     }
 
