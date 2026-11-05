@@ -209,6 +209,16 @@ class TurnManagerTest {
     }
 
     @Test
+    void attackNextPlayer_beforePickStart_throwsIllegalStateException() {
+        TurnManager turnManager = new TurnManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                turnManager::attackNextPlayer);
+        assertEquals("turnManager.notStarted", ex.getMessage());
+    }
+
+    @Test
     void attackNextPlayer_twoPlayersIndexZero_nextPlayerOwesTwo() {
         TurnManager turnManager = new TurnManager();
         turnManager.pickStart(2, alwaysFirst());

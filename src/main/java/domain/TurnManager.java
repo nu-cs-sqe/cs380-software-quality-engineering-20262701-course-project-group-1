@@ -36,6 +36,7 @@ public class TurnManager {
     }
 
     public void attackNextPlayer() {
+        requireStarted();
         advanceToNextPlayer();
         turnsRemaining = TURNS_FROM_ATTACK;
     }
