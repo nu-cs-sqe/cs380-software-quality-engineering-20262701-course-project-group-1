@@ -37,8 +37,9 @@ public class TurnManager {
 
     public void attackNextPlayer() {
         requireStarted();
+        int transferred = turnsToTransfer();
         advanceToNextPlayer();
-        turnsRemaining = TURNS_FROM_ATTACK;
+        turnsRemaining = transferred + TURNS_FROM_ATTACK;
     }
 
     public int getTurnsRemaining() {
@@ -63,5 +64,9 @@ public class TurnManager {
 
     private void advanceToNextPlayer() {
         currentIndex = (currentIndex + 1) % playerCount;
+    }
+
+    private int turnsToTransfer() {
+        return turnsRemaining == NORMAL_TURNS ? 0 : turnsRemaining;
     }
 }
