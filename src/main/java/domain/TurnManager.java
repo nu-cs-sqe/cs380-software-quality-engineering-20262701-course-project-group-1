@@ -36,7 +36,7 @@ public class TurnManager {
     }
 
     public void attackNextPlayer() {
-        currentIndex = (currentIndex + 1) % playerCount;
+        advanceToNextPlayer();
         turnsRemaining = TURNS_FROM_ATTACK;
     }
 
@@ -47,12 +47,20 @@ public class TurnManager {
 
     public void endTurn() {
         requireStarted();
-        currentIndex = (currentIndex + 1) % playerCount;
+        turnsRemaining--;
+        if (turnsRemaining == 0) {
+            advanceToNextPlayer();
+            turnsRemaining = NORMAL_TURNS;
+        }
     }
 
     private void requireStarted() {
         if (currentIndex == NOT_STARTED_INDEX) {
             throw new IllegalStateException(NOT_STARTED);
         }
+    }
+
+    private void advanceToNextPlayer() {
+        currentIndex = (currentIndex + 1) % playerCount;
     }
 }

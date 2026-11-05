@@ -61,7 +61,7 @@ Made with assistance from GenAI.
 | TC17 | `new TurnManager().endTurn()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | yes |
 | TC18 | 2 players, index `0`, owes 1, `endTurn()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `1` | yes |
 | TC19 | 4 players, index `3`, owes 1, `endTurn()` | `getCurrentIndex()` is `0` (wraps), `getTurnsRemaining()` is `1` | yes |
-| TC20 | 2 players, index `1`, owes 2, `endTurn()` | `getCurrentIndex()` is `1` (same player), `getTurnsRemaining()` is `1` | no |
+| TC20 | 2 players, index `1`, owes 2, `endTurn()` | `getCurrentIndex()` is `1` (same player), `getTurnsRemaining()` is `1` | yes |
 
 ---
 

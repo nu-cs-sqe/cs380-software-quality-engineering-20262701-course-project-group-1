@@ -197,6 +197,18 @@ class TurnManagerTest {
     }
 
     @Test
+    void endTurn_owesTwo_samePlayerNowOwesOne() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();   // index 1, owes 2
+
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
+
+    @Test
     void attackNextPlayer_twoPlayersIndexZero_nextPlayerOwesTwo() {
         TurnManager turnManager = new TurnManager();
         turnManager.pickStart(2, alwaysFirst());
