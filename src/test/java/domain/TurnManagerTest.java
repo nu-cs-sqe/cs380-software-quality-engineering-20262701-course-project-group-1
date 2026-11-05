@@ -251,4 +251,17 @@ class TurnManagerTest {
         assertEquals(0, turnManager.getCurrentIndex());
         assertEquals(4, turnManager.getTurnsRemaining());
     }
+
+    @Test
+    void attackNextPlayer_lastTurnOfAttack_nextPlayerOwesThree() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();   // index 1, owes 2
+        turnManager.endTurn();            // index 1, owes 1
+
+        turnManager.attackNextPlayer();
+
+        assertEquals(0, turnManager.getCurrentIndex());
+        assertEquals(3, turnManager.getTurnsRemaining());
+    }
 }

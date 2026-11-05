@@ -12,11 +12,10 @@ public class TurnManager {
     private static final int NOT_STARTED_INDEX = -1;
     private static final int TURNS_FROM_ATTACK = 2;
     private static final int NORMAL_TURNS = 1;
-
     private int turnsRemaining = NORMAL_TURNS;
     private int playerCount;
-
     private int currentIndex = NOT_STARTED_INDEX;
+    private boolean underAttack = false;
 
     public void pickStart(int playerCount, Random random) {
         if (playerCount < MIN_PLAYERS || playerCount > MAX_PLAYERS) {
@@ -40,6 +39,7 @@ public class TurnManager {
         int transferred = turnsToTransfer();
         advanceToNextPlayer();
         turnsRemaining = transferred + TURNS_FROM_ATTACK;
+        underAttack = true;
     }
 
     public int getTurnsRemaining() {
@@ -67,6 +67,6 @@ public class TurnManager {
     }
 
     private int turnsToTransfer() {
-        return turnsRemaining == NORMAL_TURNS ? 0 : turnsRemaining;
+        return underAttack ? turnsRemaining : 0;
     }
 }
