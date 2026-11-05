@@ -76,5 +76,5 @@ Made with assistance from GenAI.
 | TC23 | 4 players, index `3`, owes 1, `attackNextPlayer()` | `getCurrentIndex()` is `0` (wraps), `getTurnsRemaining()` is `2` | yes |
 | TC24 | 2 players, index `1`, owes 2, `attackNextPlayer()` | `getCurrentIndex()` is `0`, `getTurnsRemaining()` is `4` (stacked) | yes |
 | TC25 | 2 players, index `1`, owes 1 left from an attack, `attackNextPlayer()` | `getCurrentIndex()` is `0`, `getTurnsRemaining()` is `3` (remaining 1 + 2) | yes |
-| TC26 | 2 players, attacked player serves both turns, then `attackNextPlayer()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `2` (no transfer once attack is over) | no |
-| TC27 | `attackNextPlayer()`, then `pickStart(2, random)`, then `attackNextPlayer()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `2` (new game clears attack) | no |
+| TC26 | 2 players, attacked player serves both turns, then `attackNextPlayer()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `2` (no transfer once attack is over) | yes |
+| TC27 | `attackNextPlayer()`, then `pickStart(2, random)`, then `attackNextPlayer()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `2` (new game clears attack) | yes |
