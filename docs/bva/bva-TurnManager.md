@@ -71,7 +71,7 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC21 | `new TurnManager().attackNextPlayer()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | no |
+| TC21 | `new TurnManager().attackNextPlayer()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | yes |
 | TC22 | 2 players, index `0`, owes 1, `attackNextPlayer()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `2` | yes |
 | TC23 | 4 players, index `3`, owes 1, `attackNextPlayer()` | `getCurrentIndex()` is `0` (wraps), `getTurnsRemaining()` is `2` | no |
 | TC24 | 2 players, index `1`, owes 2, `attackNextPlayer()` | `getCurrentIndex()` is `0`, `getTurnsRemaining()` is `4` (stacked) | no |
