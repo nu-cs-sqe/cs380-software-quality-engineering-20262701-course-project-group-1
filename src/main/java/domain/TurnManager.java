@@ -27,6 +27,7 @@ public class TurnManager {
         this.playerCount = playerCount;
         currentIndex = random.nextInt(playerCount);
         turnsRemaining = NORMAL_TURNS;
+        underAttack = false;
     }
 
     public int getCurrentIndex() {

@@ -278,4 +278,17 @@ class TurnManagerTest {
         assertEquals(1, turnManager.getCurrentIndex());
         assertEquals(2, turnManager.getTurnsRemaining());
     }
+
+    @Test
+    void pickStart_afterAttack_nextAttackOwesTwo() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();   // under attack
+
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(2, turnManager.getTurnsRemaining());
+    }
 }
