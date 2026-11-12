@@ -69,3 +69,18 @@ Made with assistance from GenAI.
 | TC17 | `getDrawPile()` after `startNewGame(List.of("A", "B"))` | 1 EK and 4 Defuse | yes (implemented in TC2) |
 | TC18 | `getDrawPile()` after `startNewGame(List.of("A", "B", "C", "D"))` | 3 EK and 2 Defuse | yes (implemented in TC3) |
 | TC19 | `getDrawPile().clear()` after start | later `getDrawPile()` unchanged | yes |
+
+---
+
+## Method 6: `public void defuseDrawnKitten(int reinsertIndex)`
+
+Defuse is a `Card` with type `CardType.Defuse`, not a subclass. Its effect is resolved here after the current player has drawn an Exploding Kitten: discard one Defuse, put the kitten back into the draw pile at `reinsertIndex`, player stays alive, turn ends.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC20 | current holds Exploding Kitten and Defuse; `defuseDrawnKitten(0)` | current alive; no Exploding Kitten in hand; Defuse gone from hand; draw pile size +1; kitten is at index `0` | no |
+| TC21 | current holds Exploding Kitten and Defuse; `defuseDrawnKitten(pileSize)` | current alive; kitten reinserted at bottom of draw pile | no |
+| TC22 | current has no Exploding Kitten; `defuseDrawnKitten(0)` | throws `IllegalStateException` with message `"gameManager.defuse.noKitten"` | no |
+| TC23 | current holds Exploding Kitten but no Defuse; `defuseDrawnKitten(0)` | throws `IllegalStateException` with message `"gameManager.defuse.noDefuse"` | no |
