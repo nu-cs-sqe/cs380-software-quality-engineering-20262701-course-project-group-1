@@ -42,16 +42,6 @@ public class GameManager {
 		}
 		dealStartingHands();
 		turnManager.pickStart(players.size(), random);
-
-		List<Card> pileCards = new ArrayList<>();
-		for (int i = 0; i < players.size() - 1; i++) {
-			pileCards.add(new Card(CardType.Exploding_Kitten));
-		}
-		for (int i = 0; i < 6 - players.size(); i++) {
-			pileCards.add(new Card(CardType.Defuse));
-		}
-		drawPile = new Deck(pileCards, random);
-		drawPile.shuffleDeck();
 	}
 
 	public Player getCurrentPlayer() {
