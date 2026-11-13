@@ -267,4 +267,12 @@ class GameManagerTest {
 				manager::getTurnsRemaining);
 		assertEquals("gameManager.notStarted", ex.getMessage());
 	}
+
+	@Test
+	void getTurnsRemaining_afterStartFourPlayers_isOne() {
+		GameManager manager = new GameManager(alwaysFirst());
+		manager.startNewGame(List.of("A", "B", "C", "D"));
+
+		assertEquals(1, manager.getTurnsRemaining());
+	}
 }

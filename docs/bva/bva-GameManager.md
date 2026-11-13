@@ -97,7 +97,7 @@ Made with assistance from GenAI.
 |-------------|-------------------|-----------------|--------------|
 | TC27 | `new GameManager().getDiscardPile()` | empty list | yes |
 | TC28 | `getDiscardPile()` after `startNewGame(List.of("A", "B", "C"))` | empty list | yes |
-| TC29 | `getDiscardPile()` after `"A"` plays Attack | last element is that Attack card | no (implemented in TC22) |
+| TC29 | `getDiscardPile()` after `"A"` plays Attack | last element is that Attack card | yes (implemented in TC22) |
 | TC30 | `getDiscardPile().clear()` after `"A"` plays Attack | later `getDiscardPile()` still has 1 card | no |
 
 ---
@@ -108,6 +108,6 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC31 | `new GameManager().getTurnsRemaining()` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
-| TC32 | `getTurnsRemaining()` after `startNewGame(List.of("A", "B", "C", "D"))` | `1` | no |
-| TC33 | `getTurnsRemaining()` after `"A"` plays Attack | `2` | no (implemented in TC22) |
+| TC31 | `new GameManager().getTurnsRemaining()` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
+| TC32 | `getTurnsRemaining()` after `startNewGame(List.of("A", "B", "C", "D"))` | `1` | yes |
+| TC33 | `getTurnsRemaining()` after `"A"` plays Attack | `2` | yes (implemented in TC22) |

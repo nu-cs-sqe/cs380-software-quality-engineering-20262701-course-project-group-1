@@ -76,7 +76,7 @@ public class GameManager {
 
 	public int getTurnsRemaining() {
 		requireStarted();
-		return 1;
+		return turnManager.getTurnsRemaining();
 	}
 
 	private void dealStartingHands() {
