@@ -404,7 +404,7 @@ class GameManagerTest {
         manager.startNewGame(List.of("A", "B"));
         Card shuffle = new Card(CardType.Shuffle);
         manager.getCurrentPlayer().addCard(shuffle);
-        List<Card> pileBefore = manager.getDrawPile();
+        final List<Card> pileBefore = manager.getDrawPile();
 
         manager.playShuffle();
 
@@ -421,6 +421,7 @@ class GameManagerTest {
         }
         assertSame(pileBefore.get(0), pileAfter.get(size - 1));
     }
+
     @Test
     void playShuffle_fourPlayersFromLastSeat_turnDoesNotChange() {
         GameManager manager = new GameManager(alwaysLast());

@@ -95,6 +95,7 @@ public class GameManager {
         playFromHand(CardType.Attack);
         turnManager.attackNextPlayer();
     }
+
     /**
      * Plays a Shuffle card from the current player's hand and shuffles the draw pile.
      *
@@ -122,6 +123,7 @@ public class GameManager {
         requireStarted();
         return turnManager.getTurnsRemaining();
     }
+
     private void dealStartingHands() {
         deck = new Deck(startingCards(), random);
         List<Card> defuses = deck.removeAllCardsofType(CardType.Defuse);
