@@ -538,4 +538,15 @@ class GameManagerTest {
         assertEquals("B", manager.getCurrentPlayer().getName());
         assertEquals(2, manager.getTurnsRemaining());
     }
+
+    @Test
+    void playSeeTheFuture_returnedListIsDefensiveCopy() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        manager.playSeeTheFuture().clear();
+
+        assertEquals(pileBefore, manager.getDrawPile());
+    }
 }
