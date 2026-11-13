@@ -446,4 +446,18 @@ class GameManagerTest {
         assertEquals(1, countType(a.getHand(), CardType.Shuffle));
         assertEquals(1, countType(manager.getDiscardPile(), CardType.Shuffle));
     }
+
+    @Test
+    void playShuffle_whileUnderAttack_turnsRemainingUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();                                   // B, owes 2
+        manager.getCurrentPlayer().addCard(new Card(CardType.Shuffle));
+
+        manager.playShuffle();
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(2, manager.getTurnsRemaining());
+    }
 }
