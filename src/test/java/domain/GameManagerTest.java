@@ -327,4 +327,16 @@ class GameManagerTest {
 		assertEquals("B", manager.getCurrentPlayer().getName());
 		assertEquals(2, manager.getTurnsRemaining());
 	}
+
+	@Test
+	void playAttack_fourPlayersFromLastSeat_wrapsToA() {
+		GameManager manager = new GameManager(alwaysLast());
+		manager.startNewGame(List.of("A", "B", "C", "D"));
+		manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+
+		manager.playAttack();
+
+		assertEquals("A", manager.getCurrentPlayer().getName());
+		assertEquals(2, manager.getTurnsRemaining());
+	}
 }
