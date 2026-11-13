@@ -249,4 +249,12 @@ class GameManagerTest {
 		GameManager manager = new GameManager();
 		assertTrue(manager.getDiscardPile().isEmpty());
 	}
+
+	@Test
+	void getDiscardPile_afterStartThreePlayers_isEmpty() {
+		GameManager manager = new GameManager(alwaysFirst());
+		manager.startNewGame(List.of("A", "B", "C"));
+
+		assertTrue(manager.getDiscardPile().isEmpty());
+	}
 }
