@@ -1,5 +1,12 @@
 plugins {
     id("java")
+    id("checkstyle")
+}
+
+// Google Java Style with 4-space indentation; see config/checkstyle/checkstyle.xml.
+checkstyle {
+    toolVersion = "10.21.4"
+    maxWarnings = 0
 }
 
 group = "nu.csse.sqe"

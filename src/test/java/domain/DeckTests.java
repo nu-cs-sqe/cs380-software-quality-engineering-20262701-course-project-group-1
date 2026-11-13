@@ -1,19 +1,24 @@
 package domain;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import org.easymock.EasyMock;
-
-import static org.easymock.EasyMock.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-public class DeckTests {
+class DeckTests {
 
     // helpers for Testing
     private List<Card> defuseCards(int count) {
@@ -212,7 +217,7 @@ public class DeckTests {
     }
 
     @Test
-    public void peekTopofDeck_twoCardsPeekOne_returnsTopCard(){
+    public void peekTopofDeck_twoCardsPeekOne_returnsTopCard() {
         List<Card> cards = defuseCards(2);
         Deck deck = new Deck(cards);
 
