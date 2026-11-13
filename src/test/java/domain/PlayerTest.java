@@ -76,4 +76,18 @@ class PlayerTest {
 		assertSame(stf, hand.get(0));
 		assertSame(defuse2, hand.get(1));
 	}
+
+	@Test
+	void removeCardOfType_noMatch_throwsAndHandUnchanged() {
+		Player player = new Player("A");
+		Card stf = new Card(CardType.See_The_Future);
+		player.addCard(stf);
+
+		IllegalStateException ex = assertThrows(
+				IllegalStateException.class,
+				() -> player.removeCardOfType(CardType.Defuse));
+		assertEquals("player.card.notInHand", ex.getMessage());
+		assertEquals(1, player.getHand().size());
+		assertSame(stf, player.getHand().get(0));
+	}
 }

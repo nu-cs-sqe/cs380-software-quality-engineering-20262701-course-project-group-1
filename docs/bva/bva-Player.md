@@ -62,6 +62,6 @@ Made with assistance from GenAI.
 ##### All-combination or each-choice: each-choice
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC9 | `hand [Defuse], removeCardOfType(Defuse)` | returns that card; hand is empty | yes (implemented in TC1) |
-| TC10 | `hand [STF, Defuse, Defuse], removeCardOfType(Defuse)` | returns the first Defuse; hand is` [STF, Defuse]` | yes (implemented in TC5) |
+| TC9 | `hand [Defuse], removeCardOfType(Defuse)` | returns that card; hand is empty | yes  |
+| TC10 | `hand [STF, Defuse, Defuse], removeCardOfType(Defuse)` | returns the first Defuse; hand is` [STF, Defuse]` | yes |
 | TC11 | `hand [STF], removeCardOfType(Defuse)` | throws IllegalStateException "player.card.notInHand"; hand unchanged | yes |

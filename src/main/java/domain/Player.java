@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Player {
 
+	private static final String CARD_NOT_IN_HAND = "player.card.notInHand";
 	private final String name;
 	private final List<Card> hand = new ArrayList<>();
 
@@ -34,6 +35,6 @@ public class Player {
 				return hand.remove(i);
 			}
 		}
-		return null;
+		throw new IllegalStateException(CARD_NOT_IN_HAND);
 	}
 }
