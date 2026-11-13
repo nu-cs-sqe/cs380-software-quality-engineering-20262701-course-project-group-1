@@ -2,6 +2,10 @@ package domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -40,5 +44,17 @@ class PlayerTest {
 		player.getHand().clear();
 
 		assertEquals(1, player.getHand().size());
+	}
+
+	@Test
+	void removeCardOfType_onlyCardMatches_returnsItAndHandIsEmpty() {
+		Player player = new Player("A");
+		Card defuse = new Card(CardType.Defuse);
+		player.addCard(defuse);
+
+		Card removed = player.removeCardOfType(CardType.Defuse);
+
+		assertSame(defuse, removed);
+		assertTrue(player.getHand().isEmpty());
 	}
 }

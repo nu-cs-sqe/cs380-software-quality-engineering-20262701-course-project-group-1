@@ -27,4 +27,8 @@ public class Player {
 	public List<Card> getHand() {
 		return new ArrayList<>(hand);
 	}
+
+	public Card removeCardOfType(CardType type) {
+		return hand.remove(0);
+	}
 }

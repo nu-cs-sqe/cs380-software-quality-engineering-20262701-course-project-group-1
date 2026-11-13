@@ -56,3 +56,12 @@ Made with assistance from GenAI.
 | TC6 | `new Player("A").getHand()` | empty list | yes (implemented in TC1) |
 | TC7 | `getHand()` after one `addCard` | size `1` | yes (implemented in TC5) |
 | TC8 | `getHand().clear()` after one `addCard` | later `getHand()` size unchanged | yes |
+
+## Method 6: `public Card removeCardOfType()`
+
+##### All-combination or each-choice: each-choice
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC9 | `hand [Defuse], removeCardOfType(Defuse)` | returns that card; hand is empty | yes (implemented in TC1) |
+| TC10 | `hand [STF, Defuse, Defuse], removeCardOfType(Defuse)` | returns the first Defuse; hand is` [STF, Defuse]` | yes (implemented in TC5) |
+| TC11 | `hand [STF], removeCardOfType(Defuse)` | throws IllegalStateException "player.card.notInHand"; hand unchanged | yes |
