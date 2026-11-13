@@ -229,4 +229,18 @@ class GameManagerTest {
 				manager::playAttack);
 		assertEquals("gameManager.notStarted", ex.getMessage());
 	}
+
+	@Test
+	void playAttack_noAttackInHand_throwsAndNothingChanges() {
+		GameManager manager = new GameManager(alwaysFirst());
+		manager.startNewGame(List.of("A", "B", "C"));
+		List<Card> handBefore = manager.getCurrentPlayer().getHand();
+
+		IllegalStateException ex = assertThrows(
+				IllegalStateException.class,
+				manager::playAttack);
+		assertEquals("gameManager.play.notInHand", ex.getMessage());
+		assertEquals("A", manager.getCurrentPlayer().getName());
+		assertEquals(handBefore, manager.getCurrentPlayer().getHand());
+	}
 }
