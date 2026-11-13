@@ -491,4 +491,22 @@ class GameManagerTest {
         assertEquals(pileBefore, manager.getDrawPile());
         assertTrue(manager.getDiscardPile().isEmpty());
     }
+
+    @Test
+    void playSeeTheFuture_twoPlayers_returnsTopThreeAndPileUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        List<Card> seen = manager.playSeeTheFuture();
+
+        assertEquals(3, seen.size());
+        for (int i = 0; i < 3; i++) {
+            assertSame(pileBefore.get(i), seen.get(i));
+        }
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.See_The_Future));
+        Player a = manager.getPlayers().get(0);
+        assertEquals(4, countType(a.getHand(), CardType.See_The_Future));
+    }
 }

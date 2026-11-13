@@ -121,7 +121,7 @@ public class GameManager {
      */
     public List<Card> playSeeTheFuture() {
         playFromHand(CardType.See_The_Future);
-        return new ArrayList<>();
+        return deck.peekTopofDeck(3);
     }
 
     public List<Card> getDiscardPile() {
