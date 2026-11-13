@@ -133,4 +133,162 @@ class TurnManagerTest {
                 turnManager::getCurrentIndex);
         assertEquals("turnManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void pickStart_afterAttack_resetsTurnsRemainingToOne() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();
+
+        turnManager.pickStart(2, alwaysFirst());
+
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void getTurnsRemaining_beforePickStart_throwsIllegalStateException() {
+        TurnManager turnManager = new TurnManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                turnManager::getTurnsRemaining);
+        assertEquals("turnManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void getTurnsRemaining_afterPickStart_isOne() {
+        TurnManager turnManager = new TurnManager();
+
+        turnManager.pickStart(2, alwaysFirst());
+
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void endTurn_beforePickStart_throwsIllegalStateException() {
+        TurnManager turnManager = new TurnManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                turnManager::endTurn);
+        assertEquals("turnManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void endTurn_twoPlayersIndexZero_advancesToIndexOne() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void endTurn_fourPlayersLastSeat_wrapsToIndexZero() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(4, alwaysLast());
+
+        turnManager.endTurn();
+
+        assertEquals(0, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void endTurn_owesTwo_samePlayerNowOwesOne() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();   // index 1, owes 2
+
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void attackNextPlayer_beforePickStart_throwsIllegalStateException() {
+        TurnManager turnManager = new TurnManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                turnManager::attackNextPlayer);
+        assertEquals("turnManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void attackNextPlayer_twoPlayersIndexZero_nextPlayerOwesTwo() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+
+        turnManager.attackNextPlayer();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(2, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void attackNextPlayer_fourPlayersLastSeat_wrapsToIndexZeroOwesTwo() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(4, alwaysLast());   // index 3
+
+        turnManager.attackNextPlayer();
+
+        assertEquals(0, turnManager.getCurrentIndex());
+        assertEquals(2, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void attackNextPlayer_whileOwingTwo_stacksToFour() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();   // index 1, owes 2
+
+        turnManager.attackNextPlayer();
+
+        assertEquals(0, turnManager.getCurrentIndex());
+        assertEquals(4, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void attackNextPlayer_lastTurnOfAttack_nextPlayerOwesThree() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();   // index 1, owes 2
+        turnManager.endTurn();            // index 1, owes 1
+
+        turnManager.attackNextPlayer();
+
+        assertEquals(0, turnManager.getCurrentIndex());
+        assertEquals(3, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void attackNextPlayer_afterAttackFullyServed_nextPlayerOwesTwo() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();   // index 1, owes 2
+        turnManager.endTurn();            // index 1, owes 1
+        turnManager.endTurn();            // index 0, owes 1, attack over
+
+        turnManager.attackNextPlayer();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(2, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void pickStart_afterAttack_nextAttackOwesTwo() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();   // under attack
+
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(2, turnManager.getTurnsRemaining());
+    }
 }

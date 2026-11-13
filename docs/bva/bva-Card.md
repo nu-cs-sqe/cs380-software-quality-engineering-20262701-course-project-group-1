@@ -29,3 +29,4 @@
 | Test Case 1  |          new Card(Exploding_Kitten)           |      Exploding_Kitten           | :white_check_mark: |
 | Test Case 2  |          new Card(Defuse)             |        Defuse         | :white_check_mark: |
 | Test Case 3  |         new Card(See_The_Future              |         See_The_Future        | :white_check_mark: |
+| Test Case 4  |         new Card(Attack)              |         Attack        | :white_check_mark:  |
