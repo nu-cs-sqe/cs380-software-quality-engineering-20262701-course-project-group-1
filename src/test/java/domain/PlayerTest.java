@@ -57,4 +57,23 @@ class PlayerTest {
 		assertSame(defuse, removed);
 		assertTrue(player.getHand().isEmpty());
 	}
+
+	@Test
+	void removeCardOfType_matchNotFirst_removesFirstMatchOnly() {
+		Player player = new Player("A");
+		Card stf = new Card(CardType.See_The_Future);
+		Card defuse1 = new Card(CardType.Defuse);
+		Card defuse2 = new Card(CardType.Defuse);
+		player.addCard(stf);
+		player.addCard(defuse1);
+		player.addCard(defuse2);
+
+		Card removed = player.removeCardOfType(CardType.Defuse);
+
+		assertSame(defuse1, removed);
+		List<Card> hand = player.getHand();
+		assertEquals(2, hand.size());
+		assertSame(stf, hand.get(0));
+		assertSame(defuse2, hand.get(1));
+	}
 }

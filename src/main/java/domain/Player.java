@@ -29,6 +29,11 @@ public class Player {
 	}
 
 	public Card removeCardOfType(CardType type) {
-		return hand.remove(0);
+		for (int i = 0; i < hand.size(); i++) {
+			if (hand.get(i).getTypeofCard() == type) {
+				return hand.remove(i);
+			}
+		}
+		return null;
 	}
 }
