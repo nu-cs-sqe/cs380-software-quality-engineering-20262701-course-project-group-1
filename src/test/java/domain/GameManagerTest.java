@@ -1,13 +1,11 @@
 package domain;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameManagerTest {
 
@@ -274,5 +272,22 @@ class GameManagerTest {
 		manager.startNewGame(List.of("A", "B", "C", "D"));
 
 		assertEquals(1, manager.getTurnsRemaining());
+	}
+
+	@Test
+	void playAttack_twoPlayers_attackDiscardedAndNextPlayerOwesTwo() {
+		GameManager manager = new GameManager(alwaysFirst());
+		manager.startNewGame(List.of("A", "B"));
+		Card attack = new Card(CardType.Attack);
+		manager.getCurrentPlayer().addCard(attack);
+
+		manager.playAttack();
+
+		Player a = manager.getPlayers().get(0);
+		assertEquals(0, countType(a.getHand(), CardType.Attack));
+		List<Card> discard = manager.getDiscardPile();
+		assertSame(attack, discard.get(discard.size() - 1));
+		assertEquals("B", manager.getCurrentPlayer().getName());
+		assertEquals(2, manager.getTurnsRemaining());
 	}
 }

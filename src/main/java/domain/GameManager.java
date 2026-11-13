@@ -64,10 +64,13 @@ public class GameManager {
 	}
 
 	public void playAttack() {
-		if (players.isEmpty()) {
-			throw new IllegalStateException(NOT_STARTED);
+		requireStarted();
+		Player current = getCurrentPlayer();
+		if (countOf(current.getHand(), CardType.Attack) == 0) {
+			throw new IllegalStateException(NOT_IN_HAND);
 		}
-		throw new IllegalStateException(NOT_IN_HAND);
+		discardPile.add(current.removeCardOfType(CardType.Attack));
+		turnManager.attackNextPlayer();
 	}
 
 	public List<Card> getDiscardPile() {
@@ -114,5 +117,15 @@ public class GameManager {
 		if (players.isEmpty()) {
 			throw new IllegalStateException(NOT_STARTED);
 		}
+	}
+
+	private static int countOf(List<Card> cards, CardType type) {
+		int count = 0;
+		for (Card card : cards) {
+			if (card.getTypeofCard() == type) {
+				count++;
+			}
+		}
+		return count;
 	}
 }
