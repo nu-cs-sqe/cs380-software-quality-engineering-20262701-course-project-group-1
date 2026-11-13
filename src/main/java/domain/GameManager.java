@@ -92,13 +92,20 @@ public class GameManager {
      *     Attack card
      */
     public void playAttack() {
-        requireStarted();
-        Player current = getCurrentPlayer();
-        if (countOf(current.getHand(), CardType.Attack) == 0) {
-            throw new IllegalStateException(NOT_IN_HAND);
-        }
-        discardPile.add(current.removeCardOfType(CardType.Attack));
+        playFromHand(CardType.Attack);
         turnManager.attackNextPlayer();
+    }
+    /**
+     * Plays a Shuffle card from the current player's hand and shuffles the draw pile.
+     *
+     * <p>The current player keeps their turn.
+     *
+     * @throws IllegalStateException if the game has not started or the current player has no
+     *     Shuffle card
+     */
+    public void playShuffle() {
+        playFromHand(CardType.Shuffle);
+        deck.shuffleDeck();
     }
 
     public List<Card> getDiscardPile() {
@@ -115,20 +122,6 @@ public class GameManager {
         requireStarted();
         return turnManager.getTurnsRemaining();
     }
-
-    /**
-     * Plays a Shuffle card from the current player's hand and shuffles the draw pile.
-     *
-     * <p>The current player keeps their turn.
-     *
-     * @throws IllegalStateException if the game has not started or the current player has no
-     *     Shuffle card
-     */
-    public void playShuffle() {
-        requireStarted();
-        throw new IllegalStateException(NOT_IN_HAND);
-    }
-
     private void dealStartingHands() {
         deck = new Deck(startingCards(), random);
         List<Card> defuses = deck.removeAllCardsofType(CardType.Defuse);
@@ -174,5 +167,14 @@ public class GameManager {
             }
         }
         return count;
+    }
+
+    private void playFromHand(CardType type) {
+        requireStarted();
+        Player current = getCurrentPlayer();
+        if (countOf(current.getHand(), type) == 0) {
+            throw new IllegalStateException(NOT_IN_HAND);
+        }
+        discardPile.add(current.removeCardOfType(type));
     }
 }

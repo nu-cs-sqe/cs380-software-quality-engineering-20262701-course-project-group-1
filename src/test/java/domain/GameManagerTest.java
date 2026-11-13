@@ -397,4 +397,28 @@ class GameManagerTest {
         assertEquals(pileBefore, manager.getDrawPile());
         assertTrue(manager.getDiscardPile().isEmpty());
     }
+
+    @Test
+    void playShuffle_twoPlayers_shuffleDiscardedAndDrawPileShuffled() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card shuffle = new Card(CardType.Shuffle);
+        manager.getCurrentPlayer().addCard(shuffle);
+        List<Card> pileBefore = manager.getDrawPile();
+
+        manager.playShuffle();
+
+        Player a = manager.getPlayers().get(0);
+        assertEquals(0, countType(a.getHand(), CardType.Shuffle));
+        List<Card> discard = manager.getDiscardPile();
+        assertSame(shuffle, discard.get(discard.size() - 1));
+
+        List<Card> pileAfter = manager.getDrawPile();
+        int size = pileBefore.size();
+        assertEquals(size, pileAfter.size());
+        for (int i = 0; i < size - 1; i++) {
+            assertSame(pileBefore.get(i + 1), pileAfter.get(i));
+        }
+        assertSame(pileBefore.get(0), pileAfter.get(size - 1));
+    }
 }
