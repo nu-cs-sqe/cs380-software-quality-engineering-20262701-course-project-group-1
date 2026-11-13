@@ -421,4 +421,15 @@ class GameManagerTest {
         }
         assertSame(pileBefore.get(0), pileAfter.get(size - 1));
     }
+    @Test
+    void playShuffle_fourPlayersFromLastSeat_turnDoesNotChange() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Shuffle));
+
+        manager.playShuffle();
+
+        assertEquals("D", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
 }
