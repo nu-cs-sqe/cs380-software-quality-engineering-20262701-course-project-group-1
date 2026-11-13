@@ -290,4 +290,16 @@ class GameManagerTest {
 		assertEquals("B", manager.getCurrentPlayer().getName());
 		assertEquals(2, manager.getTurnsRemaining());
 	}
+
+	@Test
+	void getDiscardPile_returnedListIsDefensiveCopy() {
+		GameManager manager = new GameManager(alwaysFirst());
+		manager.startNewGame(List.of("A", "B"));
+		manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+		manager.playAttack();
+
+		manager.getDiscardPile().clear();
+
+		assertEquals(1, manager.getDiscardPile().size());
+	}
 }
