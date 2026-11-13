@@ -371,4 +371,14 @@ class GameManagerTest {
         assertEquals(4, manager.getTurnsRemaining());
         assertEquals(2, countType(manager.getDiscardPile(), CardType.Attack));
     }
+
+    @Test
+    void playShuffle_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playShuffle);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
 }

@@ -30,7 +30,7 @@ Made with assistance from GenAI.
 | TC5 | `startNewGame(List.of("A", "B", "C", "D", "E"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC7 | `startNewGame(List.of("", "B"))` | throws `IllegalArgumentException` with message `"gameManager.playerName.blank"` | yes |
-| TC34 | `startNewGame(List.of("A", "B"))` again after `"A"` played Attack | `getDiscardPile()` is empty; `getTurnsRemaining()` is `1` | no |
+| TC34 | `startNewGame(List.of("A", "B"))` again after `"A"` played Attack | `getDiscardPile()` is empty; `getTurnsRemaining()` is `1` | yes |
 
 ---
 
@@ -111,3 +111,18 @@ Made with assistance from GenAI.
 | TC31 | `new GameManager().getTurnsRemaining()` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
 | TC32 | `getTurnsRemaining()` after `startNewGame(List.of("A", "B", "C", "D"))` | `1` | yes |
 | TC33 | `getTurnsRemaining()` after `"A"` plays Attack | `2` | yes (implemented in TC22) |
+
+---
+
+## Method 9: `public void playShuffle()`
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC35 | `playShuffle()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
+| TC36 | 3 players, current player `"A"` has no Shuffle, `playShuffle()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile and discard pile unchanged | no |
+| TC37 | 2 players, `Random` always `0`, `"A"` holds 1 Shuffle, `playShuffle()` | Shuffle removed from `"A"`'s hand and is the last card of the discard pile; draw pile has the same 5 cards, rotated by one (old top card is now at the bottom) | no |
+| TC38 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Shuffle, `playShuffle()` | current player is still `"D"`; turns remaining is still `1` | no |
+| TC39 | 3 players, `"A"` holds 2 Shuffles, `playShuffle()` | exactly one Shuffle removed; one still in `"A"`'s hand | no |
+| TC40 | 2 players, `"A"` attacks `"B"`, `"B"` holds 1 Shuffle, `playShuffle()` | current player is still `"B"`; turns remaining is still `2` | no |

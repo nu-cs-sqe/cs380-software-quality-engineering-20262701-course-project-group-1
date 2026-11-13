@@ -116,6 +116,18 @@ public class GameManager {
         return turnManager.getTurnsRemaining();
     }
 
+    /**
+     * Plays a Shuffle card from the current player's hand and shuffles the draw pile.
+     *
+     * <p>The current player keeps their turn.
+     *
+     * @throws IllegalStateException if the game has not started or the current player has no
+     *     Shuffle card
+     */
+    public void playShuffle() {
+        requireStarted();
+    }
+
     private void dealStartingHands() {
         deck = new Deck(startingCards(), random);
         List<Card> defuses = deck.removeAllCardsofType(CardType.Defuse);

@@ -30,3 +30,4 @@
 | Test Case 2  |          new Card(Defuse)             |        Defuse         | :white_check_mark: |
 | Test Case 3  |         new Card(See_The_Future              |         See_The_Future        | :white_check_mark: |
 | Test Case 4  |         new Card(Attack)              |         Attack        | :white_check_mark:  |
+| Test Case 5  |         new Card(Shuffle)              |         Shuffle        | :white_check_mark:  |
