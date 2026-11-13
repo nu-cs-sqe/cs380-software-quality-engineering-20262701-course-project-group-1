@@ -120,7 +120,7 @@ public class GameManager {
      *     See the Future card
      */
     public List<Card> playSeeTheFuture() {
-        requireStarted();
+        playFromHand(CardType.See_The_Future);
         return new ArrayList<>();
     }
 

@@ -471,4 +471,24 @@ class GameManagerTest {
                 manager::playSeeTheFuture);
         assertEquals("gameManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void playSeeTheFuture_noSeeTheFutureInHand_throwsAndNothingChanges() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        Player a = manager.getCurrentPlayer();
+        while (countType(a.getHand(), CardType.See_The_Future) > 0) {
+            a.removeCardOfType(CardType.See_The_Future);
+        }
+        final List<Card> handBefore = a.getHand();
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSeeTheFuture);
+        assertEquals("gameManager.play.notInHand", ex.getMessage());
+        assertEquals(handBefore, a.getHand());
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
 }
