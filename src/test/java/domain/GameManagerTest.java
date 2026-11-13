@@ -432,4 +432,18 @@ class GameManagerTest {
         assertEquals("D", manager.getCurrentPlayer().getName());
         assertEquals(1, manager.getTurnsRemaining());
     }
+
+    @Test
+    void playShuffle_twoShufflesInHand_removesOnlyOne() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Shuffle));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Shuffle));
+
+        manager.playShuffle();
+
+        Player a = manager.getPlayers().get(0);
+        assertEquals(1, countType(a.getHand(), CardType.Shuffle));
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.Shuffle));
+    }
 }
