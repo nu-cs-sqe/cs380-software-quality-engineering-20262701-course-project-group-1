@@ -315,4 +315,16 @@ class GameManagerTest {
 		assertTrue(manager.getDiscardPile().isEmpty());
 		assertEquals(1, manager.getTurnsRemaining());
 	}
+
+	@Test
+	void playAttack_fourPlayersFromFirstSeat_nextPlayerIsB() {
+		GameManager manager = new GameManager(alwaysFirst());
+		manager.startNewGame(List.of("A", "B", "C", "D"));
+		manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+
+		manager.playAttack();
+
+		assertEquals("B", manager.getCurrentPlayer().getName());
+		assertEquals(2, manager.getTurnsRemaining());
+	}
 }
