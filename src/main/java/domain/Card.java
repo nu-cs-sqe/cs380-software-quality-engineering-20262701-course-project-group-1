@@ -3,7 +3,7 @@ package domain;
 /**
  * A single card in the game, identified by its {@link CardType}.
  */
-public class Card {
+public final class Card {
     private final CardType type;
 
     /**
