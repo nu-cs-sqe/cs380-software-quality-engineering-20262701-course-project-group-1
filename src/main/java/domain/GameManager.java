@@ -126,6 +126,7 @@ public class GameManager {
      */
     public void playShuffle() {
         requireStarted();
+        throw new IllegalStateException(NOT_IN_HAND);
     }
 
     private void dealStartingHands() {

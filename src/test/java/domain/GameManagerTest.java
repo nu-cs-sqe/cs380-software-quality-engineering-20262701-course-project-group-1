@@ -381,4 +381,20 @@ class GameManagerTest {
                 manager::playShuffle);
         assertEquals("gameManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void playShuffle_noShuffleInHand_throwsAndNothingChanges() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        List<Card> handBefore = manager.getCurrentPlayer().getHand();
+        List<Card> pileBefore = manager.getDrawPile();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playShuffle);
+        assertEquals("gameManager.play.notInHand", ex.getMessage());
+        assertEquals(handBefore, manager.getCurrentPlayer().getHand());
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
 }
