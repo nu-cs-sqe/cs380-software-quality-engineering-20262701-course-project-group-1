@@ -371,4 +371,94 @@ class GameManagerTest {
         assertEquals(4, manager.getTurnsRemaining());
         assertEquals(2, countType(manager.getDiscardPile(), CardType.Attack));
     }
+
+    @Test
+    void playShuffle_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playShuffle);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void playShuffle_noShuffleInHand_throwsAndNothingChanges() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        List<Card> handBefore = manager.getCurrentPlayer().getHand();
+        List<Card> pileBefore = manager.getDrawPile();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playShuffle);
+        assertEquals("gameManager.play.notInHand", ex.getMessage());
+        assertEquals(handBefore, manager.getCurrentPlayer().getHand());
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
+
+    @Test
+    void playShuffle_twoPlayers_shuffleDiscardedAndDrawPileShuffled() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card shuffle = new Card(CardType.Shuffle);
+        manager.getCurrentPlayer().addCard(shuffle);
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        manager.playShuffle();
+
+        Player a = manager.getPlayers().get(0);
+        assertEquals(0, countType(a.getHand(), CardType.Shuffle));
+        List<Card> discard = manager.getDiscardPile();
+        assertSame(shuffle, discard.get(discard.size() - 1));
+
+        List<Card> pileAfter = manager.getDrawPile();
+        int size = pileBefore.size();
+        assertEquals(size, pileAfter.size());
+        for (int i = 0; i < size - 1; i++) {
+            assertSame(pileBefore.get(i + 1), pileAfter.get(i));
+        }
+        assertSame(pileBefore.get(0), pileAfter.get(size - 1));
+    }
+
+    @Test
+    void playShuffle_fourPlayersFromLastSeat_turnDoesNotChange() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Shuffle));
+
+        manager.playShuffle();
+
+        assertEquals("D", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void playShuffle_twoShufflesInHand_removesOnlyOne() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Shuffle));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Shuffle));
+
+        manager.playShuffle();
+
+        Player a = manager.getPlayers().get(0);
+        assertEquals(1, countType(a.getHand(), CardType.Shuffle));
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.Shuffle));
+    }
+
+    @Test
+    void playShuffle_whileUnderAttack_turnsRemainingUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();                                   // B, owes 2
+        manager.getCurrentPlayer().addCard(new Card(CardType.Shuffle));
+
+        manager.playShuffle();
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(2, manager.getTurnsRemaining());
+    }
 }
