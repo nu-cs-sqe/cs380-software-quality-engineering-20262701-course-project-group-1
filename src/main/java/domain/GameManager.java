@@ -74,6 +74,11 @@ public class GameManager {
 		return new ArrayList<>(discardPile);
 	}
 
+	public int getTurnsRemaining() {
+		requireStarted();
+		return 1;
+	}
+
 	private void dealStartingHands() {
 		deck = new Deck(startingCards(), random);
 		List<Card> defuses = deck.removeAllCardsofType(CardType.Defuse);
@@ -103,5 +108,11 @@ public class GameManager {
 			cards.add(new Card(CardType.Defuse));
 		}
 		return cards;
+	}
+
+	private void requireStarted() {
+		if (players.isEmpty()) {
+			throw new IllegalStateException(NOT_STARTED);
+		}
 	}
 }

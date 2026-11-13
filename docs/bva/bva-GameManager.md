@@ -95,8 +95,8 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC27 | `new GameManager().getDiscardPile()` | empty list | no |
-| TC28 | `getDiscardPile()` after `startNewGame(List.of("A", "B", "C"))` | empty list | no |
+| TC27 | `new GameManager().getDiscardPile()` | empty list | yes |
+| TC28 | `getDiscardPile()` after `startNewGame(List.of("A", "B", "C"))` | empty list | yes |
 | TC29 | `getDiscardPile()` after `"A"` plays Attack | last element is that Attack card | no (implemented in TC22) |
 | TC30 | `getDiscardPile().clear()` after `"A"` plays Attack | later `getDiscardPile()` still has 1 card | no |
 

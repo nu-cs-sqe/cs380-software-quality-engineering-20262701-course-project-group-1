@@ -257,4 +257,14 @@ class GameManagerTest {
 
 		assertTrue(manager.getDiscardPile().isEmpty());
 	}
+
+	@Test
+	void getTurnsRemaining_beforeStart_throwsIllegalStateException() {
+		GameManager manager = new GameManager();
+
+		IllegalStateException ex = assertThrows(
+				IllegalStateException.class,
+				manager::getTurnsRemaining);
+		assertEquals("gameManager.notStarted", ex.getMessage());
+	}
 }
