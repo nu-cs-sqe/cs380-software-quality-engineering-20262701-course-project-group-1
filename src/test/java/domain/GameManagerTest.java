@@ -219,4 +219,14 @@ class GameManagerTest {
 		assertEquals(3, countType(pile, CardType.Exploding_Kitten));
 		assertEquals(2, countType(pile, CardType.Defuse));
 	}
+
+	@Test
+	void playAttack_beforeStartNewGame_throwsIllegalStateException() {
+		GameManager manager = new GameManager();
+
+		IllegalStateException ex = assertThrows(
+				IllegalStateException.class,
+				manager::playAttack);
+		assertEquals("gameManager.notStarted", ex.getMessage());
+	}
 }

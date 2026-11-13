@@ -8,6 +8,7 @@ public class GameManager {
 
 	private static final String PLAYER_COUNT_OUT_OF_RANGE = "gameManager.playerCount.outOfRange";
 	private static final String PLAYER_NAME_BLANK = "gameManager.playerName.blank";
+	private static final String NOT_STARTED = "gameManager.notStarted";
 	private static final int MIN_PLAYERS = 2;
 	private static final int MAX_PLAYERS = 4;
 	private static final int TOTAL_DEFUSES = 6;
@@ -58,6 +59,10 @@ public class GameManager {
 			pile.add(deck.getCardAt(i));
 		}
 		return pile;
+	}
+
+	public void playAttack() {
+		throw new IllegalStateException(NOT_STARTED);
 	}
 
 	private void dealStartingHands() {
