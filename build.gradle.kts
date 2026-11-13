@@ -1,6 +1,10 @@
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.Effort
+
 plugins {
     id("java")
     id("checkstyle")
+    id("com.github.spotbugs") version "6.0.25"
 }
 
 // Google Java Style with 4-space indentation; see config/checkstyle/checkstyle.xml.
@@ -41,4 +45,31 @@ tasks.compileJava {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+// SpotBugs: default effort + confidence, HTML report only. Fails the build on any finding.
+spotbugs {
+    ignoreFailures = false
+    showStackTraces = true
+    showProgress = true
+    effort = Effort.DEFAULT
+    reportLevel = Confidence.DEFAULT
+    maxHeapSize = "1g"
+    excludeFilter.set(file("config/spotbugs/excludeFilter.xml"))
+}
+
+tasks.spotbugsMain {
+    reports.create("html") {
+        required = true
+        outputLocation = layout.buildDirectory.file("reports/spotbugs/spotbugs-main.html")
+        setStylesheet("fancy-hist.xsl")
+    }
+}
+
+tasks.spotbugsTest {
+    reports.create("html") {
+        required = true
+        outputLocation = layout.buildDirectory.file("reports/spotbugs/spotbugs-test.html")
+        setStylesheet("fancy-hist.xsl")
+    }
 }
