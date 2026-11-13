@@ -509,4 +509,20 @@ class GameManagerTest {
         Player a = manager.getPlayers().get(0);
         assertEquals(4, countType(a.getHand(), CardType.See_The_Future));
     }
+
+    @Test
+    void playSeeTheFuture_fourPlayersFromLastSeat_turnDoesNotChange() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        List<Card> seen = manager.playSeeTheFuture();
+
+        assertEquals(5, pileBefore.size());
+        for (int i = 0; i < 3; i++) {
+            assertSame(pileBefore.get(i), seen.get(i));
+        }
+        assertEquals("D", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
 }
