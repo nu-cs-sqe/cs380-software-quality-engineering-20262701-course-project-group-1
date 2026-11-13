@@ -339,4 +339,18 @@ class GameManagerTest {
 		assertEquals("A", manager.getCurrentPlayer().getName());
 		assertEquals(2, manager.getTurnsRemaining());
 	}
+
+	@Test
+	void playAttack_twoAttacksInHand_removesOnlyOne() {
+		GameManager manager = new GameManager(alwaysFirst());
+		manager.startNewGame(List.of("A", "B", "C"));
+		manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+		manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+
+		manager.playAttack();
+
+		Player a = manager.getPlayers().get(0);
+		assertEquals(1, countType(a.getHand(), CardType.Attack));
+		assertEquals(1, countType(manager.getDiscardPile(), CardType.Attack));
+	}
 }
