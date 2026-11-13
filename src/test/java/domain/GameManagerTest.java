@@ -461,4 +461,14 @@ class GameManagerTest {
         assertEquals("B", manager.getCurrentPlayer().getName());
         assertEquals(2, manager.getTurnsRemaining());
     }
+
+    @Test
+    void playSeeTheFuture_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSeeTheFuture);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
 }

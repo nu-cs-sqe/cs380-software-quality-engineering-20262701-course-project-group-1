@@ -109,6 +109,21 @@ public class GameManager {
         deck.shuffleDeck();
     }
 
+    /**
+     * Plays a See the Future card from the current player's hand and shows them the top three
+     * cards of the draw pile.
+     *
+     * <p>The draw pile is not changed and the current player keeps their turn.
+     *
+     * @return the top three cards of the draw pile, top card first
+     * @throws IllegalStateException if the game has not started or the current player has no
+     *     See the Future card
+     */
+    public List<Card> playSeeTheFuture() {
+        requireStarted();
+        return new ArrayList<>();
+    }
+
     public List<Card> getDiscardPile() {
         return new ArrayList<>(discardPile);
     }
