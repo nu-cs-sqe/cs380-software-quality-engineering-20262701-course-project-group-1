@@ -302,4 +302,17 @@ class GameManagerTest {
 
 		assertEquals(1, manager.getDiscardPile().size());
 	}
+
+	@Test
+	void startNewGame_afterAttack_discardEmptyAndOneTurn() {
+		GameManager manager = new GameManager(alwaysFirst());
+		manager.startNewGame(List.of("A", "B"));
+		manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+		manager.playAttack();
+
+		manager.startNewGame(List.of("A", "B"));
+
+		assertTrue(manager.getDiscardPile().isEmpty());
+		assertEquals(1, manager.getTurnsRemaining());
+	}
 }

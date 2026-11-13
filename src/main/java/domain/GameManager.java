@@ -40,6 +40,7 @@ public class GameManager {
 			}
 		}
 		players.clear();
+		discardPile.clear();
 		for (String name : playerNames) {
 			players.add(new Player(name));
 		}
