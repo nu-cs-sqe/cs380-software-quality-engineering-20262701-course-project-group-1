@@ -525,4 +525,17 @@ class GameManagerTest {
         assertEquals("D", manager.getCurrentPlayer().getName());
         assertEquals(1, manager.getTurnsRemaining());
     }
+
+    @Test
+    void playSeeTheFuture_whileUnderAttack_turnsRemainingUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();                                   // B, owes 2
+
+        manager.playSeeTheFuture();
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(2, manager.getTurnsRemaining());
+    }
 }
