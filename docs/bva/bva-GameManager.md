@@ -30,6 +30,7 @@ Made with assistance from GenAI.
 | TC5 | `startNewGame(List.of("A", "B", "C", "D", "E"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC7 | `startNewGame(List.of("", "B"))` | throws `IllegalArgumentException` with message `"gameManager.playerName.blank"` | yes |
+| TC34 | `startNewGame(List.of("A", "B"))` again after `"A"` played Attack | `getDiscardPile()` is empty; `getTurnsRemaining()` is `1` | no |
 
 ---
 
@@ -85,3 +86,28 @@ Made with assistance from GenAI.
 | TC24 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Attack, `playAttack()` | current player is `"A"` (wraps from last seat); turns remaining is `2` | no |
 | TC25 | 3 players, `"A"` holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in `"A"`'s hand | no |
 | TC26 | 3 players, `"A"` attacks `"B"`, then `"B"` plays Attack | current player is `"C"` (not back to `"A"`); turns remaining is `4` | no |
+
+---
+
+## Method 7: `public List<Card> getDiscardPile()`
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC27 | `new GameManager().getDiscardPile()` | empty list | no |
+| TC28 | `getDiscardPile()` after `startNewGame(List.of("A", "B", "C"))` | empty list | no |
+| TC29 | `getDiscardPile()` after `"A"` plays Attack | last element is that Attack card | no (implemented in TC22) |
+| TC30 | `getDiscardPile().clear()` after `"A"` plays Attack | later `getDiscardPile()` still has 1 card | no |
+
+---
+
+## Method 8: `public int getTurnsRemaining()`
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC31 | `new GameManager().getTurnsRemaining()` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
+| TC32 | `getTurnsRemaining()` after `startNewGame(List.of("A", "B", "C", "D"))` | `1` | no |
+| TC33 | `getTurnsRemaining()` after `"A"` plays Attack | `2` | no (implemented in TC22) |

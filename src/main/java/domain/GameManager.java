@@ -17,6 +17,7 @@ public class GameManager {
 	private static final int GENERIC_SUPPLY = 20;
 
 	private final List<Player> players = new ArrayList<>();
+	private final List<Card> discardPile = new ArrayList<>();
 	private final TurnManager turnManager = new TurnManager();
 	private final Random random;
 	private Deck deck;
@@ -67,6 +68,10 @@ public class GameManager {
 			throw new IllegalStateException(NOT_STARTED);
 		}
 		throw new IllegalStateException(NOT_IN_HAND);
+	}
+
+	public List<Card> getDiscardPile() {
+		return new ArrayList<>(discardPile);
 	}
 
 	private void dealStartingHands() {

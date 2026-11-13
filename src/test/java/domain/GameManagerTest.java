@@ -243,4 +243,10 @@ class GameManagerTest {
 		assertEquals("A", manager.getCurrentPlayer().getName());
 		assertEquals(handBefore, manager.getCurrentPlayer().getHand());
 	}
+
+	@Test
+	void getDiscardPile_beforeStart_isEmpty() {
+		GameManager manager = new GameManager();
+		assertTrue(manager.getDiscardPile().isEmpty());
+	}
 }
