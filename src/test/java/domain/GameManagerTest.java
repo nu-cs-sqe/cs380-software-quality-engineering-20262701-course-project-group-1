@@ -353,4 +353,19 @@ class GameManagerTest {
 		assertEquals(1, countType(a.getHand(), CardType.Attack));
 		assertEquals(1, countType(manager.getDiscardPile(), CardType.Attack));
 	}
+
+	@Test
+	void playAttack_stackedAttackThreePlayers_passesToCOwingFour() {
+		GameManager manager = new GameManager(alwaysFirst());
+		manager.startNewGame(List.of("A", "B", "C"));
+		manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+		manager.playAttack();                                   // B, owes 2
+		manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+
+		manager.playAttack();
+
+		assertEquals("C", manager.getCurrentPlayer().getName());
+		assertEquals(4, manager.getTurnsRemaining());
+		assertEquals(2, countType(manager.getDiscardPile(), CardType.Attack));
+	}
 }
