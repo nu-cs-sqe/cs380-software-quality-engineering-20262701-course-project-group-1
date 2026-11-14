@@ -38,6 +38,13 @@
 
 **Other**: Alternative win condition still being considered, base game cards all decided, custom cards are still tbd. 
 
+# Week 6 (11/02/2026-11/08/2026)
+1. [75% done] Ethan: Player + TerminalPrinting, fix merge conflict with Yutong GameManager PR ([#20](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/20), [#24](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/24))
+2. [60%] Connor: Implementation of Shuffle, See the Future, Attack [#28](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/28), Gamble Cat (Draw Card Feature), Playing a Turn
+3. [80% done] Yutong: Help review PRs ([#20](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/20))
+
+**Other**: Alternative win condition is a Hyper Specific Set of Cat Cards that you can play, to cause a different player to explode only playable when there are two remaining players left in the game to ensure your victory. Connor has decided on the type of custom card he wants to use which is a gamble cat card that has a mechanic where a player can force himself or a seperate player to draw two cards depending on the outcome of a dice roll or coinflip. Yutong and Ethan are still deciding custom cards.
+
 # One section per week until the last week of class (the week before the Finals week)
 
 
