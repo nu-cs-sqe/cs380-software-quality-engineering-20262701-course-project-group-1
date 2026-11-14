@@ -123,6 +123,22 @@ Made with assistance from GenAI.
 | TC35 | `playShuffle()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
 | TC36 | 3 players, current player `"A"` has no Shuffle, `playShuffle()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile and discard pile unchanged | yes |
 | TC37 | 2 players, `Random` always `0`, `"A"` holds 1 Shuffle, `playShuffle()` | Shuffle removed from `"A"`'s hand and is the last card of the discard pile; draw pile has the same 5 cards, rotated by one (old top card is now at the bottom) | yes |
-| TC38 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Shuffle, `playShuffle()` | current player is still `"D"`; turns remaining is still `1` | no |
-| TC39 | 3 players, `"A"` holds 2 Shuffles, `playShuffle()` | exactly one Shuffle removed; one still in `"A"`'s hand | no |
-| TC40 | 2 players, `"A"` attacks `"B"`, `"B"` holds 1 Shuffle, `playShuffle()` | current player is still `"B"`; turns remaining is still `2` | no |
+| TC38 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Shuffle, `playShuffle()` | current player is still `"D"`; turns remaining is still `1` | yes |
+| TC39 | 3 players, `"A"` holds 2 Shuffles, `playShuffle()` | exactly one Shuffle removed; one still in `"A"`'s hand | yes |
+| TC40 | 2 players, `"A"` attacks `"B"`, `"B"` holds 1 Shuffle, `playShuffle()` | current player is still `"B"`; turns remaining is still `2` | yes |
+
+---
+
+## Method 10: `public List<Card> playSeeTheFuture()`
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC41 | `playSeeTheFuture()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
+| TC42 | 3 players, current player `"A"` has no See the Future (all 5 removed), `playSeeTheFuture()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile and discard pile unchanged | yes |
+| TC43 | 2 players, `"A"` holds 5 See the Future, `playSeeTheFuture()` | returns the top 3 cards of the draw pile, top first; draw pile unchanged (same 15 cards, same order); See the Future is the last card of the discard pile; `"A"` holds 4 See the Future | yes |
+| TC44 | 4 players, `Random` always `bound - 1` (`"D"` starts), draw pile has 5 cards, `playSeeTheFuture()` | returns the top 3 of the 5 cards; current player is still `"D"`; turns remaining is still `1` | yes |
+| TC45 | 2 players, `"A"` attacks `"B"`, `"B"` plays See the Future | current player is still `"B"`; turns remaining is still `2` | yes |
+| TC46 | 2 players, `"A"` plays See the Future, then `.clear()` on the returned list | later `getDrawPile()` unchanged | yes |
+| TC47 | draw pile has fewer than 3 cards, `playSeeTheFuture()` | CAN'T SET: no way to draw from the pile through `GameManager` yet; add once a draw method exists (expected: returns all remaining cards) | no |

@@ -18,6 +18,7 @@ public class GameManager {
     private static final int TOTAL_DEFUSES = 6;
     private static final int STARTING_GENERIC_CARDS = 5;
     private static final int GENERIC_SUPPLY = 20;
+    private static final int SEE_THE_FUTURE_COUNT = 3;
 
     private final List<Player> players = new ArrayList<>();
     private final List<Card> discardPile = new ArrayList<>();
@@ -107,6 +108,21 @@ public class GameManager {
     public void playShuffle() {
         playFromHand(CardType.Shuffle);
         deck.shuffleDeck();
+    }
+
+    /**
+     * Plays a See the Future card from the current player's hand and shows them the top three
+     * cards of the draw pile.
+     *
+     * <p>The draw pile is not changed and the current player keeps their turn.
+     *
+     * @return the top three cards of the draw pile, top card first
+     * @throws IllegalStateException if the game has not started or the current player has no
+     *     See the Future card
+     */
+    public List<Card> playSeeTheFuture() {
+        playFromHand(CardType.See_The_Future);
+        return deck.peekTopofDeck(SEE_THE_FUTURE_COUNT);
     }
 
     public List<Card> getDiscardPile() {

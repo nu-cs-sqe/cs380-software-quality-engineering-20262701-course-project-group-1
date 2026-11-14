@@ -461,4 +461,92 @@ class GameManagerTest {
         assertEquals("B", manager.getCurrentPlayer().getName());
         assertEquals(2, manager.getTurnsRemaining());
     }
+
+    @Test
+    void playSeeTheFuture_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSeeTheFuture);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void playSeeTheFuture_noSeeTheFutureInHand_throwsAndNothingChanges() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        Player a = manager.getCurrentPlayer();
+        while (countType(a.getHand(), CardType.See_The_Future) > 0) {
+            a.removeCardOfType(CardType.See_The_Future);
+        }
+        final List<Card> handBefore = a.getHand();
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSeeTheFuture);
+        assertEquals("gameManager.play.notInHand", ex.getMessage());
+        assertEquals(handBefore, a.getHand());
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
+
+    @Test
+    void playSeeTheFuture_twoPlayers_returnsTopThreeAndPileUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        List<Card> seen = manager.playSeeTheFuture();
+
+        assertEquals(3, seen.size());
+        for (int i = 0; i < 3; i++) {
+            assertSame(pileBefore.get(i), seen.get(i));
+        }
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.See_The_Future));
+        Player a = manager.getPlayers().get(0);
+        assertEquals(4, countType(a.getHand(), CardType.See_The_Future));
+    }
+
+    @Test
+    void playSeeTheFuture_fourPlayersFromLastSeat_turnDoesNotChange() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        List<Card> seen = manager.playSeeTheFuture();
+
+        assertEquals(5, pileBefore.size());
+        for (int i = 0; i < 3; i++) {
+            assertSame(pileBefore.get(i), seen.get(i));
+        }
+        assertEquals("D", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void playSeeTheFuture_whileUnderAttack_turnsRemainingUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();                                   // B, owes 2
+
+        manager.playSeeTheFuture();
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(2, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void playSeeTheFuture_returnedListIsDefensiveCopy() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        manager.playSeeTheFuture().clear();
+
+        assertEquals(pileBefore, manager.getDrawPile());
+    }
 }
