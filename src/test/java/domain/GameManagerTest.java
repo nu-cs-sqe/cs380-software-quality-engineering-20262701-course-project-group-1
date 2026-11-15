@@ -635,4 +635,14 @@ class GameManagerTest {
         assertSame(kitten, discard.get(discard.size() - 1));
         assertFalse(a.getHand().contains(kitten));
     }
+
+    @Test
+    void playDefuse_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> manager.playDefuse(0));
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
 }

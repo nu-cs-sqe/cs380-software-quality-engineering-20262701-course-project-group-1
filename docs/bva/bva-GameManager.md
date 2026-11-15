@@ -171,7 +171,7 @@ Plays a Defuse after the current player has drawn an Exploding Kitten. The Defus
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC54 | `playDefuse(0)` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
+| TC54 | `playDefuse(0)` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
 | TC55 | 2 players, current player `"A"` has Defuse but no Exploding Kitten, `playDefuse(0)` | throws `IllegalStateException` with message `"gameManager.defuse.noKitten"`; hand, draw pile and discard pile unchanged | no |
 | TC56 | 2 players, `"A"` draws Exploding Kitten with Defuse in hand, `playDefuse(0)` | Defuse is the last card of the discard pile; Exploding Kitten is not in `"A"`'s hand and is the top card of the draw pile; current player is `"B"` | no |
 | TC57 | 2 players, `"A"` draws Exploding Kitten with Defuse in hand, `playDefuse` at bottom (index = draw-pile size) | Exploding Kitten is the bottom card of the draw pile; Defuse is on the discard pile; current player is `"B"` | no |

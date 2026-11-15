@@ -151,6 +151,22 @@ public class GameManager {
         return card;
     }
 
+    /**
+     * Plays a Defuse after the current player has drawn an Exploding Kitten.
+     *
+     * <p>The Defuse goes to the discard pile, the Exploding Kitten is put back into the draw pile
+     * at the chosen index, and the turn ends the same way a normal draw does.
+     *
+     * @param reinsertIndex where to put the Exploding Kitten, from 0 (top) to the draw-pile size
+     *     (bottom)
+     * @throws IllegalStateException if the game has not started, the current player has no
+     *     Exploding Kitten, or the current player has no Defuse
+     * @throws IllegalArgumentException if {@code reinsertIndex} is out of range
+     */
+    public void playDefuse(int reinsertIndex) {
+        requireStarted();
+    }
+
     // Used in GameManagerTest to put a known card on top of the draw pile
     void placeOnTopOfDrawPile(Card card) {
         deck.insertCardAt(card, 0);
