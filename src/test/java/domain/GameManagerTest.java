@@ -760,4 +760,22 @@ class GameManagerTest {
         assertEquals(1, countType(a.getHand(), CardType.Defuse));
         assertTrue(manager.getDiscardPile().isEmpty());
     }
+
+    @Test
+    void playDefuse_noDefuseInHand_throwsAndKittenStays() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        Player a = manager.getCurrentPlayer();
+        manager.drawCard();
+        a.removeCardOfType(CardType.Defuse);
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> manager.playDefuse(0));
+        assertEquals("gameManager.play.notInHand", ex.getMessage());
+        assertTrue(a.getHand().contains(kitten));
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
 }

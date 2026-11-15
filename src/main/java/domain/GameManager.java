@@ -170,6 +170,9 @@ public class GameManager {
         if (countOf(current.getHand(), CardType.Exploding_Kitten) == 0) {
             throw new IllegalStateException(NO_KITTEN);
         }
+        if (countOf(current.getHand(), CardType.Defuse) == 0) {
+            throw new IllegalStateException(NOT_IN_HAND);
+        }
         if (reinsertIndex < 0 || reinsertIndex > deck.getDeckSize()) {
             throw new IllegalArgumentException("Index out of range: " + reinsertIndex);
         }
