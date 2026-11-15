@@ -1,6 +1,7 @@
 package domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -88,5 +89,14 @@ class PlayerTest {
         assertEquals("player.card.notInHand", ex.getMessage());
         assertEquals(1, player.getHand().size());
         assertSame(stf, player.getHand().get(0));
+    }
+
+    @Test
+    void eliminate_alivePlayer_isAliveFalse() {
+        Player player = new Player("A");
+
+        player.eliminate();
+
+        assertFalse(player.isAlive());
     }
 }
