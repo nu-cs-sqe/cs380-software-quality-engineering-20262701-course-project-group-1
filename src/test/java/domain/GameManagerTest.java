@@ -576,4 +576,18 @@ class GameManagerTest {
         assertEquals(pileBefore - 1, manager.getDrawPile().size());
         assertEquals("B", manager.getCurrentPlayer().getName());
     }
+
+    @Test
+    void drawCard_whileUnderAttack_samePlayerOwesOneMoreTurn() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
 }

@@ -214,4 +214,6 @@ public class GameManager {
         }
         discardPile.add(current.removeCardOfType(type));
     }
+
+
 }
