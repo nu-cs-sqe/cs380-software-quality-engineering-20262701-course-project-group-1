@@ -698,4 +698,19 @@ class GameManagerTest {
         assertEquals(CardType.Defuse, discard.get(discard.size() - 1).getTypeofCard());
         assertEquals("B", manager.getCurrentPlayer().getName());
     }
+
+    @Test
+    void playDefuse_whileUnderAttack_samePlayerOwesOneMoreTurn() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+        manager.drawCard();
+
+        manager.playDefuse(0);
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
 }
