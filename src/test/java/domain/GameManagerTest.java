@@ -725,4 +725,19 @@ class GameManagerTest {
 
         assertEquals("A", manager.getCurrentPlayer().getName());
     }
+
+    @Test
+    void playDefuse_twoDefusesInHand_removesExactlyOne() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        a.addCard(new Card(CardType.Defuse));
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+        manager.drawCard();
+
+        manager.playDefuse(0);
+
+        assertEquals(1, countType(a.getHand(), CardType.Defuse));
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.Defuse));
+    }
 }
