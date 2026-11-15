@@ -99,4 +99,14 @@ class PlayerTest {
 
         assertFalse(player.isAlive());
     }
+
+    @Test
+    void eliminate_alreadyEliminated_staysEliminatedWithoutException() {
+        Player player = new Player("A");
+        player.eliminate();
+
+        player.eliminate();
+
+        assertFalse(player.isAlive());
+    }
 }

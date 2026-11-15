@@ -77,4 +77,4 @@ Made with assistance from GenAI.
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
 | TC12 | alive player, `eliminate()` once | `isAlive()` is `false` | yes          |
-| TC13 | player already eliminated, `eliminate()` again | `isAlive()` is still `false`; no exception | no           |
+| TC13 | player already eliminated, `eliminate()` again | `isAlive()` is still `false`; no exception | yes          |
