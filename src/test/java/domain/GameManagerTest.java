@@ -602,4 +602,19 @@ class GameManagerTest {
 
         assertEquals("A", manager.getCurrentPlayer().getName());
     }
+
+    @Test
+    void drawCard_explodingKittenWithDefuse_kittenInHandAndTurnWaits() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        Player a = manager.getCurrentPlayer();
+
+        manager.drawCard();
+
+        assertTrue(a.getHand().contains(kitten));
+        assertTrue(a.isAlive());
+        assertEquals("A", manager.getCurrentPlayer().getName());
+    }
 }

@@ -135,6 +135,9 @@ public class GameManager {
         requireStarted();
         Card card = deck.drawCard();
         getCurrentPlayer().addCard(card);
+        if (card.getTypeofCard() == CardType.Exploding_Kitten) {
+            return card;
+        }
         turnManager.endTurn();
         return card;
     }
