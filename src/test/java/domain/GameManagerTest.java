@@ -645,4 +645,20 @@ class GameManagerTest {
                 () -> manager.playDefuse(0));
         assertEquals("gameManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void playDefuse_noKittenInHand_throwsAndNothingChanges() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        List<Card> handBefore = manager.getCurrentPlayer().getHand();
+        List<Card> pileBefore = manager.getDrawPile();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> manager.playDefuse(0));
+        assertEquals("gameManager.defuse.noKitten", ex.getMessage());
+        assertEquals(handBefore, manager.getCurrentPlayer().getHand());
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
 }
