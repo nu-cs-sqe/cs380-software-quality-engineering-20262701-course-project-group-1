@@ -142,3 +142,21 @@ Made with assistance from GenAI.
 | TC45 | 2 players, `"A"` attacks `"B"`, `"B"` plays See the Future | current player is still `"B"`; turns remaining is still `2` | yes |
 | TC46 | 2 players, `"A"` plays See the Future, then `.clear()` on the returned list | later `getDrawPile()` unchanged | yes |
 | TC47 | draw pile has fewer than 3 cards, `playSeeTheFuture()` | CAN'T SET: no way to draw from the pile through `GameManager` yet; add once a draw method exists (expected: returns all remaining cards) | no |
+
+
+---
+
+## Method 11: `public Card drawCard()`
+
+Ends the current player's turn by drawing the top card of the draw pile. A normal card goes into the hand and the turn ends. An Exploding Kitten stays in the hand if the player has a Defuse (the turn waits for the Defuse to be played). Without a Defuse, the player is eliminated and the Exploding Kitten goes to the discard pile.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC48 | `drawCard()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
+| TC49 | 2 players, `"A"` starts, top card is See the Future, `drawCard()` | returns that card; it is in `"A"`'s hand; draw pile has one fewer card; current player is `"B"` | no |
+| TC50 | 2 players, `"A"` attacks `"B"`, top card is See the Future, `"B"` draws | current player is still `"B"`; turns remaining is `1` | no |
+| TC51 | 4 players, `"D"` starts, top card is See the Future, `drawCard()` | current player is `"A"` | no |
+| TC52 | 2 players, `"A"` has 1 Defuse, top card is Exploding Kitten, `drawCard()` | Exploding Kitten is in `"A"`'s hand; `"A"` is alive; current player is still `"A"` | no |
+| TC53 | 2 players, `"A"` has no Defuse, top card is Exploding Kitten, `drawCard()` | `"A"` is eliminated; Exploding Kitten is the last card of the discard pile and not in `"A"`'s hand | no |
