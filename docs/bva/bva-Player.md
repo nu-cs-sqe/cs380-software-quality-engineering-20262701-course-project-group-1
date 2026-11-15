@@ -57,6 +57,8 @@ Made with assistance from GenAI.
 | TC7 | `getHand()` after one `addCard` | size `1` | yes (implemented in TC5) |
 | TC8 | `getHand().clear()` after one `addCard` | later `getHand()` size unchanged | yes |
 
+---
+
 ## Method 6: `public Card removeCardOfType()`
 
 ##### All-combination or each-choice: each-choice
@@ -65,3 +67,14 @@ Made with assistance from GenAI.
 | TC9 | `hand [Defuse], removeCardOfType(Defuse)` | returns that card; hand is empty | yes  |
 | TC10 | `hand [STF, Defuse, Defuse], removeCardOfType(Defuse)` | returns the first Defuse; hand is` [STF, Defuse]` | yes |
 | TC11 | `hand [STF], removeCardOfType(Defuse)` | throws IllegalStateException "player.card.notInHand"; hand unchanged | yes |
+
+---
+
+## Method 7: `public void eliminate()`
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC12 | alive player, `eliminate()` once | `isAlive()` is `false` | yes          |
+| TC13 | player already eliminated, `eliminate()` again | `isAlive()` is still `false`; no exception | yes          |

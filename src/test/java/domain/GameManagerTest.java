@@ -1,6 +1,7 @@
 package domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -548,5 +549,90 @@ class GameManagerTest {
         manager.playSeeTheFuture().clear();
 
         assertEquals(pileBefore, manager.getDrawPile());
+    }
+
+    @Test
+    void drawCard_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::drawCard);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void drawCard_twoPlayers_cardGoesToHandAndTurnPasses() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card top = new Card(CardType.See_The_Future);
+        manager.placeOnTopOfDrawPile(top);
+        int pileBefore = manager.getDrawPile().size();
+        Player a = manager.getCurrentPlayer();
+
+        Card drawn = manager.drawCard();
+
+        assertSame(top, drawn);
+        assertTrue(a.getHand().contains(top));
+        assertEquals(pileBefore - 1, manager.getDrawPile().size());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void drawCard_whileUnderAttack_samePlayerOwesOneMoreTurn() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+
+    @Test
+    void drawCard_fourPlayersFromLastSeat_wrapsToA() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();
+
+        assertEquals("A", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void drawCard_explodingKittenWithDefuse_kittenInHandAndTurnWaits() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        Player a = manager.getCurrentPlayer();
+
+        manager.drawCard();
+
+        assertTrue(a.getHand().contains(kitten));
+        assertTrue(a.isAlive());
+        assertEquals("A", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void drawCard_explodingKittenWithoutDefuse_playerEliminatedAndKittenDiscarded() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        a.removeCardOfType(CardType.Defuse);
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+
+        manager.drawCard();
+
+        assertFalse(a.isAlive());
+        List<Card> discard = manager.getDiscardPile();
+        assertSame(kitten, discard.get(discard.size() - 1));
+        assertFalse(a.getHand().contains(kitten));
     }
 }

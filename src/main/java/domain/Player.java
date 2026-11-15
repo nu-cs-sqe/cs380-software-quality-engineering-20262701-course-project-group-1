@@ -11,6 +11,7 @@ public class Player {
     private static final String CARD_NOT_IN_HAND = "player.card.notInHand";
     private final String name;
     private final List<Card> hand = new ArrayList<>();
+    private boolean alive = true;
 
     /**
      * Creates a living player with an empty hand.
@@ -26,7 +27,14 @@ public class Player {
     }
 
     public boolean isAlive() {
-        return true;
+        return alive;
+    }
+
+    /**
+     * Marks this player as out of the game.
+     */
+    public void eliminate() {
+        alive = false;
     }
 
     /**
