@@ -740,4 +740,24 @@ class GameManagerTest {
         assertEquals(1, countType(a.getHand(), CardType.Defuse));
         assertEquals(1, countType(manager.getDiscardPile(), CardType.Defuse));
     }
+
+    @Test
+    void playDefuse_invalidReinsertIndex_throwsAndNothingChanges() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        Player a = manager.getCurrentPlayer();
+        manager.drawCard();
+        List<Card> handBefore = a.getHand();
+
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> manager.playDefuse(-1));
+        assertTrue(ex.getMessage().startsWith("Index out of range:"));
+        assertEquals(handBefore, a.getHand());
+        assertTrue(a.getHand().contains(kitten));
+        assertEquals(1, countType(a.getHand(), CardType.Defuse));
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
 }

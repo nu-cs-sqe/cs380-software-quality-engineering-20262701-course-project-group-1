@@ -170,6 +170,9 @@ public class GameManager {
         if (countOf(current.getHand(), CardType.Exploding_Kitten) == 0) {
             throw new IllegalStateException(NO_KITTEN);
         }
+        if (reinsertIndex < 0 || reinsertIndex > deck.getDeckSize()) {
+            throw new IllegalArgumentException("Index out of range: " + reinsertIndex);
+        }
         Card kitten = current.removeCardOfType(CardType.Exploding_Kitten);
         discardPile.add(current.removeCardOfType(CardType.Defuse));
         deck.insertCardAt(kitten, reinsertIndex);

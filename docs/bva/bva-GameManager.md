@@ -178,5 +178,5 @@ Plays a Defuse after the current player has drawn an Exploding Kitten. The Defus
 | TC58 | 2 players, `"A"` attacks `"B"`, `"B"` draws Exploding Kitten with Defuse and `playDefuse(0)` | current player is still `"B"`; turns remaining is `1` | yes |
 | TC59 | 4 players, `"D"` starts, `"D"` draws Exploding Kitten with Defuse and `playDefuse(0)` | current player is `"A"` | yes |
 | TC60 | 2 players, `"A"` holds 2 Defuses and draws Exploding Kitten, `playDefuse(0)` | exactly one Defuse removed from `"A"`'s hand and on the discard pile; one Defuse still in hand | yes |
-| TC61 | 2 players, `"A"` draws Exploding Kitten with Defuse, `playDefuse(-1)` or index past bottom | throws `IllegalArgumentException`; Exploding Kitten and Defuse still in `"A"`'s hand; discard pile unchanged | no |
+| TC61 | 2 players, `"A"` draws Exploding Kitten with Defuse, `playDefuse(-1)` or index past bottom | throws `IllegalArgumentException`; Exploding Kitten and Defuse still in `"A"`'s hand; discard pile unchanged | yes |
 | TC62 | 2 players, `"A"` draws Exploding Kitten with Defuse, then Defuse is removed from hand, `playDefuse(0)` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; Exploding Kitten still in `"A"`'s hand | no |
