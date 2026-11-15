@@ -170,6 +170,10 @@ public class GameManager {
         if (countOf(current.getHand(), CardType.Exploding_Kitten) == 0) {
             throw new IllegalStateException(NO_KITTEN);
         }
+        Card kitten = current.removeCardOfType(CardType.Exploding_Kitten);
+        discardPile.add(current.removeCardOfType(CardType.Defuse));
+        deck.insertCardAt(kitten, reinsertIndex);
+        turnManager.endTurn();
     }
 
     // Used in GameManagerTest to put a known card on top of the draw pile

@@ -661,4 +661,23 @@ class GameManagerTest {
         assertEquals(pileBefore, manager.getDrawPile());
         assertTrue(manager.getDiscardPile().isEmpty());
     }
+
+    @Test
+    void playDefuse_afterDrawingKitten_reinsertsAtTopAndEndsTurn() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        Player a = manager.getCurrentPlayer();
+        manager.drawCard();
+
+        manager.playDefuse(0);
+
+        assertFalse(a.getHand().contains(kitten));
+        assertEquals(0, countType(a.getHand(), CardType.Defuse));
+        List<Card> discard = manager.getDiscardPile();
+        assertEquals(CardType.Defuse, discard.get(discard.size() - 1).getTypeofCard());
+        assertSame(kitten, manager.getDrawPile().get(0));
+        assertEquals("B", manager.getCurrentPlayer().getName());
+    }
 }
