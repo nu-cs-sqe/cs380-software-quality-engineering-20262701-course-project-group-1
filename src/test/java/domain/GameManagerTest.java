@@ -590,4 +590,16 @@ class GameManagerTest {
         assertEquals("B", manager.getCurrentPlayer().getName());
         assertEquals(1, manager.getTurnsRemaining());
     }
+
+
+    @Test
+    void drawCard_fourPlayersFromLastSeat_wrapsToA() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();
+
+        assertEquals("A", manager.getCurrentPlayer().getName());
+    }
 }
