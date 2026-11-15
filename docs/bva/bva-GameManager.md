@@ -153,10 +153,10 @@ Ends the current player's turn by drawing the top card of the draw pile. A norma
 ##### All-combination or each-choice: each-choice
 
 | Test Case # | System under test | Expected output | Implemented? |
-|-------------|-------------------|-----------------|-------------|
-| TC48 | `drawCard()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes         |
-| TC49 | 2 players, `"A"` starts, top card is See the Future, `drawCard()` | returns that card; it is in `"A"`'s hand; draw pile has one fewer card; current player is `"B"` | yes         |
-| TC50 | 2 players, `"A"` attacks `"B"`, top card is See the Future, `"B"` draws | current player is still `"B"`; turns remaining is `1` | yes         |
-| TC51 | 4 players, `"D"` starts, top card is See the Future, `drawCard()` | current player is `"A"` | yes         |
-| TC52 | 2 players, `"A"` has 1 Defuse, top card is Exploding Kitten, `drawCard()` | Exploding Kitten is in `"A"`'s hand; `"A"` is alive; current player is still `"A"` | yes         |
-| TC53 | 2 players, `"A"` has no Defuse, top card is Exploding Kitten, `drawCard()` | `"A"` is eliminated; Exploding Kitten is the last card of the discard pile and not in `"A"`'s hand | no          |
+|-------------|-------------------|-----------------|--------------|
+| TC48 | `drawCard()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes          |
+| TC49 | 2 players, `"A"` starts, top card is See the Future, `drawCard()` | returns that card; it is in `"A"`'s hand; draw pile has one fewer card; current player is `"B"` | yes          |
+| TC50 | 2 players, `"A"` attacks `"B"`, top card is See the Future, `"B"` draws | current player is still `"B"`; turns remaining is `1` | yes          |
+| TC51 | 4 players, `"D"` starts, top card is See the Future, `drawCard()` | current player is `"A"` | yes          |
+| TC52 | 2 players, `"A"` has 1 Defuse, top card is Exploding Kitten, `drawCard()` | Exploding Kitten is in `"A"`'s hand; `"A"` is alive; current player is still `"A"` | yes          |
+| TC53 | 2 players, `"A"` has no Defuse, top card is Exploding Kitten, `drawCard()` | `"A"` is eliminated; Exploding Kitten is the last card of the discard pile and not in `"A"`'s hand | yes          |

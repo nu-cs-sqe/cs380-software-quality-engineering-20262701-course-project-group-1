@@ -126,7 +126,11 @@ public class GameManager {
     }
 
     /**
-     * Draws the top card of the draw pile into the current player's hand and ends their turn.
+     * Draws the top card of the draw pile for the current player.
+     *
+     * <p>A normal card goes into the hand and the turn ends. An Exploding Kitten stays in the
+     * hand if the player has a Defuse, and the turn waits for it to be played. Without a Defuse,
+     * the player is eliminated and the Exploding Kitten goes to the discard pile.
      *
      * @return the card that was drawn
      * @throws IllegalStateException if the game has not started
@@ -134,11 +138,16 @@ public class GameManager {
     public Card drawCard() {
         requireStarted();
         Card card = deck.drawCard();
-        getCurrentPlayer().addCard(card);
-        if (card.getTypeofCard() == CardType.Exploding_Kitten) {
-            return card;
+        Player current = getCurrentPlayer();
+        if (card.getTypeofCard() != CardType.Exploding_Kitten) {
+            current.addCard(card);
+            turnManager.endTurn();
+        } else if (countOf(current.getHand(), CardType.Defuse) > 0) {
+            current.addCard(card);
+        } else {
+            current.eliminate();
+            discardPile.add(card);
         }
-        turnManager.endTurn();
         return card;
     }
 

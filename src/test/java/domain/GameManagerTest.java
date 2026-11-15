@@ -1,6 +1,7 @@
 package domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -616,5 +617,22 @@ class GameManagerTest {
         assertTrue(a.getHand().contains(kitten));
         assertTrue(a.isAlive());
         assertEquals("A", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void drawCard_explodingKittenWithoutDefuse_playerEliminatedAndKittenDiscarded() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        a.removeCardOfType(CardType.Defuse);
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+
+        manager.drawCard();
+
+        assertFalse(a.isAlive());
+        List<Card> discard = manager.getDiscardPile();
+        assertSame(kitten, discard.get(discard.size() - 1));
+        assertFalse(a.getHand().contains(kitten));
     }
 }
