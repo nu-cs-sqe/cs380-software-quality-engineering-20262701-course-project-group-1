@@ -680,4 +680,22 @@ class GameManagerTest {
         assertSame(kitten, manager.getDrawPile().get(0));
         assertEquals("B", manager.getCurrentPlayer().getName());
     }
+
+    @Test
+    void playDefuse_afterDrawingKitten_reinsertsAtBottomAndEndsTurn() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        manager.drawCard();
+        int bottomIndex = manager.getDrawPile().size();
+
+        manager.playDefuse(bottomIndex);
+
+        List<Card> pile = manager.getDrawPile();
+        assertSame(kitten, pile.get(pile.size() - 1));
+        List<Card> discard = manager.getDiscardPile();
+        assertEquals(CardType.Defuse, discard.get(discard.size() - 1).getTypeofCard());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+    }
 }
