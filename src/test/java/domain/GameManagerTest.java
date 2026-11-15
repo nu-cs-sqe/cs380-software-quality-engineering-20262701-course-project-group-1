@@ -549,4 +549,14 @@ class GameManagerTest {
 
         assertEquals(pileBefore, manager.getDrawPile());
     }
+
+    @Test
+    void drawCard_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::drawCard);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
 }

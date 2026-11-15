@@ -125,6 +125,17 @@ public class GameManager {
         return deck.peekTopofDeck(SEE_THE_FUTURE_COUNT);
     }
 
+    /**
+     * Draws the top card of the draw pile for the current player.
+     *
+     * @return the card that was drawn
+     * @throws IllegalStateException if the game has not started
+     */
+    public Card drawCard() {
+        requireStarted();
+        return deck.drawCard();
+    }
+
     public List<Card> getDiscardPile() {
         return new ArrayList<>(discardPile);
     }
