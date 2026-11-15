@@ -126,14 +126,22 @@ public class GameManager {
     }
 
     /**
-     * Draws the top card of the draw pile for the current player.
+     * Draws the top card of the draw pile into the current player's hand and ends their turn.
      *
      * @return the card that was drawn
      * @throws IllegalStateException if the game has not started
      */
     public Card drawCard() {
         requireStarted();
-        return deck.drawCard();
+        Card card = deck.drawCard();
+        getCurrentPlayer().addCard(card);
+        turnManager.endTurn();
+        return card;
+    }
+
+    // Used in GameManagerTest to put a known card on top of the draw pile
+    void placeOnTopOfDrawPile(Card card) {
+        deck.insertCardAt(card, 0);
     }
 
     public List<Card> getDiscardPile() {

@@ -559,4 +559,21 @@ class GameManagerTest {
                 manager::drawCard);
         assertEquals("gameManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void drawCard_twoPlayers_cardGoesToHandAndTurnPasses() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card top = new Card(CardType.See_The_Future);
+        manager.placeOnTopOfDrawPile(top);
+        int pileBefore = manager.getDrawPile().size();
+        Player a = manager.getCurrentPlayer();
+
+        Card drawn = manager.drawCard();
+
+        assertSame(top, drawn);
+        assertTrue(a.getHand().contains(top));
+        assertEquals(pileBefore - 1, manager.getDrawPile().size());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+    }
 }
