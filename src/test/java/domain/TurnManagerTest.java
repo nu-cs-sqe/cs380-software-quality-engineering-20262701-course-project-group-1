@@ -316,4 +316,18 @@ class TurnManagerTest {
         assertEquals(1, turnManager.getTurnsRemaining());
         assertTrue(turnManager.isMidDraw());
     }
+
+    @Test
+    void addExtraDraw_thenTwoEndTurns_advancesAndNotMidDraw() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+
+        turnManager.endTurn();
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+        assertFalse(turnManager.isMidDraw());
+    }
 }

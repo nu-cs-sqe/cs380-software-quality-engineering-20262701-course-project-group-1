@@ -92,6 +92,7 @@ public class TurnManager {
             midDraw = true;
             return;
         }
+        midDraw = false;
         turnsRemaining--;
         if (turnsRemaining == 0) {
             advanceToNextPlayer();
