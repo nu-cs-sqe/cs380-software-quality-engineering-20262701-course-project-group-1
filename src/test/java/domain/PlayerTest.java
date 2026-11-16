@@ -124,4 +124,14 @@ class PlayerTest {
 
         assertTrue(player.hasCard(CardType.Defuse));
     }
+
+    @Test
+    void hasCard_matchIsLastCard_returnsTrue() {
+        Player player = new Player("A");
+        player.addCard(new Card(CardType.See_The_Future));
+        player.addCard(new Card(CardType.Attack));
+        player.addCard(new Card(CardType.Defuse));
+
+        assertTrue(player.hasCard(CardType.Defuse));
+    }
 }
