@@ -330,4 +330,17 @@ class TurnManagerTest {
         assertEquals(1, turnManager.getTurnsRemaining());
         assertFalse(turnManager.isMidDraw());
     }
+
+    @Test
+    void addExtraDraw_fourPlayersLastSeat_wrapsAfterTwoEndTurns() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(4, alwaysLast());
+        turnManager.addExtraDraw();
+
+        turnManager.endTurn();
+        turnManager.endTurn();
+
+        assertEquals(0, turnManager.getCurrentIndex());
+        assertFalse(turnManager.isMidDraw());
+    }
 }
