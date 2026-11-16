@@ -116,4 +116,12 @@ class PlayerTest {
 
         assertFalse(player.hasCard(CardType.Defuse));
     }
+
+    @Test
+    void hasCard_onlyCardMatches_returnsTrue() {
+        Player player = new Player("A");
+        player.addCard(new Card(CardType.Defuse));
+
+        assertTrue(player.hasCard(CardType.Defuse));
+    }
 }
