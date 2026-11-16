@@ -41,6 +41,8 @@ public class TurnManager {
         currentIndex = random.nextInt(playerCount);
         turnsRemaining = NORMAL_TURNS;
         underAttack = false;
+        extraDraw = false;
+        midDraw = false;
     }
 
     /**

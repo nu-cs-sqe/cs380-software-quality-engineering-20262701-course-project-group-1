@@ -410,4 +410,16 @@ class TurnManagerTest {
 
         assertFalse(turnManager.isMidDraw());
     }
+
+    @Test
+    void pickStart_afterAddExtraDraw_clearsExtraDraw() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+    }
 }
