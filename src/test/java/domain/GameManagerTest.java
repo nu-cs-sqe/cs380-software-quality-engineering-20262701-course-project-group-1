@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 class GameManagerTest {
@@ -960,5 +961,24 @@ class GameManagerTest {
 
         assertEquals(1, countType(a.getHand(), CardType.Gamble_Cat));
         assertEquals(1, countType(manager.getDiscardPile(), CardType.Gamble_Cat));
+    }
+
+    @Test
+    void playGambleCat_unlucky_asksRandomForOneCoinFlip() {
+        Random random = EasyMock.createNiceMock(Random.class);
+        EasyMock.replay(random);
+        GameManager manager = new GameManager(random);
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+
+        EasyMock.resetToStrict(random);
+        EasyMock.expect(random.nextInt(2)).andReturn(1);
+        EasyMock.replay(random);
+
+        boolean turnEnded = manager.playGambleCat();
+
+        assertFalse(turnEnded);
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        EasyMock.verify(random);
     }
 }
