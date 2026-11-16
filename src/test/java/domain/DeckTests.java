@@ -526,4 +526,14 @@ class DeckTests {
 
         assertEquals(3, deck.getDeckSize());
     }
+
+    @Test
+    public void getCards_fullDeck_returnsAll56WithKittenOnTop() {
+        Deck deck = new Deck();
+
+        List<Card> cards = deck.getCards();
+
+        assertEquals(56, cards.size());
+        assertEquals(CardType.Exploding_Kitten, cards.get(0).getTypeofCard());
+    }
 }
