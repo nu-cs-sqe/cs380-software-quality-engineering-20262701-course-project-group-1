@@ -383,4 +383,14 @@ class TurnManagerTest {
         assertEquals(1, turnManager.getCurrentIndex());
         assertEquals(1, turnManager.getTurnsRemaining());
     }
+
+    @Test
+    void isMidDraw_beforePickStart_throwsIllegalStateException() {
+        TurnManager turnManager = new TurnManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                turnManager::isMidDraw);
+        assertEquals("turnManager.notStarted", ex.getMessage());
+    }
 }

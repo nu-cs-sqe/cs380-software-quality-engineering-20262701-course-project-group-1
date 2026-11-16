@@ -115,8 +115,10 @@ public class TurnManager {
      * Returns whether the current player has started drawing but still owes another draw.
      *
      * @return true if the player is between the two draws of a double-draw turn
+     * @throws IllegalStateException if {@link #pickStart} has not been called
      */
     public boolean isMidDraw() {
+        requireStarted();
         return midDraw;
     }
 
