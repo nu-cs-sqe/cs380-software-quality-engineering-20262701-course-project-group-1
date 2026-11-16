@@ -142,7 +142,7 @@ public class GameManager {
         if (card.getTypeofCard() != CardType.Exploding_Kitten) {
             current.addCard(card);
             turnManager.endTurn();
-        } else if (countOf(current.getHand(), CardType.Defuse) > 0) {
+        } else if (current.hasCard(CardType.Defuse)) {
             current.addCard(card);
         } else {
             current.eliminate();
@@ -166,10 +166,10 @@ public class GameManager {
     public void playDefuse(int reinsertIndex) {
         requireStarted();
         Player current = getCurrentPlayer();
-        if (countOf(current.getHand(), CardType.Exploding_Kitten) == 0) {
+        if (!current.hasCard(CardType.Exploding_Kitten)) {
             throw new IllegalStateException(NO_KITTEN);
         }
-        if (countOf(current.getHand(), CardType.Defuse) == 0) {
+        if (!current.hasCard(CardType.Defuse)) {
             throw new IllegalStateException(NOT_IN_HAND);
         }
         if (reinsertIndex < 0 || reinsertIndex > deck.getDeckSize()) {
@@ -275,23 +275,13 @@ public class GameManager {
         }
     }
 
-    private static int countOf(List<Card> cards, CardType type) {
-        int count = 0;
-        for (Card card : cards) {
-            if (card.getTypeofCard() == type) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     private void playFromHand(CardType type) {
         requireStarted();
         if (turnManager.isMidDraw()) {
             throw new IllegalStateException(MUST_FINISH_DRAWING);
         }
         Player current = getCurrentPlayer();
-        if (countOf(current.getHand(), type) == 0) {
+        if (!current.hasCard(type)) {
             throw new IllegalStateException(NOT_IN_HAND);
         }
         discardPile.add(current.removeCardOfType(type));

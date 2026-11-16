@@ -87,7 +87,7 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC14 | empty hand, `hasCard(Defuse)` | `false` | no |
-| TC15 | hand `[Defuse]`, `hasCard(Defuse)` | `true` | no |
-| TC16 | hand `[STF, Attack, Defuse]`, `hasCard(Defuse)` (match is last) | `true` | no |
-| TC17 | hand `[STF, Attack]`, `hasCard(Defuse)` | `false` | no |
+| TC14 | empty hand, `hasCard(Defuse)` | `false` | yes |
+| TC15 | hand `[Defuse]`, `hasCard(Defuse)` | `true` | yes |
+| TC16 | hand `[STF, Attack, Defuse]`, `hasCard(Defuse)` (match is last) | `true` | yes |
+| TC17 | hand `[STF, Attack]`, `hasCard(Defuse)` | `false` | yes |
