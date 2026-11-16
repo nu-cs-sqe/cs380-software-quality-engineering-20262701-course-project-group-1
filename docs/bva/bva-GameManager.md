@@ -180,3 +180,24 @@ Plays a Defuse after the current player has drawn an Exploding Kitten. The Defus
 | TC60 | 2 players, `"A"` holds 2 Defuses and draws Exploding Kitten, `playDefuse(0)` | exactly one Defuse removed from `"A"`'s hand and on the discard pile; one Defuse still in hand | yes |
 | TC61 | 2 players, `"A"` draws Exploding Kitten with Defuse, `playDefuse(-1)` or index past bottom | throws `IllegalArgumentException`; Exploding Kitten and Defuse still in `"A"`'s hand; discard pile unchanged | yes |
 | TC62 | 2 players, `"A"` draws Exploding Kitten with Defuse, then Defuse is removed from hand, `playDefuse(0)` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; Exploding Kitten still in `"A"`'s hand | yes |
+
+---
+
+## Method 13: `public Player playGambleCat()`
+
+Custom card. Randomly picks the current player or the next living player (50/50, `random.nextInt(2)`: `0` = current player, `1` = next player). The chosen player draws 2 cards from the draw pile into their hand. Playing it does not end the turn. If a drawn card is an Exploding Kitten and the chosen player has no Defuse, they are eliminated and draw no further cards. Returns the chosen player.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC54 | `playGambleCat()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
+| TC55 | 3 players, current player `"A"` has no Gamble Cat, `playGambleCat()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile and discard pile unchanged | no |
+| TC56 | 2 players, `Random` always `0` (`"A"` starts, picks current player), top two cards See the Future, `playGambleCat()` | returns `"A"`; both cards are in `"A"`'s hand; draw pile has 2 fewer cards; Gamble Cat is the last card of the discard pile; current player is still `"A"`; turns remaining is still `1` | no |
+| TC57 | 2 players, `Random` always `bound - 1` (`"B"` starts, picks next player), `playGambleCat()` | returns `"A"` (wraps from last seat); `"A"` has 2 more cards; `"B"`'s hand only lost the Gamble Cat; current player is still `"B"` | no |
+| TC58 | 4 players, `Random` always `bound - 1` (`"D"` starts, picks next player), `playGambleCat()` | returns `"A"` (wraps from last seat, not `"B"`); `"A"` has 2 more cards; current player is still `"D"` | no |
+| TC59 | 3 players, `"A"` starts, picks next player, `"B"` is eliminated, `playGambleCat()` | returns `"C"` (skips eliminated `"B"`); `"C"` has 2 more cards | no |
+| TC60 | 2 players, picks current player `"A"`, `"A"` has no Defuse, top card Exploding Kitten then See the Future | `"A"` is eliminated; Exploding Kitten is the last card of the discard pile; See the Future is still on top of the draw pile (second card not drawn) | no |
+| TC61 | 2 players, picks current player `"A"`, `"A"` has a Defuse, top card Exploding Kitten then See the Future | `"A"` is alive; Exploding Kitten and See the Future are in `"A"`'s hand (how the Defuse is played: TBD with team) | no |
+| TC62 | 3 players, `"A"` holds 2 Gamble Cats, `playGambleCat()` | exactly one Gamble Cat removed; one still in `"A"`'s hand | no |
+| TC63 | 2 players, `"A"` attacks `"B"`, `"B"` plays Gamble Cat (picks current player) | current player is still `"B"`; turns remaining is still `2`; `"B"` has 2 more cards | no |
