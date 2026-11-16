@@ -109,4 +109,11 @@ class PlayerTest {
 
         assertFalse(player.isAlive());
     }
+
+    @Test
+    void hasCard_emptyHand_returnsFalse() {
+        Player player = new Player("A");
+
+        assertFalse(player.hasCard(CardType.Defuse));
+    }
 }

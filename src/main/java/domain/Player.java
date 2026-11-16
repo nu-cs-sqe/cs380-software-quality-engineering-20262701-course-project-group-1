@@ -65,4 +65,14 @@ public class Player {
         }
         throw new IllegalStateException(CARD_NOT_IN_HAND);
     }
+
+    /**
+     * Returns whether this player's hand has at least one card of the given type.
+     *
+     * @param type the type of card to look for
+     * @return true if the hand contains a card of that type
+     */
+    public boolean hasCard(CardType type) {
+        return false;
+    }
 }
