@@ -93,6 +93,15 @@ public class TurnManager {
         }
     }
 
+    /**
+     * Makes the current turn end only after one more draw than usual.
+     *
+     * @throws IllegalStateException if {@link #pickStart} has not been called
+     */
+    public void addExtraDraw() {
+        requireStarted();
+    }
+
     private void requireStarted() {
         if (currentIndex == NOT_STARTED_INDEX) {
             throw new IllegalStateException(NOT_STARTED);

@@ -8,5 +8,6 @@ public enum CardType {
     Exploding_Kitten,
     See_The_Future,
     Attack,
-    Shuffle
+    Shuffle,
+    Gamble_Cat
 }

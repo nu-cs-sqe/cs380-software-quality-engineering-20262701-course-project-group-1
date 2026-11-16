@@ -198,7 +198,7 @@ Custom card. Plays a Gamble Cat from the current player's hand, then picks an ou
 | TC67 | 4 players, `Random` always `bound - 1` (`"D"` starts, unlucky), `playGambleCat()` | returns `false`; current player is still `"D"`; turns remaining `1`; draw pile unchanged | no |
 | TC68 | 4 players, `"D"` unlucky, then `drawCard()` twice (top two See the Future) | after first draw: still `"D"`; after second draw: current player is `"A"` (wraps) | no |
 | TC69 | 2 players, `"B"` unlucky and holds an Attack, `drawCard()` once, then `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; still `"B"`; Attack still in hand | no |
-| TC70 | 2 players, `"B"` unlucky, first draw Exploding Kitten with Defuse, `playDefuse(0)`, then `drawCard()` (See the Future) | after Defuse: still `"B"`; after the second draw: current player is `"A"` | no |
+| TC70 | 2 players, `"B"` unlucky, first draw Exploding Kitten with Defuse, `playDefuse(<bottom index>)`, then `drawCard()` (See the Future) | after Defuse: still `"B"`; after the second draw: current player is `"A"` | no |
 | TC71 | 2 players, `Random` always `0`, `"A"` attacks `"B"`, `"B"` plays Gamble Cat (lucky) | returns `true`; still `"B"`; turns remaining `1` (cancels one owed turn) | no |
 | TC72 | 2 players, `Random` always `bound - 1`, `"B"` attacks `"A"`, `"A"` plays Gamble Cat (unlucky), then `drawCard()` twice | still `"A"`; turns remaining `1` | no |
 | TC73 | 2 players, `"B"` unlucky, then `playAttack()` before drawing | allowed; current player is `"A"`; turns remaining `2`; one `drawCard()` by `"A"` leaves `"A"` owing 1 (extra draw not passed on) | no |

@@ -2,6 +2,8 @@ package domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -290,5 +292,15 @@ class TurnManagerTest {
 
         assertEquals(1, turnManager.getCurrentIndex());
         assertEquals(2, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void addExtraDraw_beforePickStart_throwsIllegalStateException() {
+        TurnManager turnManager = new TurnManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                turnManager::addExtraDraw);
+        assertEquals("turnManager.notStarted", ex.getMessage());
     }
 }

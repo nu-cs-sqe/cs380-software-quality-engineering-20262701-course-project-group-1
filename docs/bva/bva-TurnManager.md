@@ -107,3 +107,4 @@ Made with assistance from GenAI.
 | TC36 | `isMidDraw()` after `pickStart(2, random)` | `false` | no |
 | TC37 | `isMidDraw()` after `addExtraDraw()` with no draw yet | `false` (penalty set, but drawing hasn't started) | no |
 | TC38 | `isMidDraw()` after `addExtraDraw()` and one `endTurn()` | `true` | no (implemented in TC29) |
+| TC39 | 2 players, `addExtraDraw()`, then `pickStart(2, random)` (index `0`), then `endTurn()` | index `1` (new game clears the extra draw) | no |
