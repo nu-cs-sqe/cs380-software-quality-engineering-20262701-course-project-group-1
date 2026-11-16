@@ -393,4 +393,12 @@ class TurnManagerTest {
                 turnManager::isMidDraw);
         assertEquals("turnManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void isMidDraw_afterPickStart_isFalse() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+
+        assertFalse(turnManager.isMidDraw());
+    }
 }
