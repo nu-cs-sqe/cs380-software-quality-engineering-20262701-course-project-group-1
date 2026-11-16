@@ -862,4 +862,23 @@ class GameManagerTest {
         manager.drawCard();
         assertEquals("A", manager.getCurrentPlayer().getName());
     }
+
+    @Test
+    void playGambleCat_unluckyMidDraw_cannotPlayCards() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getCurrentPlayer();
+        b.addCard(new Card(CardType.Gamble_Cat));
+        b.addCard(new Card(CardType.Attack));
+        manager.playGambleCat();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playAttack);
+        assertEquals("gameManager.play.mustFinishDrawing", ex.getMessage());
+        assertSame(b, manager.getCurrentPlayer());
+        assertEquals(1, countType(b.getHand(), CardType.Attack));
+    }
 }

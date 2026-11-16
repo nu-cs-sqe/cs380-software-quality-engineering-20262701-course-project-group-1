@@ -14,6 +14,7 @@ public class GameManager {
     private static final String NOT_STARTED = "gameManager.notStarted";
     private static final String NOT_IN_HAND = "gameManager.play.notInHand";
     private static final String NO_KITTEN = "gameManager.defuse.noKitten";
+    private static final String MUST_FINISH_DRAWING = "gameManager.play.mustFinishDrawing";
     private static final int GAMBLE_CHOICES = 2;
     private static final int MIN_PLAYERS = 2;
     private static final int MAX_PLAYERS = 4;
@@ -272,6 +273,9 @@ public class GameManager {
 
     private void playFromHand(CardType type) {
         requireStarted();
+        if (turnManager.isMidDraw()) {
+            throw new IllegalStateException(MUST_FINISH_DRAWING);
+        }
         Player current = getCurrentPlayer();
         if (countOf(current.getHand(), type) == 0) {
             throw new IllegalStateException(NOT_IN_HAND);
