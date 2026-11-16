@@ -202,6 +202,21 @@ public class GameManager {
         return turnManager.getTurnsRemaining();
     }
 
+    /**
+     * Plays a Gamble Cat from the current player's hand and flips a coin.
+     *
+     * <p>Lucky: the turn ends immediately without drawing, like a Skip. Unlucky: the turn only
+     * ends after two draws in a row, and no cards can be played between them.
+     *
+     * @return true if the turn ended
+     * @throws IllegalStateException if the game has not started or the current player has no
+     *     Gamble Cat
+     */
+    public boolean playGambleCat() {
+        requireStarted();
+        return false;
+    }
+
     private void dealStartingHands() {
         deck = new Deck(startingCards(), random);
         List<Card> defuses = deck.removeAllCardsofType(CardType.Defuse);
