@@ -213,7 +213,7 @@ public class GameManager {
      *     Gamble Cat
      */
     public boolean playGambleCat() {
-        requireStarted();
+        playFromHand(CardType.Gamble_Cat);
         return false;
     }
 
