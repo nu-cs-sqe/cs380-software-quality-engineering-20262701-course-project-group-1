@@ -14,12 +14,18 @@ public class GameManager {
     private static final String NOT_STARTED = "gameManager.notStarted";
     private static final String NOT_IN_HAND = "gameManager.play.notInHand";
     private static final String NO_KITTEN = "gameManager.defuse.noKitten";
+    private static final String MUST_FINISH_DRAWING = "gameManager.play.mustFinishDrawing";
+    private static final String INVALID_REINSERT_INDEX = "gameManager.defuse.invalidIndex";
+
     private static final int MIN_PLAYERS = 2;
     private static final int MAX_PLAYERS = 4;
+
     private static final int TOTAL_DEFUSES = 6;
     private static final int STARTING_GENERIC_CARDS = 5;
     private static final int GENERIC_SUPPLY = 20;
+
     private static final int SEE_THE_FUTURE_COUNT = 3;
+    private static final int GAMBLE_CHOICES = 2;
 
     private final List<Player> players = new ArrayList<>();
     private final List<Card> discardPile = new ArrayList<>();
@@ -46,14 +52,7 @@ public class GameManager {
      *     blank
      */
     public void startNewGame(List<String> playerNames) {
-        if (playerNames.size() < MIN_PLAYERS || playerNames.size() > MAX_PLAYERS) {
-            throw new IllegalArgumentException(PLAYER_COUNT_OUT_OF_RANGE);
-        }
-        for (String name : playerNames) {
-            if (name.isBlank()) {
-                throw new IllegalArgumentException(PLAYER_NAME_BLANK);
-            }
-        }
+        validatePlayerNames(playerNames);
         players.clear();
         discardPile.clear();
         for (String name : playerNames) {
@@ -174,17 +173,12 @@ public class GameManager {
             throw new IllegalStateException(NOT_IN_HAND);
         }
         if (reinsertIndex < 0 || reinsertIndex > deck.getDeckSize()) {
-            throw new IllegalArgumentException("Index out of range: " + reinsertIndex);
+            throw new IllegalArgumentException(INVALID_REINSERT_INDEX);
         }
         Card kitten = current.removeCardOfType(CardType.Exploding_Kitten);
         discardPile.add(current.removeCardOfType(CardType.Defuse));
         deck.insertCardAt(kitten, reinsertIndex);
         turnManager.endTurn();
-    }
-
-    // Used in GameManagerTest to put a known card on top of the draw pile
-    void placeOnTopOfDrawPile(Card card) {
-        deck.insertCardAt(card, 0);
     }
 
     public List<Card> getDiscardPile() {
@@ -202,24 +196,66 @@ public class GameManager {
         return turnManager.getTurnsRemaining();
     }
 
+    /**
+     * Plays a Gamble Cat from the current player's hand and flips a coin.
+     *
+     * <p>Lucky: the turn ends immediately without drawing, like a Skip. Unlucky: the turn only
+     * ends after two draws in a row, and no cards can be played between them.
+     *
+     * @return true if the turn ended
+     * @throws IllegalStateException if the game has not started or the current player has no
+     *     Gamble Cat
+     */
+    public boolean playGambleCat() {
+        playFromHand(CardType.Gamble_Cat);
+        if (random.nextInt(GAMBLE_CHOICES) == 0) {
+            turnManager.endTurn();
+            return true;
+        }
+        turnManager.addExtraDraw();
+        return false;
+    }
+
+    private static void validatePlayerNames(List<String> playerNames) {
+        if (playerNames.size() < MIN_PLAYERS || playerNames.size() > MAX_PLAYERS) {
+            throw new IllegalArgumentException(PLAYER_COUNT_OUT_OF_RANGE);
+        }
+        for (String name : playerNames) {
+            if (name.isBlank()) {
+                throw new IllegalArgumentException(PLAYER_NAME_BLANK);
+            }
+        }
+    }
+
     private void dealStartingHands() {
         deck = new Deck(startingCards(), random);
         List<Card> defuses = deck.removeAllCardsofType(CardType.Defuse);
         deck.shuffleDeck();
+        dealHands(defuses);
+        returnLeftoverDefuses(defuses);
+        addExplodingKittens(players.size() - 1);
+        deck.shuffleDeck();
+    }
+
+    private void dealHands(List<Card> defuses) {
         for (Player player : players) {
             for (int i = 0; i < STARTING_GENERIC_CARDS; i++) {
                 player.addCard(deck.drawCard());
             }
             player.addCard(defuses.remove(0));
         }
+    }
+
+    private void returnLeftoverDefuses(List<Card> defuses) {
         for (Card defuse : defuses) {
             deck.addCard(defuse);
         }
-        int explodingKittens = players.size() - 1;
-        for (int i = 0; i < explodingKittens; i++) {
+    }
+
+    private void addExplodingKittens(int count) {
+        for (int i = 0; i < count; i++) {
             deck.addCard(new Card(CardType.Exploding_Kitten));
         }
-        deck.shuffleDeck();
     }
 
     private static List<Card> startingCards() {
@@ -251,6 +287,9 @@ public class GameManager {
 
     private void playFromHand(CardType type) {
         requireStarted();
+        if (turnManager.isMidDraw()) {
+            throw new IllegalStateException(MUST_FINISH_DRAWING);
+        }
         Player current = getCurrentPlayer();
         if (countOf(current.getHand(), type) == 0) {
             throw new IllegalStateException(NOT_IN_HAND);
@@ -258,4 +297,8 @@ public class GameManager {
         discardPile.add(current.removeCardOfType(type));
     }
 
+    // Used in GameManagerTest to put a known card on top of the draw pile
+    void placeOnTopOfDrawPile(Card card) {
+        deck.insertCardAt(card, 0);
+    }
 }

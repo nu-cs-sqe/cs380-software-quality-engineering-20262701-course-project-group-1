@@ -19,6 +19,8 @@ public class TurnManager {
     private int playerCount;
     private int currentIndex = NOT_STARTED_INDEX;
     private boolean underAttack = false;
+    private boolean extraDraw = false;
+    private boolean midDraw = false;
 
     /**
      * Starts turn tracking with a randomly chosen first player.
@@ -39,6 +41,8 @@ public class TurnManager {
         currentIndex = random.nextInt(playerCount);
         turnsRemaining = NORMAL_TURNS;
         underAttack = false;
+        extraDraw = false;
+        midDraw = false;
     }
 
     /**
@@ -85,12 +89,39 @@ public class TurnManager {
      */
     public void endTurn() {
         requireStarted();
+        if (extraDraw) {
+            extraDraw = false;
+            midDraw = true;
+            return;
+        }
+        midDraw = false;
         turnsRemaining--;
         if (turnsRemaining == 0) {
             advanceToNextPlayer();
             turnsRemaining = NORMAL_TURNS;
             underAttack = false;
         }
+    }
+
+    /**
+     * Makes the current turn end only after one more draw than usual.
+     *
+     * @throws IllegalStateException if {@link #pickStart} has not been called
+     */
+    public void addExtraDraw() {
+        requireStarted();
+        extraDraw = true;
+    }
+
+    /**
+     * Returns whether the current player has started drawing but still owes another draw.
+     *
+     * @return true if the player is between the two draws of a double-draw turn
+     * @throws IllegalStateException if {@link #pickStart} has not been called
+     */
+    public boolean isMidDraw() {
+        requireStarted();
+        return midDraw;
     }
 
     private void requireStarted() {
@@ -101,6 +132,8 @@ public class TurnManager {
 
     private void advanceToNextPlayer() {
         currentIndex = (currentIndex + 1) % playerCount;
+        extraDraw = false;
+        midDraw = false;
     }
 
     private int turnsToTransfer() {

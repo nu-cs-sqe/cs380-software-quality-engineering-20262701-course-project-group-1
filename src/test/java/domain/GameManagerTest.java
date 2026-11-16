@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 class GameManagerTest {
@@ -754,7 +755,7 @@ class GameManagerTest {
         IllegalArgumentException ex = assertThrows(
                 IllegalArgumentException.class,
                 () -> manager.playDefuse(-1));
-        assertTrue(ex.getMessage().startsWith("Index out of range:"));
+        assertEquals("gameManager.defuse.invalidIndex", ex.getMessage());
         assertEquals(handBefore, a.getHand());
         assertTrue(a.getHand().contains(kitten));
         assertEquals(1, countType(a.getHand(), CardType.Defuse));
@@ -777,5 +778,245 @@ class GameManagerTest {
         assertEquals("gameManager.play.notInHand", ex.getMessage());
         assertTrue(a.getHand().contains(kitten));
         assertTrue(manager.getDiscardPile().isEmpty());
+    }
+
+    @Test
+    void playGambleCat_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playGambleCat);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void playGambleCat_noGambleCatInHand_throwsAndNothingChanges() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        final List<Card> handBefore = manager.getCurrentPlayer().getHand();
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playGambleCat);
+        assertEquals("gameManager.play.notInHand", ex.getMessage());
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        assertEquals(handBefore, manager.getCurrentPlayer().getHand());
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
+
+    @Test
+    void playGambleCat_twoPlayersLucky_turnEndsWithoutDrawing() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        boolean turnEnded = manager.playGambleCat();
+
+        assertTrue(turnEnded);
+        List<Card> discard = manager.getDiscardPile();
+        assertEquals(CardType.Gamble_Cat, discard.get(discard.size() - 1).getTypeofCard());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(pileBefore, manager.getDrawPile());
+    }
+
+    @Test
+    void playGambleCat_fourPlayersLucky_nextPlayerIsB() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+
+        assertTrue(manager.playGambleCat());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void playGambleCat_fourPlayersUnlucky_turnContinues() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        boolean turnEnded = manager.playGambleCat();
+
+        assertFalse(turnEnded);
+        assertEquals("D", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+        assertEquals(pileBefore, manager.getDrawPile());
+    }
+
+    @Test
+    void playGambleCat_unlucky_turnEndsAfterSecondDraw() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+        manager.playGambleCat();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();
+        assertEquals("D", manager.getCurrentPlayer().getName());
+
+        manager.drawCard();
+        assertEquals("A", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void playGambleCat_unluckyMidDraw_cannotPlayCards() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getCurrentPlayer();
+        b.addCard(new Card(CardType.Gamble_Cat));
+        b.addCard(new Card(CardType.Attack));
+        manager.playGambleCat();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playAttack);
+        assertEquals("gameManager.play.mustFinishDrawing", ex.getMessage());
+        assertSame(b, manager.getCurrentPlayer());
+        assertEquals(1, countType(b.getHand(), CardType.Attack));
+    }
+
+    @Test
+    void playGambleCat_unluckyKittenDefused_countsAsOneDraw() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+        manager.playGambleCat();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+
+        manager.drawCard();
+        manager.playDefuse(manager.getDrawPile().size());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+
+        manager.drawCard();
+        assertEquals("A", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void playGambleCat_luckyWhileUnderAttack_cancelsOneTurn() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();                                   // B, owes 2
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+
+        assertTrue(manager.playGambleCat());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void playGambleCat_unluckyWhileUnderAttack_twoDrawsThenOneTurnLeft() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();                                   // A, owes 2
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+        manager.playGambleCat();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();
+        manager.drawCard();
+
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void playGambleCat_unluckyThenAttackBeforeDrawing_extraDrawCancelled() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getCurrentPlayer();
+        b.addCard(new Card(CardType.Gamble_Cat));
+        b.addCard(new Card(CardType.Attack));
+        manager.playGambleCat();
+
+        manager.playAttack();
+
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        assertEquals(2, manager.getTurnsRemaining());
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void playGambleCat_twoGambleCatsInHand_removesOnlyOne() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        Player a = manager.getCurrentPlayer();
+        a.addCard(new Card(CardType.Gamble_Cat));
+        a.addCard(new Card(CardType.Gamble_Cat));
+
+        manager.playGambleCat();
+
+        assertEquals(1, countType(a.getHand(), CardType.Gamble_Cat));
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.Gamble_Cat));
+    }
+
+    @Test
+    void playGambleCat_unlucky_asksRandomForOneCoinFlip() {
+        Random random = EasyMock.createNiceMock(Random.class);
+        EasyMock.replay(random);
+        GameManager manager = new GameManager(random);
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+
+        EasyMock.resetToStrict(random);
+        EasyMock.expect(random.nextInt(2)).andReturn(1);
+        EasyMock.replay(random);
+
+        boolean turnEnded = manager.playGambleCat();
+
+        assertFalse(turnEnded);
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        EasyMock.verify(random);
+    }
+
+    @Test
+    void playGambleCat_lucky_asksRandomForOneCoinFlip() {
+        Random random = EasyMock.createNiceMock(Random.class);
+        EasyMock.replay(random);
+        GameManager manager = new GameManager(random);
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+
+        EasyMock.resetToStrict(random);
+        EasyMock.expect(random.nextInt(2)).andReturn(0);
+        EasyMock.replay(random);
+
+        boolean turnEnded = manager.playGambleCat();
+
+        assertTrue(turnEnded);
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        EasyMock.verify(random);
+    }
+
+    @Test
+    void playGambleCat_unluckyKittenOnSecondDraw_canStillDefuse() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+        manager.playGambleCat();
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();                                   // first draw, now mid-draw
+        manager.drawCard();                                   // second draw: the Kitten
+        manager.playDefuse(manager.getDrawPile().size());
+
+        List<Card> pile = manager.getDrawPile();
+        assertSame(kitten, pile.get(pile.size() - 1));
+        assertEquals("A", manager.getCurrentPlayer().getName());
     }
 }
