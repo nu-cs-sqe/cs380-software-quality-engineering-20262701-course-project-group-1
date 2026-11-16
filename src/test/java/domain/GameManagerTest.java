@@ -898,4 +898,17 @@ class GameManagerTest {
         manager.drawCard();
         assertEquals("A", manager.getCurrentPlayer().getName());
     }
+
+    @Test
+    void playGambleCat_luckyWhileUnderAttack_cancelsOneTurn() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();                                   // B, owes 2
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+
+        assertTrue(manager.playGambleCat());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
 }
