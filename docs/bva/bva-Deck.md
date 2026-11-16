@@ -122,3 +122,12 @@
 | Test Case 1  |          empty deck      |      True     | :white_check_mark: |
 | Test Case 2  |          deck w/ 56 cards          |        False     | :white_check_mark:  |
 | Test Case 3 |          deck w/ 1 cards          |        False     | :white_check_mark:  |
+
+### Method under test: `getCards()`
+
+|              | State of the System | Expected output | Implemented?              |
+|--------------|---------------------|-----------------|---------------------------|
+| Test Case 1  |          empty deck          |      empty list      | :x: |
+| Test Case 2  |          deck w/ 3 cards [Defuse, Exploding_Kitten, See_The_Future]          |      same 3 cards, same order (top first)      | :x: |
+| Test Case 3  |          deck w/ 3 cards, getCards().clear()          |      getDeckSize() still 3      | :x: |
+| Test Case 4  |          new Deck() (56 cards)          |      list of 56 cards, first is Exploding_Kitten      | :x: |
