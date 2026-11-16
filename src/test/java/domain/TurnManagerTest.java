@@ -343,4 +343,18 @@ class TurnManagerTest {
         assertEquals(0, turnManager.getCurrentIndex());
         assertFalse(turnManager.isMidDraw());
     }
+
+    @Test
+    void addExtraDraw_whileOwingTwo_firstTurnUsesTwoDraws() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();   // index 1, owes 2
+        turnManager.addExtraDraw();
+
+        turnManager.endTurn();
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
 }
