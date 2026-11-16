@@ -502,4 +502,19 @@ class DeckTests {
 
         assertTrue(deck.getCards().isEmpty());
     }
+
+    @Test
+    public void getCards_threeCards_returnsSameCardsInOrder() {
+        Card defuse = new Card(CardType.Defuse);
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        Card stf = new Card(CardType.See_The_Future);
+        Deck deck = new Deck(List.of(defuse, kitten, stf), new Random());
+
+        List<Card> cards = deck.getCards();
+
+        assertEquals(3, cards.size());
+        assertSame(defuse, cards.get(0));
+        assertSame(kitten, cards.get(1));
+        assertSame(stf, cards.get(2));
+    }
 }

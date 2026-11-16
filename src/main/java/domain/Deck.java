@@ -147,7 +147,7 @@ public class Deck {
      * @return the cards in the deck
      */
     public List<Card> getCards() {
-        return new ArrayList<>();
+        return new ArrayList<>(cards);
     }
 
     public boolean isEmpty() {
