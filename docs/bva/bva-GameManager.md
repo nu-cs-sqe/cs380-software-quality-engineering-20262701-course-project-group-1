@@ -160,3 +160,23 @@ Ends the current player's turn by drawing the top card of the draw pile. A norma
 | TC51 | 4 players, `"D"` starts, top card is See the Future, `drawCard()` | current player is `"A"` | yes          |
 | TC52 | 2 players, `"A"` has 1 Defuse, top card is Exploding Kitten, `drawCard()` | Exploding Kitten is in `"A"`'s hand; `"A"` is alive; current player is still `"A"` | yes          |
 | TC53 | 2 players, `"A"` has no Defuse, top card is Exploding Kitten, `drawCard()` | `"A"` is eliminated; Exploding Kitten is the last card of the discard pile and not in `"A"`'s hand | yes          |
+
+---
+
+## Method 12: `public void playDefuse(int reinsertIndex)`
+
+Plays a Defuse after the current player has drawn an Exploding Kitten. The Defuse goes to the discard pile, the Exploding Kitten is put back into the draw pile at the chosen index (`0` = top, draw-pile size = bottom), and the turn ends the same way a normal draw does.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC54 | `playDefuse(0)` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
+| TC55 | 2 players, current player `"A"` has Defuse but no Exploding Kitten, `playDefuse(0)` | throws `IllegalStateException` with message `"gameManager.defuse.noKitten"`; hand, draw pile and discard pile unchanged | yes |
+| TC56 | 2 players, `"A"` draws Exploding Kitten with Defuse in hand, `playDefuse(0)` | Defuse is the last card of the discard pile; Exploding Kitten is not in `"A"`'s hand and is the top card of the draw pile; current player is `"B"` | yes |
+| TC57 | 2 players, `"A"` draws Exploding Kitten with Defuse in hand, `playDefuse` at bottom (index = draw-pile size) | Exploding Kitten is the bottom card of the draw pile; Defuse is on the discard pile; current player is `"B"` | yes |
+| TC58 | 2 players, `"A"` attacks `"B"`, `"B"` draws Exploding Kitten with Defuse and `playDefuse(0)` | current player is still `"B"`; turns remaining is `1` | yes |
+| TC59 | 4 players, `"D"` starts, `"D"` draws Exploding Kitten with Defuse and `playDefuse(0)` | current player is `"A"` | yes |
+| TC60 | 2 players, `"A"` holds 2 Defuses and draws Exploding Kitten, `playDefuse(0)` | exactly one Defuse removed from `"A"`'s hand and on the discard pile; one Defuse still in hand | yes |
+| TC61 | 2 players, `"A"` draws Exploding Kitten with Defuse, `playDefuse(-1)` or index past bottom | throws `IllegalArgumentException`; Exploding Kitten and Defuse still in `"A"`'s hand; discard pile unchanged | yes |
+| TC62 | 2 players, `"A"` draws Exploding Kitten with Defuse, then Defuse is removed from hand, `playDefuse(0)` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; Exploding Kitten still in `"A"`'s hand | yes |

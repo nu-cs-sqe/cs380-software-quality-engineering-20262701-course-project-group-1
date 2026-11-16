@@ -635,4 +635,147 @@ class GameManagerTest {
         assertSame(kitten, discard.get(discard.size() - 1));
         assertFalse(a.getHand().contains(kitten));
     }
+
+    @Test
+    void playDefuse_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> manager.playDefuse(0));
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void playDefuse_noKittenInHand_throwsAndNothingChanges() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        List<Card> handBefore = manager.getCurrentPlayer().getHand();
+        List<Card> pileBefore = manager.getDrawPile();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> manager.playDefuse(0));
+        assertEquals("gameManager.defuse.noKitten", ex.getMessage());
+        assertEquals(handBefore, manager.getCurrentPlayer().getHand());
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
+
+    @Test
+    void playDefuse_afterDrawingKitten_reinsertsAtTopAndEndsTurn() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        Player a = manager.getCurrentPlayer();
+        manager.drawCard();
+
+        manager.playDefuse(0);
+
+        assertFalse(a.getHand().contains(kitten));
+        assertEquals(0, countType(a.getHand(), CardType.Defuse));
+        List<Card> discard = manager.getDiscardPile();
+        assertEquals(CardType.Defuse, discard.get(discard.size() - 1).getTypeofCard());
+        assertSame(kitten, manager.getDrawPile().get(0));
+        assertEquals("B", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void playDefuse_afterDrawingKitten_reinsertsAtBottomAndEndsTurn() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        manager.drawCard();
+        int bottomIndex = manager.getDrawPile().size();
+
+        manager.playDefuse(bottomIndex);
+
+        List<Card> pile = manager.getDrawPile();
+        assertSame(kitten, pile.get(pile.size() - 1));
+        List<Card> discard = manager.getDiscardPile();
+        assertEquals(CardType.Defuse, discard.get(discard.size() - 1).getTypeofCard());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void playDefuse_whileUnderAttack_samePlayerOwesOneMoreTurn() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+        manager.playAttack();
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+        manager.drawCard();
+
+        manager.playDefuse(0);
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void playDefuse_fourPlayersFromLastSeat_wrapsToA() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+        manager.drawCard();
+
+        manager.playDefuse(0);
+
+        assertEquals("A", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void playDefuse_twoDefusesInHand_removesExactlyOne() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        a.addCard(new Card(CardType.Defuse));
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+        manager.drawCard();
+
+        manager.playDefuse(0);
+
+        assertEquals(1, countType(a.getHand(), CardType.Defuse));
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.Defuse));
+    }
+
+    @Test
+    void playDefuse_invalidReinsertIndex_throwsAndNothingChanges() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        Player a = manager.getCurrentPlayer();
+        manager.drawCard();
+        List<Card> handBefore = a.getHand();
+
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> manager.playDefuse(-1));
+        assertTrue(ex.getMessage().startsWith("Index out of range:"));
+        assertEquals(handBefore, a.getHand());
+        assertTrue(a.getHand().contains(kitten));
+        assertEquals(1, countType(a.getHand(), CardType.Defuse));
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
+
+    @Test
+    void playDefuse_noDefuseInHand_throwsAndKittenStays() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        Player a = manager.getCurrentPlayer();
+        manager.drawCard();
+        a.removeCardOfType(CardType.Defuse);
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> manager.playDefuse(0));
+        assertEquals("gameManager.play.notInHand", ex.getMessage());
+        assertTrue(a.getHand().contains(kitten));
+        assertTrue(manager.getDiscardPile().isEmpty());
+    }
 }

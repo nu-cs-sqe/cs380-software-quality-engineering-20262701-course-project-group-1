@@ -13,6 +13,7 @@ public class GameManager {
     private static final String PLAYER_NAME_BLANK = "gameManager.playerName.blank";
     private static final String NOT_STARTED = "gameManager.notStarted";
     private static final String NOT_IN_HAND = "gameManager.play.notInHand";
+    private static final String NO_KITTEN = "gameManager.defuse.noKitten";
     private static final int MIN_PLAYERS = 2;
     private static final int MAX_PLAYERS = 4;
     private static final int TOTAL_DEFUSES = 6;
@@ -149,6 +150,36 @@ public class GameManager {
             discardPile.add(card);
         }
         return card;
+    }
+
+    /**
+     * Plays a Defuse after the current player has drawn an Exploding Kitten.
+     *
+     * <p>The Defuse goes to the discard pile, the Exploding Kitten is put back into the draw pile
+     * at the chosen index, and the turn ends the same way a normal draw does.
+     *
+     * @param reinsertIndex where to put the Exploding Kitten, from 0 (top) to the draw-pile size
+     *     (bottom)
+     * @throws IllegalStateException if the game has not started, the current player has no
+     *     Exploding Kitten, or the current player has no Defuse
+     * @throws IllegalArgumentException if {@code reinsertIndex} is out of range
+     */
+    public void playDefuse(int reinsertIndex) {
+        requireStarted();
+        Player current = getCurrentPlayer();
+        if (countOf(current.getHand(), CardType.Exploding_Kitten) == 0) {
+            throw new IllegalStateException(NO_KITTEN);
+        }
+        if (countOf(current.getHand(), CardType.Defuse) == 0) {
+            throw new IllegalStateException(NOT_IN_HAND);
+        }
+        if (reinsertIndex < 0 || reinsertIndex > deck.getDeckSize()) {
+            throw new IllegalArgumentException("Index out of range: " + reinsertIndex);
+        }
+        Card kitten = current.removeCardOfType(CardType.Exploding_Kitten);
+        discardPile.add(current.removeCardOfType(CardType.Defuse));
+        deck.insertCardAt(kitten, reinsertIndex);
+        turnManager.endTurn();
     }
 
     // Used in GameManagerTest to put a known card on top of the draw pile
