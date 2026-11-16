@@ -805,4 +805,20 @@ class GameManagerTest {
         assertEquals(pileBefore, manager.getDrawPile());
         assertTrue(manager.getDiscardPile().isEmpty());
     }
+
+    @Test
+    void playGambleCat_twoPlayersLucky_turnEndsWithoutDrawing() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+        final List<Card> pileBefore = manager.getDrawPile();
+
+        boolean turnEnded = manager.playGambleCat();
+
+        assertTrue(turnEnded);
+        List<Card> discard = manager.getDiscardPile();
+        assertEquals(CardType.Gamble_Cat, discard.get(discard.size() - 1).getTypeofCard());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(pileBefore, manager.getDrawPile());
+    }
 }

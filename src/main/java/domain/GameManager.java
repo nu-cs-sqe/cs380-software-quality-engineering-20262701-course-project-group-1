@@ -214,7 +214,8 @@ public class GameManager {
      */
     public boolean playGambleCat() {
         playFromHand(CardType.Gamble_Cat);
-        return false;
+        turnManager.endTurn();
+        return true;
     }
 
     private void dealStartingHands() {
