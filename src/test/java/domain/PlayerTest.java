@@ -134,4 +134,13 @@ class PlayerTest {
 
         assertTrue(player.hasCard(CardType.Defuse));
     }
+
+    @Test
+    void hasCard_noMatchingType_returnsFalse() {
+        Player player = new Player("A");
+        player.addCard(new Card(CardType.See_The_Future));
+        player.addCard(new Card(CardType.Attack));
+
+        assertFalse(player.hasCard(CardType.Defuse));
+    }
 }

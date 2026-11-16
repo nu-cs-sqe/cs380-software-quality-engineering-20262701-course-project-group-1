@@ -73,6 +73,11 @@ public class Player {
      * @return true if the hand contains a card of that type
      */
     public boolean hasCard(CardType type) {
-        return !hand.isEmpty();
+        for (Card card : hand) {
+            if (card.getTypeofCard() == type) {
+                return true;
+            }
+        }
+        return false;
     }
 }
