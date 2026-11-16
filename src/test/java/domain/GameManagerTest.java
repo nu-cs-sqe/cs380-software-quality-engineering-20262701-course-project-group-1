@@ -981,4 +981,23 @@ class GameManagerTest {
         assertEquals("A", manager.getCurrentPlayer().getName());
         EasyMock.verify(random);
     }
+
+    @Test
+    void playGambleCat_lucky_asksRandomForOneCoinFlip() {
+        Random random = EasyMock.createNiceMock(Random.class);
+        EasyMock.replay(random);
+        GameManager manager = new GameManager(random);
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+
+        EasyMock.resetToStrict(random);
+        EasyMock.expect(random.nextInt(2)).andReturn(0);
+        EasyMock.replay(random);
+
+        boolean turnEnded = manager.playGambleCat();
+
+        assertTrue(turnEnded);
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        EasyMock.verify(random);
+    }
 }
