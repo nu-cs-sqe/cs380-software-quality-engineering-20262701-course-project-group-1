@@ -821,4 +821,14 @@ class GameManagerTest {
         assertEquals("B", manager.getCurrentPlayer().getName());
         assertEquals(pileBefore, manager.getDrawPile());
     }
+
+    @Test
+    void playGambleCat_fourPlayersLucky_nextPlayerIsB() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+
+        assertTrue(manager.playGambleCat());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+    }
 }
