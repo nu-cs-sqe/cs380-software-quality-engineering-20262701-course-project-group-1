@@ -76,11 +76,7 @@ public class GameManager {
      * @return the cards in the draw pile
      */
     public List<Card> getDrawPile() {
-        List<Card> pile = new ArrayList<>();
-        for (int i = 0; i < deck.getDeckSize(); i++) {
-            pile.add(deck.getCardAt(i));
-        }
-        return pile;
+        return deck.getCards();
     }
 
     /**
