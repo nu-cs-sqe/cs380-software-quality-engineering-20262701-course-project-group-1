@@ -14,6 +14,7 @@ public class GameManager {
     private static final String NOT_STARTED = "gameManager.notStarted";
     private static final String NOT_IN_HAND = "gameManager.play.notInHand";
     private static final String NO_KITTEN = "gameManager.defuse.noKitten";
+    private static final int GAMBLE_CHOICES = 2;
     private static final int MIN_PLAYERS = 2;
     private static final int MAX_PLAYERS = 4;
     private static final int TOTAL_DEFUSES = 6;
@@ -214,8 +215,11 @@ public class GameManager {
      */
     public boolean playGambleCat() {
         playFromHand(CardType.Gamble_Cat);
-        turnManager.endTurn();
-        return true;
+        if (random.nextInt(GAMBLE_CHOICES) == 0) {
+            turnManager.endTurn();
+            return true;
+        }
+        return false;
     }
 
     private void dealStartingHands() {
