@@ -357,4 +357,17 @@ class TurnManagerTest {
         assertEquals(1, turnManager.getCurrentIndex());
         assertEquals(1, turnManager.getTurnsRemaining());
     }
+
+    @Test
+    void addExtraDraw_calledTwice_doesNotStack() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+        turnManager.addExtraDraw();
+
+        turnManager.endTurn();
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+    }
 }
