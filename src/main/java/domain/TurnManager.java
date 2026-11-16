@@ -128,6 +128,8 @@ public class TurnManager {
 
     private void advanceToNextPlayer() {
         currentIndex = (currentIndex + 1) % playerCount;
+        extraDraw = false;
+        midDraw = false;
     }
 
     private int turnsToTransfer() {

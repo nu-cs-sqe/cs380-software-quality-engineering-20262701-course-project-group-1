@@ -370,4 +370,17 @@ class TurnManagerTest {
 
         assertEquals(1, turnManager.getCurrentIndex());
     }
+
+    @Test
+    void addExtraDraw_thenAttack_extraDrawNotPassedOn() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+        turnManager.attackNextPlayer();   // index 1, owes 2
+
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
 }
