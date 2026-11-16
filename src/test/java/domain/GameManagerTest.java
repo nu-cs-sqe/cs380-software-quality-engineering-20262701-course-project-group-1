@@ -947,4 +947,18 @@ class GameManagerTest {
         manager.drawCard();
         assertEquals(1, manager.getTurnsRemaining());
     }
+
+    @Test
+    void playGambleCat_twoGambleCatsInHand_removesOnlyOne() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        Player a = manager.getCurrentPlayer();
+        a.addCard(new Card(CardType.Gamble_Cat));
+        a.addCard(new Card(CardType.Gamble_Cat));
+
+        manager.playGambleCat();
+
+        assertEquals(1, countType(a.getHand(), CardType.Gamble_Cat));
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.Gamble_Cat));
+    }
 }
