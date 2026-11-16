@@ -141,6 +141,15 @@ public class Deck {
         insertCardAt(card, cards.size());
     }
 
+    /**
+     * Returns a copy of the cards in the deck, top card first.
+     *
+     * @return the cards in the deck
+     */
+    public List<Card> getCards() {
+        return new ArrayList<>(cards);
+    }
+
     public boolean isEmpty() {
         return cards.isEmpty();
     }

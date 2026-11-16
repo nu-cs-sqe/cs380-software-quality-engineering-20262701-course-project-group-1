@@ -495,4 +495,45 @@ class DeckTests {
         Deck deck = new Deck(defuseCards(1), new Random());
         assertFalse(deck.isEmpty());
     }
+
+    @Test
+    public void getCards_emptyDeck_returnsEmptyList() {
+        Deck deck = new Deck(new ArrayList<>(), new Random());
+
+        assertTrue(deck.getCards().isEmpty());
+    }
+
+    @Test
+    public void getCards_threeCards_returnsSameCardsInOrder() {
+        Card defuse = new Card(CardType.Defuse);
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        Card stf = new Card(CardType.See_The_Future);
+        Deck deck = new Deck(List.of(defuse, kitten, stf), new Random());
+
+        List<Card> cards = deck.getCards();
+
+        assertEquals(3, cards.size());
+        assertSame(defuse, cards.get(0));
+        assertSame(kitten, cards.get(1));
+        assertSame(stf, cards.get(2));
+    }
+
+    @Test
+    public void getCards_returnedListIsDefensiveCopy() {
+        Deck deck = new Deck(defuseCards(3), new Random());
+
+        deck.getCards().clear();
+
+        assertEquals(3, deck.getDeckSize());
+    }
+
+    @Test
+    public void getCards_fullDeck_returnsAll56WithKittenOnTop() {
+        Deck deck = new Deck();
+
+        List<Card> cards = deck.getCards();
+
+        assertEquals(56, cards.size());
+        assertEquals(CardType.Exploding_Kitten, cards.get(0).getTypeofCard());
+    }
 }
