@@ -19,6 +19,8 @@ public class TurnManager {
     private int playerCount;
     private int currentIndex = NOT_STARTED_INDEX;
     private boolean underAttack = false;
+    private boolean extraDraw = false;
+    private boolean midDraw = false;
 
     /**
      * Starts turn tracking with a randomly chosen first player.
@@ -85,6 +87,11 @@ public class TurnManager {
      */
     public void endTurn() {
         requireStarted();
+        if (extraDraw) {
+            extraDraw = false;
+            midDraw = true;
+            return;
+        }
         turnsRemaining--;
         if (turnsRemaining == 0) {
             advanceToNextPlayer();
@@ -100,6 +107,16 @@ public class TurnManager {
      */
     public void addExtraDraw() {
         requireStarted();
+        extraDraw = true;
+    }
+
+    /**
+     * Returns whether the current player has started drawing but still owes another draw.
+     *
+     * @return true if the player is between the two draws of a double-draw turn
+     */
+    public boolean isMidDraw() {
+        return midDraw;
     }
 
     private void requireStarted() {

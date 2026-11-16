@@ -303,4 +303,17 @@ class TurnManagerTest {
                 turnManager::addExtraDraw);
         assertEquals("turnManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void addExtraDraw_thenOneEndTurn_samePlayerMidDraw() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+
+        turnManager.endTurn();
+
+        assertEquals(0, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+        assertTrue(turnManager.isMidDraw());
+    }
 }
