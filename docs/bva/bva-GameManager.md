@@ -205,3 +205,4 @@ Custom card. Plays a Gamble Cat from the current player's hand, then picks an ou
 | TC74 | 3 players, `"A"` holds 2 Gamble Cats, `playGambleCat()` | exactly one Gamble Cat removed; one still in `"A"`'s hand | yes |
 | TC75 | 2 players, `Random` is an EasyMock mock: setup returns `0` (`"A"` starts), then exactly one `nextInt(2)` returning `1`, `playGambleCat()` | returns `false`; current player is still `"A"`; mock verifies exactly one `nextInt(2)` call | yes |
 | TC76 | 2 players, `Random` is an EasyMock mock: setup returns `0` (`"A"` starts), then exactly one `nextInt(2)` returning `0`, `playGambleCat()` | returns `true`; current player is `"B"`; mock verifies exactly one `nextInt(2)` call | yes |
+| TC77 | 2 players, `"B"` unlucky, first draw See the Future, second draw Exploding Kitten with Defuse, `playDefuse(bottom)` | Defuse allowed mid-draw; Exploding Kitten is the bottom card of the draw pile; current player is `"A"` | yes |

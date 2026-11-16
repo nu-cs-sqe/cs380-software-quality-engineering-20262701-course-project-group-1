@@ -755,7 +755,7 @@ class GameManagerTest {
         IllegalArgumentException ex = assertThrows(
                 IllegalArgumentException.class,
                 () -> manager.playDefuse(-1));
-        assertTrue(ex.getMessage().startsWith("Index out of range:"));
+        assertEquals("gameManager.defuse.invalidIndex", ex.getMessage());
         assertEquals(handBefore, a.getHand());
         assertTrue(a.getHand().contains(kitten));
         assertEquals(1, countType(a.getHand(), CardType.Defuse));
@@ -999,5 +999,24 @@ class GameManagerTest {
         assertTrue(turnEnded);
         assertEquals("B", manager.getCurrentPlayer().getName());
         EasyMock.verify(random);
+    }
+
+    @Test
+    void playGambleCat_unluckyKittenOnSecondDraw_canStillDefuse() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+        manager.playGambleCat();
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        manager.placeOnTopOfDrawPile(kitten);
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();                                   // first draw, now mid-draw
+        manager.drawCard();                                   // second draw: the Kitten
+        manager.playDefuse(manager.getDrawPile().size());
+
+        List<Card> pile = manager.getDrawPile();
+        assertSame(kitten, pile.get(pile.size() - 1));
+        assertEquals("A", manager.getCurrentPlayer().getName());
     }
 }
