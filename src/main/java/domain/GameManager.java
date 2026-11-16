@@ -219,6 +219,7 @@ public class GameManager {
             turnManager.endTurn();
             return true;
         }
+        turnManager.addExtraDraw();
         return false;
     }
 

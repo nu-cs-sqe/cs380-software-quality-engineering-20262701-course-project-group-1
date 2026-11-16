@@ -846,4 +846,20 @@ class GameManagerTest {
         assertEquals(1, manager.getTurnsRemaining());
         assertEquals(pileBefore, manager.getDrawPile());
     }
+
+    @Test
+    void playGambleCat_unlucky_turnEndsAfterSecondDraw() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+        manager.playGambleCat();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();
+        assertEquals("D", manager.getCurrentPlayer().getName());
+
+        manager.drawCard();
+        assertEquals("A", manager.getCurrentPlayer().getName());
+    }
 }
