@@ -517,4 +517,13 @@ class DeckTests {
         assertSame(kitten, cards.get(1));
         assertSame(stf, cards.get(2));
     }
+
+    @Test
+    public void getCards_returnedListIsDefensiveCopy() {
+        Deck deck = new Deck(defuseCards(3), new Random());
+
+        deck.getCards().clear();
+
+        assertEquals(3, deck.getDeckSize());
+    }
 }
