@@ -929,4 +929,22 @@ class GameManagerTest {
         assertEquals("A", manager.getCurrentPlayer().getName());
         assertEquals(1, manager.getTurnsRemaining());
     }
+
+    @Test
+    void playGambleCat_unluckyThenAttackBeforeDrawing_extraDrawCancelled() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getCurrentPlayer();
+        b.addCard(new Card(CardType.Gamble_Cat));
+        b.addCard(new Card(CardType.Attack));
+        manager.playGambleCat();
+
+        manager.playAttack();
+
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        assertEquals(2, manager.getTurnsRemaining());
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();
+        assertEquals(1, manager.getTurnsRemaining());
+    }
 }
