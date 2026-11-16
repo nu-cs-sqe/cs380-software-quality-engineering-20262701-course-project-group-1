@@ -881,4 +881,21 @@ class GameManagerTest {
         assertSame(b, manager.getCurrentPlayer());
         assertEquals(1, countType(b.getHand(), CardType.Attack));
     }
+
+    @Test
+    void playGambleCat_unluckyKittenDefused_countsAsOneDraw() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.Gamble_Cat));
+        manager.playGambleCat();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+
+        manager.drawCard();
+        manager.playDefuse(manager.getDrawPile().size());
+        assertEquals("B", manager.getCurrentPlayer().getName());
+
+        manager.drawCard();
+        assertEquals("A", manager.getCurrentPlayer().getName());
+    }
 }
