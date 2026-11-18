@@ -98,6 +98,7 @@ public class GameManager {
     public void playAttack() {
         playFromHand(CardType.Attack);
         turnManager.attackNextPlayer();
+        skipEliminatedPlayers();
     }
 
     /**
@@ -133,7 +134,8 @@ public class GameManager {
      *
      * <p>A normal card goes into the hand and the turn ends. An Exploding Kitten stays in the
      * hand if the player has a Defuse, and the turn waits for it to be played. Without a Defuse,
-     * the player is eliminated and the Exploding Kitten goes to the discard pile.
+     * the player is eliminated, the Exploding Kitten goes to the discard pile, and the next
+     * living player becomes current. Dead seats are skipped after any turn advance.
      *
      * @return the card that was drawn
      * @throws IllegalStateException if the game has not started
@@ -145,11 +147,15 @@ public class GameManager {
         if (card.getTypeofCard() != CardType.Exploding_Kitten) {
             current.addCard(card);
             turnManager.endTurn();
+            skipEliminatedPlayers();
         } else if (countOf(current.getHand(), CardType.Defuse) > 0) {
             current.addCard(card);
         } else {
             current.eliminate();
             discardPile.add(card);
+            turnManager.resetTurnsToNormal();
+            turnManager.advanceToNextSeat();
+            skipEliminatedPlayers();
         }
         return card;
     }
@@ -182,6 +188,7 @@ public class GameManager {
         discardPile.add(current.removeCardOfType(CardType.Defuse));
         deck.insertCardAt(kitten, reinsertIndex);
         turnManager.endTurn();
+        skipEliminatedPlayers();
     }
 
     // Used in GameManagerTest to put a known card on top of the draw pile
@@ -245,6 +252,24 @@ public class GameManager {
         if (players.isEmpty()) {
             throw new IllegalStateException(NOT_STARTED);
         }
+    }
+
+    private void skipEliminatedPlayers() {
+        int guard = 0;
+        while (!getCurrentPlayer().isAlive() && countAlive() > 0 && guard < players.size()) {
+            turnManager.advanceToNextSeat();
+            guard++;
+        }
+    }
+
+    private int countAlive() {
+        int alive = 0;
+        for (Player player : players) {
+            if (player.isAlive()) {
+                alive++;
+            }
+        }
+        return alive;
     }
 
     private static int countOf(List<Card> cards, CardType type) {

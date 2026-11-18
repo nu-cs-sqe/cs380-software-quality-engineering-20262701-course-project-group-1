@@ -663,6 +663,49 @@ class GameManagerTest {
         List<Card> discard = manager.getDiscardPile();
         assertSame(kitten, discard.get(discard.size() - 1));
         assertFalse(a.getHand().contains(kitten));
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void drawCard_skipsEliminatedNextPlayer() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getPlayers().get(1).eliminate();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();
+
+        assertEquals("C", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void drawCard_explodeSkipsAlreadyEliminatedPlayer() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getPlayers().get(1).eliminate();
+        Player a = manager.getCurrentPlayer();
+        a.removeCardOfType(CardType.Defuse);
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+
+        manager.drawCard();
+
+        assertFalse(a.isAlive());
+        assertEquals("C", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void playAttack_skipsEliminatedNextPlayer() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getPlayers().get(1).eliminate();
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+
+        manager.playAttack();
+
+        assertEquals("C", manager.getCurrentPlayer().getName());
+        assertEquals(2, manager.getTurnsRemaining());
     }
 
     @Test

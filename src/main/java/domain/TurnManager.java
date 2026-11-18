@@ -103,6 +103,23 @@ public class TurnManager {
         currentIndex = (currentIndex + 1) % playerCount;
     }
 
+    /**
+     * Moves to the next seat without changing turns remaining. Used to skip eliminated players.
+     */
+    void advanceToNextSeat() {
+        requireStarted();
+        advanceToNextPlayer();
+    }
+
+    /**
+     * Sets turns remaining to a normal single turn and clears attack state.
+     */
+    void resetTurnsToNormal() {
+        requireStarted();
+        turnsRemaining = NORMAL_TURNS;
+        underAttack = false;
+    }
+
     private int turnsToTransfer() {
         return underAttack ? turnsRemaining : 0;
     }
