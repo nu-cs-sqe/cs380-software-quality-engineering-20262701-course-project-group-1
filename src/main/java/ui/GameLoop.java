@@ -73,6 +73,7 @@ public class GameLoop {
 
     private boolean playTurn() {
         Player current = gameManager.getCurrentPlayer();
+        String seatName = current.getName();
         printer.printTurn(current, gameManager.getTurnsRemaining(), gameManager.getDrawPile().size());
         printer.printDiscardTop(gameManager.getDiscardPile());
         List<Card> hand = current.getHand();
@@ -87,6 +88,7 @@ public class GameLoop {
         }
         if (line.equalsIgnoreCase("d")) {
             drawForCurrentPlayer();
+            pauseForHotseat(seatName);
             return true;
         }
         int index;
@@ -101,7 +103,22 @@ public class GameLoop {
             return true;
         }
         playHandIndex(hand.get(index).getTypeofCard());
+        pauseForHotseat(seatName);
         return true;
+    }
+
+    private void pauseForHotseat(String previousName) {
+        if (gameManager.isGameOver()) {
+            return;
+        }
+        Player current = gameManager.getCurrentPlayer();
+        if (current.getName().equals(previousName)) {
+            return;
+        }
+        printer.printMessage("Pass device to " + current.getName() + ". Press Enter:");
+        if (in.hasNextLine()) {
+            in.nextLine();
+        }
     }
 
     private void playHandIndex(CardType type) {

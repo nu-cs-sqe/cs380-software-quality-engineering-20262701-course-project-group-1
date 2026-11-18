@@ -37,6 +37,6 @@ Full interactive session. Tests feed scripted `Scanner` input and assert on prin
 | TC10 | draw Exploding Kitten with Defuse in hand, then valid reinsert index `0` | `playDefuse(0)`; kitten on top of draw pile | yes |
 | TC11 | draw Exploding Kitten with Defuse, reinsert at bottom (index = draw pile size) | kitten at bottom; turn ends per domain | yes |
 | TC12 | draw Exploding Kitten with no Defuse | player eliminated printed; turn advances to next living; if one left, winner printed | yes |
-| TC13 | play Defuse from hand menu while no kitten pending | illegal; error message printed; hand unchanged | no |
-| TC14 | play index out of range / non-integer | error message; hand and turn unchanged | no |
-| TC15 | after a turn ends and next player differs | hotseat pause prompt; previous hand not required to stay on screen (dev: at least a pass/Enter gate) | no |
+| TC13 | play Defuse from hand menu while no kitten pending | illegal; error message printed; hand unchanged | yes |
+| TC14 | play index out of range / non-integer | error message; hand and turn unchanged | yes |
+| TC15 | after a turn ends and next player differs | hotseat pause prompt; previous hand not required to stay on screen (dev: at least a pass/Enter gate) | yes |

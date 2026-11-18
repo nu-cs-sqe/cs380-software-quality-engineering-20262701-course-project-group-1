@@ -115,7 +115,7 @@ class GameLoopTest {
         int attackIndex = indexOfType(a, CardType.Attack);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        runTurnsWithInput(manager, out, attackIndex + "\nq\n");
+        runTurnsWithInput(manager, out, attackIndex + "\n\nq\n");
 
         assertEquals("B", manager.getCurrentPlayer().getName());
         assertEquals(2, manager.getTurnsRemaining());
@@ -159,7 +159,7 @@ class GameLoopTest {
         GameManagerFixtures.putOnTop(manager, new Card(CardType.See_The_Future));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        runTurnsWithInput(manager, out, "d\nq\n");
+        runTurnsWithInput(manager, out, "d\n\nq\n");
 
         assertEquals("B", manager.getCurrentPlayer().getName());
         assertTrue(outputOf(out).contains("Drew: See_The_Future"));
@@ -174,7 +174,7 @@ class GameLoopTest {
         GameManagerFixtures.putOnTop(manager, kitten);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        runTurnsWithInput(manager, out, "d\n0\nq\n");
+        runTurnsWithInput(manager, out, "d\n0\n\nq\n");
 
         assertSame(kitten, manager.getDrawPile().get(0));
         assertEquals("B", manager.getCurrentPlayer().getName());
@@ -190,7 +190,7 @@ class GameLoopTest {
         int bottomAfterDraw = manager.getDrawPile().size() - 1;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        runTurnsWithInput(manager, out, "d\n" + bottomAfterDraw + "\nq\n");
+        runTurnsWithInput(manager, out, "d\n" + bottomAfterDraw + "\n\nq\n");
 
         List<Card> pile = manager.getDrawPile();
         assertSame(kitten, pile.get(pile.size() - 1));
@@ -216,6 +216,65 @@ class GameLoopTest {
         assertTrue(printed.toLowerCase().contains("eliminated"));
         assertTrue(printed.contains("B"));
         assertTrue(printed.toLowerCase().contains("won"));
+    }
+
+    @Test
+    void run_playDefuseFromMenu_printsErrorAndHandUnchanged() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        ensureInHand(a, CardType.Defuse);
+        int defuseIndex = indexOfType(a, CardType.Defuse);
+        List<Card> handBefore = a.getHand();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, defuseIndex + "\nq\n");
+
+        assertEquals(handBefore, a.getHand());
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        assertTrue(outputOf(out).contains("Cannot play that card now"));
+    }
+
+    @Test
+    void run_invalidIndex_printsErrorAndTurnUnchanged() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        List<Card> handBefore = a.getHand();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, "99\nq\n");
+
+        assertEquals(handBefore, a.getHand());
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        assertTrue(outputOf(out).contains("Invalid card index"));
+    }
+
+    @Test
+    void run_nonIntegerInput_printsErrorAndTurnUnchanged() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, "x\nq\n");
+
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        assertTrue(outputOf(out).contains("Invalid input"));
+    }
+
+    @Test
+    void run_afterTurnEnds_promptsHotseatPass() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        GameManagerFixtures.putOnTop(manager, new Card(CardType.See_The_Future));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, "d\n\nq\n");
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertTrue(outputOf(out).contains("Pass device to B"));
+        assertTrue(outputOf(out).contains("Press Enter"));
     }
 
     private static int countType(List<Card> cards, CardType type) {
