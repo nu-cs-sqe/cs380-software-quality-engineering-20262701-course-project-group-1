@@ -2,6 +2,9 @@ package domain;
 
 import java.util.Random;
 
+/**
+ * Tracks whose turn it is and how many turns the current player still owes.
+ */
 public class TurnManager {
 
     private static final String PLAYER_COUNT_OUT_OF_RANGE = "turnManager.playerCount.outOfRange";
@@ -19,6 +22,14 @@ public class TurnManager {
     private boolean extraDraw = false;
     private boolean midDraw = false;
 
+    /**
+     * Starts turn tracking with a randomly chosen first player.
+     *
+     * @param playerCount the number of players, from 2 to 4
+     * @param random the source used to pick the first player
+     * @throws IllegalArgumentException if {@code playerCount} is out of range or
+     *     {@code random} is null
+     */
     public void pickStart(int playerCount, Random random) {
         if (playerCount < MIN_PLAYERS || playerCount > MAX_PLAYERS) {
             throw new IllegalArgumentException(PLAYER_COUNT_OUT_OF_RANGE);
@@ -45,6 +56,13 @@ public class TurnManager {
         return currentIndex;
     }
 
+    /**
+     * Ends the current player's turns and makes the next player take two turns.
+     *
+     * <p>If the current player is under attack, their remaining turns are passed on as well.
+     *
+     * @throws IllegalStateException if {@link #pickStart} has not been called
+     */
     public void attackNextPlayer() {
         requireStarted();
         int transferred = turnsToTransfer();
@@ -53,11 +71,24 @@ public class TurnManager {
         underAttack = true;
     }
 
+    /**
+     * Returns how many turns the current player still owes.
+     *
+     * @return the number of turns remaining
+     * @throws IllegalStateException if {@link #pickStart} has not been called
+     */
     public int getTurnsRemaining() {
         requireStarted();
         return turnsRemaining;
     }
 
+    /**
+     * Uses up one of the current player's turns, moving to the next player when none are left.
+     *
+     * <p>If an extra draw is owed, the first call only marks mid-draw and does not advance.
+     *
+     * @throws IllegalStateException if {@link #pickStart} has not been called
+     */
     public void endTurn() {
         requireStarted();
         if (extraDraw) {

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Drives a hotseat terminal game using {@link GameManager} and {@link TerminalPrinting}.
+ */
 public class GameLoop {
 
     private static final int MIN_PLAYERS = 2;
@@ -17,12 +20,22 @@ public class GameLoop {
     private final TerminalPrinting printer;
     private final Scanner in;
 
+    /**
+     * Creates a game loop.
+     *
+     * @param gameManager the game rules and state
+     * @param printer terminal output
+     * @param in player input
+     */
     public GameLoop(GameManager gameManager, TerminalPrinting printer, Scanner in) {
         this.gameManager = gameManager;
         this.printer = printer;
         this.in = in;
     }
 
+    /**
+     * Collects player names, then runs turns until the game ends or the user quits.
+     */
     public void run() {
         if (!startFromInput()) {
             return;
@@ -73,8 +86,8 @@ public class GameLoop {
 
     private boolean playTurn() {
         Player current = gameManager.getCurrentPlayer();
-        String seatName = current.getName();
-        printer.printTurn(current, gameManager.getTurnsRemaining(), gameManager.getDrawPile().size());
+        printer.printTurn(
+                current, gameManager.getTurnsRemaining(), gameManager.getDrawPile().size());
         printer.printDiscardTop(gameManager.getDiscardPile());
         List<Card> hand = current.getHand();
         printer.printHand(hand);
@@ -87,6 +100,7 @@ public class GameLoop {
             return false;
         }
         if (line.equalsIgnoreCase("d")) {
+            String seatName = current.getName();
             drawForCurrentPlayer();
             pauseForHotseat(seatName);
             return true;
@@ -102,6 +116,7 @@ public class GameLoop {
             printer.printMessage("Invalid card index");
             return true;
         }
+        String seatName = current.getName();
         playHandIndex(hand.get(index).getTypeofCard());
         pauseForHotseat(seatName);
         return true;

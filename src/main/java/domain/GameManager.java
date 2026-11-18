@@ -222,11 +222,23 @@ public class GameManager {
         return false;
     }
 
+    /**
+     * Returns whether the game has ended.
+     *
+     * @return true when at most one player is still alive
+     * @throws IllegalStateException if the game has not started
+     */
     public boolean isGameOver() {
         requireStarted();
         return countAlive() <= 1;
     }
 
+    /**
+     * Returns the only remaining living player.
+     *
+     * @return the winner
+     * @throws IllegalStateException if the game has not started or is not over
+     */
     public Player getWinner() {
         requireStarted();
         if (!isGameOver()) {

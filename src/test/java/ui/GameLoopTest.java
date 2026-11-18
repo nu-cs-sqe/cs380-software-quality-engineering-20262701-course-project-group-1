@@ -21,7 +21,8 @@ import org.junit.jupiter.api.Test;
 
 class GameLoopTest {
 
-    private static GameLoop loopWithInput(GameManager manager, ByteArrayOutputStream out, String input) {
+    private static GameLoop loopWithInput(
+            GameManager manager, ByteArrayOutputStream out, String input) {
         TerminalPrinting printer = new TerminalPrinting(
                 new PrintStream(out, true, StandardCharsets.UTF_8));
         Scanner scanner = new Scanner(
@@ -169,7 +170,6 @@ class GameLoopTest {
     void run_drawExplodingKitten_withDefuse_reinsertsAtTop() {
         GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
         manager.startNewGame(List.of("A", "B"));
-        Player a = manager.getCurrentPlayer();
         Card kitten = new Card(CardType.Exploding_Kitten);
         GameManagerFixtures.putOnTop(manager, kitten);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -178,6 +178,7 @@ class GameLoopTest {
 
         assertSame(kitten, manager.getDrawPile().get(0));
         assertEquals("B", manager.getCurrentPlayer().getName());
+        Player a = manager.getPlayers().get(0);
         assertEquals(0, countType(a.getHand(), CardType.Exploding_Kitten));
     }
 
