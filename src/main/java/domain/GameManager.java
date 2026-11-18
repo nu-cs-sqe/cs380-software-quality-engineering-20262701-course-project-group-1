@@ -14,6 +14,7 @@ public class GameManager {
     private static final String NOT_STARTED = "gameManager.notStarted";
     private static final String NOT_IN_HAND = "gameManager.play.notInHand";
     private static final String NO_KITTEN = "gameManager.defuse.noKitten";
+    private static final String NOT_OVER = "gameManager.notOver";
     private static final int MIN_PLAYERS = 2;
     private static final int MAX_PLAYERS = 4;
     private static final int TOTAL_DEFUSES = 6;
@@ -209,6 +210,24 @@ public class GameManager {
     public int getTurnsRemaining() {
         requireStarted();
         return turnManager.getTurnsRemaining();
+    }
+
+    public boolean isGameOver() {
+        requireStarted();
+        return countAlive() <= 1;
+    }
+
+    public Player getWinner() {
+        requireStarted();
+        if (!isGameOver()) {
+            throw new IllegalStateException(NOT_OVER);
+        }
+        for (Player player : players) {
+            if (player.isAlive()) {
+                return player;
+            }
+        }
+        throw new IllegalStateException(NOT_OVER);
     }
 
     private void dealStartingHands() {

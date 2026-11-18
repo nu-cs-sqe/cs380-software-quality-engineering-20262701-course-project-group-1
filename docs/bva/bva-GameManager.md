@@ -196,10 +196,10 @@ True when at most one player is still alive. Extensible later for an alternate w
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC65 | `isGameOver()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
-| TC66 | after `startNewGame` with 2 players, both alive | `false` | no |
-| TC67 | 2 players, `"A"` eliminated by EK without Defuse | `true` | no |
-| TC68 | 3 players, only `"A"` eliminated, `"B"` and `"C"` alive | `false` | no |
+| TC65 | `isGameOver()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
+| TC66 | after `startNewGame` with 2 players, both alive | `false` | yes |
+| TC67 | 2 players, `"A"` eliminated by EK without Defuse | `true` | yes |
+| TC68 | 3 players, only `"A"` eliminated, `"B"` and `"C"` alive | `false` | yes |
 
 ---
 
@@ -211,7 +211,7 @@ Returns the sole remaining living player. Throws if the game is not over (keeps 
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC69 | `getWinner()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
-| TC70 | after start, both alive | throws `IllegalStateException` with message `"gameManager.notOver"` | no |
-| TC71 | 2 players, `"A"` eliminated | returns `"B"` | no |
-| TC72 | 3 players, `"A"` and `"B"` eliminated | returns `"C"` | no |
+| TC69 | `getWinner()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
+| TC70 | after start, both alive | throws `IllegalStateException` with message `"gameManager.notOver"` | yes |
+| TC71 | 2 players, `"A"` eliminated | returns `"B"` | yes |
+| TC72 | 3 players, `"A"` and `"B"` eliminated | returns `"C"` | yes |

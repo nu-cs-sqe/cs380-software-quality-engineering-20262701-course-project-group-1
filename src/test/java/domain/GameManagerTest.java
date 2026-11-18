@@ -709,6 +709,88 @@ class GameManagerTest {
     }
 
     @Test
+    void isGameOver_beforeStart_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::isGameOver);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void isGameOver_afterStart_bothAlive_false() {
+        GameManager manager = new GameManager();
+        manager.startNewGame(List.of("A", "B"));
+
+        assertFalse(manager.isGameOver());
+    }
+
+    @Test
+    void isGameOver_onePlayerLeft_true() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().removeCardOfType(CardType.Defuse);
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+
+        manager.drawCard();
+
+        assertTrue(manager.isGameOver());
+    }
+
+    @Test
+    void isGameOver_threePlayersOneEliminated_false() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getPlayers().get(0).eliminate();
+
+        assertFalse(manager.isGameOver());
+    }
+
+    @Test
+    void getWinner_beforeStart_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::getWinner);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void getWinner_gameNotOver_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+        manager.startNewGame(List.of("A", "B"));
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::getWinner);
+        assertEquals("gameManager.notOver", ex.getMessage());
+    }
+
+    @Test
+    void getWinner_twoPlayersAfterEliminate_returnsSurvivor() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().removeCardOfType(CardType.Defuse);
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+
+        manager.drawCard();
+
+        assertEquals("B", manager.getWinner().getName());
+    }
+
+    @Test
+    void getWinner_threePlayersTwoEliminated_returnsSurvivor() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getPlayers().get(0).eliminate();
+        manager.getPlayers().get(1).eliminate();
+
+        assertEquals("C", manager.getWinner().getName());
+    }
+
+    @Test
     void playDefuse_beforeStartNewGame_throwsIllegalStateException() {
         GameManager manager = new GameManager();
 
