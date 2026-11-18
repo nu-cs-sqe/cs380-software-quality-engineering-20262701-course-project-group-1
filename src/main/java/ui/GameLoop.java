@@ -39,7 +39,7 @@ public class GameLoop {
         printer.printWinner(gameManager.getWinner());
     }
 
-    private boolean startFromInput() {
+    boolean startFromInput() {
         printer.printMessage("Enter number of players (2-4):");
         if (!in.hasNextInt()) {
             printer.printMessage("Invalid player count");

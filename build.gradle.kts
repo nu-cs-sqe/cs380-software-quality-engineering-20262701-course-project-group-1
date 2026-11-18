@@ -3,10 +3,15 @@ import com.github.spotbugs.snom.Effort
 
 plugins {
     id("java")
+    id("application")
     id("checkstyle")
     id("com.github.spotbugs") version "6.0.25"
     jacoco
     id("info.solidsoft.pitest") version "1.15.0"
+}
+
+application {
+    mainClass.set("ui.Main")
 }
 
 // Google Java Style with 4-space indentation; see config/checkstyle/checkstyle.xml.

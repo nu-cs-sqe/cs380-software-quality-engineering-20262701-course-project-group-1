@@ -219,6 +219,44 @@ class GameLoopTest {
     }
 
     @Test
+    void run_twoPlayers_drawUntilEliminate_printsWinner() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GameLoop loop = loopWithInput(manager, out, "2\nA\nB\nd\n");
+
+        assertTrue(loop.startFromInput());
+        Player a = manager.getCurrentPlayer();
+        a.removeCardOfType(CardType.Defuse);
+        GameManagerFixtures.putOnTop(manager, new Card(CardType.Exploding_Kitten));
+        loop.runTurns();
+
+        assertTrue(manager.isGameOver());
+        assertEquals("B", manager.getWinner().getName());
+        String printed = outputOf(out);
+        assertTrue(printed.contains("A alive"));
+        assertTrue(printed.toLowerCase().contains("eliminated"));
+        assertTrue(printed.toLowerCase().contains("won"));
+    }
+
+    @Test
+    void main_startsWithoutThrowing_whenQuitImmediately() {
+        String input = "2\nA\nB\nq\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        java.io.InputStream originalIn = System.in;
+        try {
+            System.setIn(in);
+            System.setOut(new PrintStream(out, true, StandardCharsets.UTF_8));
+            assertDoesNotThrow(() -> Main.main(new String[] {}));
+        } finally {
+            System.setIn(originalIn);
+            System.setOut(originalOut);
+        }
+        assertTrue(outputOf(out).contains("Current turn:"));
+    }
+
+    @Test
     void run_playDefuseFromMenu_printsErrorAndHandUnchanged() {
         GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
         manager.startNewGame(List.of("A", "B"));
