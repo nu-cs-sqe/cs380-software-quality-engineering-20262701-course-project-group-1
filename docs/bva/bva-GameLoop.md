@@ -30,10 +30,10 @@ Full interactive session. Tests feed scripted `Scanner` input and assert on prin
 | TC3 | names `"A"` only (then quit / invalid count path) | rejects player count outside 2–4; does not call a successful `startNewGame` with 1 player | yes |
 | TC4 | names `"A"`, `"B"`, `"C"`, `"D"` | `startNewGame` with 4 players; setup printed | yes |
 | TC5 | blank name among otherwise valid names | rejects blank name; game not started with that list | yes |
-| TC6 | current player chooses hand index of Attack | `playAttack` effect; turn may move; next turn banner printed | no |
-| TC7 | current player chooses hand index of Shuffle | `playShuffle`; same player still current | no |
-| TC8 | current player chooses hand index of See_The_Future | `playSeeTheFuture`; peek printed via `printSeeTheFuture`; turn unchanged | no |
-| TC9 | current player chooses Draw | `drawCard`; if non-EK, turn ends per domain rules | no |
+| TC6 | current player chooses hand index of Attack | `playAttack` effect; turn may move; next turn banner printed | yes |
+| TC7 | current player chooses hand index of Shuffle | `playShuffle`; same player still current | yes |
+| TC8 | current player chooses hand index of See_The_Future | `playSeeTheFuture`; peek printed via `printSeeTheFuture`; turn unchanged | yes |
+| TC9 | current player chooses Draw | `drawCard`; if non-EK, turn ends per domain rules | yes |
 | TC10 | draw Exploding Kitten with Defuse in hand, then valid reinsert index `0` | `playDefuse(0)`; kitten on top of draw pile | no |
 | TC11 | draw Exploding Kitten with Defuse, reinsert at bottom (index = draw pile size) | kitten at bottom; turn ends per domain | no |
 | TC12 | draw Exploding Kitten with no Defuse | player eliminated printed; turn advances to next living; if one left, winner printed | no |

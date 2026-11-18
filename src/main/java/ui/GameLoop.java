@@ -1,5 +1,7 @@
 package ui;
 
+import domain.Card;
+import domain.CardType;
 import domain.GameManager;
 import domain.Player;
 import java.util.ArrayList;
@@ -25,6 +27,16 @@ public class GameLoop {
         if (!startFromInput()) {
             return;
         }
+        runTurns();
+    }
+
+    void runTurns() {
+        while (!gameManager.isGameOver()) {
+            if (!playTurn()) {
+                return;
+            }
+        }
+        printer.printWinner(gameManager.getWinner());
     }
 
     private boolean startFromInput() {
@@ -57,5 +69,65 @@ public class GameLoop {
         Player current = gameManager.getCurrentPlayer();
         printer.printSetup(gameManager.getPlayers(), current);
         return true;
+    }
+
+    private boolean playTurn() {
+        Player current = gameManager.getCurrentPlayer();
+        printer.printTurn(current, gameManager.getTurnsRemaining(), gameManager.getDrawPile().size());
+        printer.printDiscardTop(gameManager.getDiscardPile());
+        List<Card> hand = current.getHand();
+        printer.printHand(hand);
+        printer.printMessage("Enter card index, d to draw, or q to quit:");
+        if (!in.hasNextLine()) {
+            return false;
+        }
+        String line = in.nextLine().trim();
+        if (line.equalsIgnoreCase("q")) {
+            return false;
+        }
+        if (line.equalsIgnoreCase("d")) {
+            drawForCurrentPlayer();
+            return true;
+        }
+        int index;
+        try {
+            index = Integer.parseInt(line);
+        } catch (NumberFormatException ex) {
+            printer.printMessage("Invalid input");
+            return true;
+        }
+        if (index < 0 || index >= hand.size()) {
+            printer.printMessage("Invalid card index");
+            return true;
+        }
+        playHandIndex(hand.get(index).getTypeofCard());
+        return true;
+    }
+
+    private void playHandIndex(CardType type) {
+        try {
+            switch (type) {
+                case Attack:
+                    gameManager.playAttack();
+                    break;
+                case Shuffle:
+                    gameManager.playShuffle();
+                    break;
+                case See_The_Future:
+                    List<Card> seen = gameManager.playSeeTheFuture();
+                    printer.printSeeTheFuture(seen);
+                    break;
+                default:
+                    printer.printMessage("Cannot play that card now");
+                    break;
+            }
+        } catch (IllegalStateException ex) {
+            printer.printMessage(ex.getMessage());
+        }
+    }
+
+    private void drawForCurrentPlayer() {
+        Card drawn = gameManager.drawCard();
+        printer.printMessage("Drew: " + drawn.getTypeofCard());
     }
 }
