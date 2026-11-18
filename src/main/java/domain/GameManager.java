@@ -18,7 +18,9 @@ public class GameManager {
     private static final int MAX_PLAYERS = 4;
     private static final int TOTAL_DEFUSES = 6;
     private static final int STARTING_GENERIC_CARDS = 5;
-    private static final int GENERIC_SUPPLY = 20;
+    private static final int SEE_THE_FUTURE_SUPPLY = 10;
+    private static final int ATTACK_SUPPLY = 5;
+    private static final int SHUFFLE_SUPPLY = 5;
     private static final int SEE_THE_FUTURE_COUNT = 3;
 
     private final List<Player> players = new ArrayList<>();
@@ -224,8 +226,14 @@ public class GameManager {
 
     private static List<Card> startingCards() {
         List<Card> cards = new ArrayList<>();
-        for (int i = 0; i < GENERIC_SUPPLY; i++) {
+        for (int i = 0; i < SEE_THE_FUTURE_SUPPLY; i++) {
             cards.add(new Card(CardType.See_The_Future));
+        }
+        for (int i = 0; i < ATTACK_SUPPLY; i++) {
+            cards.add(new Card(CardType.Attack));
+        }
+        for (int i = 0; i < SHUFFLE_SUPPLY; i++) {
+            cards.add(new Card(CardType.Shuffle));
         }
         for (int i = 0; i < TOTAL_DEFUSES; i++) {
             cards.add(new Card(CardType.Defuse));

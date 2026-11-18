@@ -26,8 +26,8 @@ Starting cards: **10** See_The_Future, **5** Attack, **5** Shuffle, **6** Defuse
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC2 | `startNewGame(List.of("A", "B"))` | 2 alive players named `"A"`, `"B"`; each hand is 6 cards (1 Defuse + 5 non-EK from {See_The_Future, Attack, Shuffle}, no EK); pile has 1 EK and 4 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 6 Defuse, 1 EK (rough deal mix; balance later) | no |
-| TC3 | `startNewGame(List.of("A", "B", "C", "D"))` | 4 alive players; each hand same shape as TC2; pile has 3 EK and 2 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 6 Defuse, 3 EK | no |
+| TC2 | `startNewGame(List.of("A", "B"))` | 2 alive players named `"A"`, `"B"`; each hand is 6 cards (1 Defuse + 5 non-EK from {See_The_Future, Attack, Shuffle}, no EK); pile has 1 EK and 4 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 6 Defuse, 1 EK (rough deal mix; balance later) | yes |
+| TC3 | `startNewGame(List.of("A", "B", "C", "D"))` | 4 alive players; each hand same shape as TC2; pile has 3 EK and 2 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 6 Defuse, 3 EK | yes |
 | TC4 | `startNewGame(List.of("A"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC5 | `startNewGame(List.of("A", "B", "C", "D", "E"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
