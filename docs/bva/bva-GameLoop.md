@@ -34,9 +34,9 @@ Full interactive session. Tests feed scripted `Scanner` input and assert on prin
 | TC7 | current player chooses hand index of Shuffle | `playShuffle`; same player still current | yes |
 | TC8 | current player chooses hand index of See_The_Future | `playSeeTheFuture`; peek printed via `printSeeTheFuture`; turn unchanged | yes |
 | TC9 | current player chooses Draw | `drawCard`; if non-EK, turn ends per domain rules | yes |
-| TC10 | draw Exploding Kitten with Defuse in hand, then valid reinsert index `0` | `playDefuse(0)`; kitten on top of draw pile | no |
-| TC11 | draw Exploding Kitten with Defuse, reinsert at bottom (index = draw pile size) | kitten at bottom; turn ends per domain | no |
-| TC12 | draw Exploding Kitten with no Defuse | player eliminated printed; turn advances to next living; if one left, winner printed | no |
+| TC10 | draw Exploding Kitten with Defuse in hand, then valid reinsert index `0` | `playDefuse(0)`; kitten on top of draw pile | yes |
+| TC11 | draw Exploding Kitten with Defuse, reinsert at bottom (index = draw pile size) | kitten at bottom; turn ends per domain | yes |
+| TC12 | draw Exploding Kitten with no Defuse | player eliminated printed; turn advances to next living; if one left, winner printed | yes |
 | TC13 | play Defuse from hand menu while no kitten pending | illegal; error message printed; hand unchanged | no |
 | TC14 | play index out of range / non-integer | error message; hand and turn unchanged | no |
 | TC15 | after a turn ends and next player differs | hotseat pause prompt; previous hand not required to stay on screen (dev: at least a pass/Enter gate) | no |

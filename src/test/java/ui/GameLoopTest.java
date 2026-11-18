@@ -2,6 +2,8 @@ package ui;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import domain.Card;
@@ -161,5 +163,68 @@ class GameLoopTest {
 
         assertEquals("B", manager.getCurrentPlayer().getName());
         assertTrue(outputOf(out).contains("Drew: See_The_Future"));
+    }
+
+    @Test
+    void run_drawExplodingKitten_withDefuse_reinsertsAtTop() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        GameManagerFixtures.putOnTop(manager, kitten);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, "d\n0\nq\n");
+
+        assertSame(kitten, manager.getDrawPile().get(0));
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(0, countType(a.getHand(), CardType.Exploding_Kitten));
+    }
+
+    @Test
+    void run_drawExplodingKitten_withDefuse_reinsertsAtBottom() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Card kitten = new Card(CardType.Exploding_Kitten);
+        GameManagerFixtures.putOnTop(manager, kitten);
+        int bottomAfterDraw = manager.getDrawPile().size() - 1;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, "d\n" + bottomAfterDraw + "\nq\n");
+
+        List<Card> pile = manager.getDrawPile();
+        assertSame(kitten, pile.get(pile.size() - 1));
+        assertEquals("B", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void run_drawExplodingKitten_withoutDefuse_eliminatesAndEndsGame() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        a.removeCardOfType(CardType.Defuse);
+        GameManagerFixtures.putOnTop(manager, new Card(CardType.Exploding_Kitten));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, "d\n");
+
+        assertFalse(a.isAlive());
+        assertTrue(manager.isGameOver());
+        assertEquals("B", manager.getWinner().getName());
+        String printed = outputOf(out);
+        assertTrue(printed.contains("A"));
+        assertTrue(printed.toLowerCase().contains("eliminated"));
+        assertTrue(printed.contains("B"));
+        assertTrue(printed.toLowerCase().contains("won"));
+    }
+
+    private static int countType(List<Card> cards, CardType type) {
+        int count = 0;
+        for (Card card : cards) {
+            if (card.getTypeofCard() == type) {
+                count++;
+            }
+        }
+        return count;
     }
 }

@@ -127,7 +127,41 @@ public class GameLoop {
     }
 
     private void drawForCurrentPlayer() {
+        Player beforeDraw = gameManager.getCurrentPlayer();
         Card drawn = gameManager.drawCard();
         printer.printMessage("Drew: " + drawn.getTypeofCard());
+        if (drawn.getTypeofCard() != CardType.Exploding_Kitten) {
+            return;
+        }
+        if (!beforeDraw.isAlive()) {
+            printer.printEliminated(beforeDraw);
+            return;
+        }
+        resolveDefuse();
+    }
+
+    private void resolveDefuse() {
+        while (true) {
+            int maxIndex = gameManager.getDrawPile().size();
+            printer.printMessage(
+                    "Exploding Kitten! Enter reinsert index (0=top .. " + maxIndex + "=bottom):");
+            if (!in.hasNextLine()) {
+                return;
+            }
+            String line = in.nextLine().trim();
+            int index;
+            try {
+                index = Integer.parseInt(line);
+            } catch (NumberFormatException ex) {
+                printer.printMessage("Invalid input");
+                continue;
+            }
+            try {
+                gameManager.playDefuse(index);
+                return;
+            } catch (IllegalArgumentException | IllegalStateException ex) {
+                printer.printMessage(ex.getMessage());
+            }
+        }
     }
 }
