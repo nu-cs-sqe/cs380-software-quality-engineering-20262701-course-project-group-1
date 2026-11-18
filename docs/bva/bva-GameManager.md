@@ -188,7 +188,33 @@ Plays a Defuse after the current player has drawn an Exploding Kitten. The Defus
 
 ---
 
-## Method 13: `public boolean isGameOver()`
+## Method 13: `public boolean playGambleCat()`
+
+Custom card. Plays a Gamble Cat from the current player's hand, then picks an outcome at random (50/50, `random.nextInt(2)`): `0` = lucky, the turn ends immediately without drawing (like Skip); `1` = unlucky, the current turn only ends after two draws in a row, and no cards can be played between them. A defused Exploding Kitten counts as one of the two draws. Returns `true` if the turn ended.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC78 | `playGambleCat()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
+| TC79 | 3 players, current player `"A"` has no Gamble Cat, `playGambleCat()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile, discard pile and current player unchanged | yes |
+| TC80 | 2 players, `Random` always `0` (`"A"` starts, lucky), `playGambleCat()` | returns `true`; Gamble Cat is the last card of the discard pile; current player is `"B"`; draw pile unchanged | yes |
+| TC81 | 4 players, `Random` always `0` (`"A"` starts, lucky), `playGambleCat()` | returns `true`; current player is `"B"` (next seat, not `"C"` or `"D"`) | yes |
+| TC82 | 4 players, `Random` always `bound - 1` (`"D"` starts, unlucky), `playGambleCat()` | returns `false`; current player is still `"D"`; turns remaining `1`; draw pile unchanged | yes |
+| TC83 | 4 players, `"D"` unlucky, then `drawCard()` twice (top two See the Future) | after first draw: still `"D"`; after second draw: current player is `"A"` (wraps) | yes |
+| TC84 | 2 players, `"B"` unlucky and holds an Attack, `drawCard()` once, then `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; still `"B"`; Attack still in hand | yes |
+| TC85 | 2 players, `"B"` unlucky, first draw Exploding Kitten with Defuse, `playDefuse(<bottom index>)`, then `drawCard()` (See the Future) | after Defuse: still `"B"`; after the second draw: current player is `"A"` | yes |
+| TC86 | 2 players, `Random` always `0`, `"A"` attacks `"B"`, `"B"` plays Gamble Cat (lucky) | returns `true`; still `"B"`; turns remaining `1` (cancels one owed turn) | yes |
+| TC87 | 2 players, `Random` always `bound - 1`, `"B"` attacks `"A"`, `"A"` plays Gamble Cat (unlucky), then `drawCard()` twice | still `"A"`; turns remaining `1` | yes |
+| TC88 | 2 players, `"B"` unlucky, then `playAttack()` before drawing | allowed; current player is `"A"`; turns remaining `2`; one `drawCard()` by `"A"` leaves `"A"` owing 1 (extra draw not passed on) | yes |
+| TC89 | 3 players, `"A"` holds 2 Gamble Cats, `playGambleCat()` | exactly one Gamble Cat removed; one still in `"A"`'s hand | yes |
+| TC90 | 2 players, `Random` is an EasyMock mock: setup returns `0` (`"A"` starts), then exactly one `nextInt(2)` returning `1`, `playGambleCat()` | returns `false`; current player is still `"A"`; mock verifies exactly one `nextInt(2)` call | yes |
+| TC91 | 2 players, `Random` is an EasyMock mock: setup returns `0` (`"A"` starts), then exactly one `nextInt(2)` returning `0`, `playGambleCat()` | returns `true`; current player is `"B"`; mock verifies exactly one `nextInt(2)` call | yes |
+| TC92 | 2 players, `"B"` unlucky, first draw See the Future, second draw Exploding Kitten with Defuse, `playDefuse(bottom)` | Defuse allowed mid-draw; Exploding Kitten is the bottom card of the draw pile; current player is `"A"` | yes |
+
+---
+
+## Method 14: `public boolean isGameOver()`
 
 True when at most one player is still alive. Extensible later for an alternate win condition without changing the UI loop.
 
@@ -196,14 +222,14 @@ True when at most one player is still alive. Extensible later for an alternate w
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC65 | `isGameOver()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
-| TC66 | after `startNewGame` with 2 players, both alive | `false` | yes |
-| TC67 | 2 players, `"A"` eliminated by EK without Defuse | `true` | yes |
-| TC68 | 3 players, only `"A"` eliminated, `"B"` and `"C"` alive | `false` | yes |
+| TC93 | `isGameOver()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
+| TC94 | after `startNewGame` with 2 players, both alive | `false` | yes |
+| TC95 | 2 players, `"A"` eliminated by EK without Defuse | `true` | yes |
+| TC96 | 3 players, only `"A"` eliminated, `"B"` and `"C"` alive | `false` | yes |
 
 ---
 
-## Method 14: `public Player getWinner()`
+## Method 15: `public Player getWinner()`
 
 Returns the sole remaining living player. Throws if the game is not over (keeps alt-win flexibility: UI only calls this when `isGameOver()` is true).
 
@@ -211,7 +237,7 @@ Returns the sole remaining living player. Throws if the game is not over (keeps 
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC69 | `getWinner()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
-| TC70 | after start, both alive | throws `IllegalStateException` with message `"gameManager.notOver"` | yes |
-| TC71 | 2 players, `"A"` eliminated | returns `"B"` | yes |
-| TC72 | 3 players, `"A"` and `"B"` eliminated | returns `"C"` | yes |
+| TC97 | `getWinner()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
+| TC98 | after start, both alive | throws `IllegalStateException` with message `"gameManager.notOver"` | yes |
+| TC99 | 2 players, `"A"` eliminated | returns `"B"` | yes |
+| TC100 | 3 players, `"A"` and `"B"` eliminated | returns `"C"` | yes |

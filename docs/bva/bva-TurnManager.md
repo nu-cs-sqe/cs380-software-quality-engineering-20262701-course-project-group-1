@@ -78,3 +78,33 @@ Made with assistance from GenAI.
 | TC25 | 2 players, index `1`, owes 1 left from an attack, `attackNextPlayer()` | `getCurrentIndex()` is `0`, `getTurnsRemaining()` is `3` (remaining 1 + 2) | yes |
 | TC26 | 2 players, attacked player serves both turns, then `attackNextPlayer()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `2` (no transfer once attack is over) | yes |
 | TC27 | `attackNextPlayer()`, then `pickStart(2, random)`, then `attackNextPlayer()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `2` (new game clears attack) | yes |
+
+---
+
+## Method 6: `public void addExtraDraw()`
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC28 | `new TurnManager().addExtraDraw()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | yes |
+| TC29 | 2 players, index `0`, `addExtraDraw()`, then `endTurn()` | index still `0`; turns remaining `1`; `isMidDraw()` is `true` | yes |
+| TC30 | 2 players, index `0`, `addExtraDraw()`, then `endTurn()` twice | index `1`; turns remaining `1`; `isMidDraw()` is `false` | yes |
+| TC31 | 4 players, index `3`, `addExtraDraw()`, then `endTurn()` twice | index `0` (wraps); `isMidDraw()` is `false` | yes |
+| TC32 | 2 players, index `1` owes 2 from an attack, `addExtraDraw()`, then `endTurn()` twice | index still `1`; turns remaining `1` (this turn used two draws) | yes |
+| TC33 | 2 players, index `0`, `addExtraDraw()` twice, then `endTurn()` twice | index `1` (extra draws do not stack) | yes |
+| TC34 | 2 players, index `0`, `addExtraDraw()`, then `attackNextPlayer()`, then `endTurn()` | index `1`; turns remaining `1` (extra draw cleared, not passed on) | yes |
+
+---
+
+## Method 7: `public boolean isMidDraw()`
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC35 | `new TurnManager().isMidDraw()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | yes |
+| TC36 | `isMidDraw()` after `pickStart(2, random)` | `false` | yes |
+| TC37 | `isMidDraw()` after `addExtraDraw()` with no draw yet | `false` (penalty set, but drawing hasn't started) | yes |
+| TC38 | `isMidDraw()` after `addExtraDraw()` and one `endTurn()` | `true` | yes (implemented in TC29) |
+| TC39 | 2 players, `addExtraDraw()`, then `pickStart(2, random)` (index `0`), then `endTurn()` | index `1` (new game clears the extra draw) | yes |

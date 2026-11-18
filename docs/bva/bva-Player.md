@@ -77,4 +77,17 @@ Made with assistance from GenAI.
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
 | TC12 | alive player, `eliminate()` once | `isAlive()` is `false` | yes          |
-| TC13 | player already eliminated, `eliminate()` again | `isAlive()` is still `false`; no exception |
+| TC13 | player already eliminated, `eliminate()` again | `isAlive()` is still `false`; no exception | yes          |
+
+---
+
+## Method 8: `public boolean hasCard(CardType type)`
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC14 | empty hand, `hasCard(Defuse)` | `false` | yes |
+| TC15 | hand `[Defuse]`, `hasCard(Defuse)` | `true` | yes |
+| TC16 | hand `[STF, Attack, Defuse]`, `hasCard(Defuse)` (match is last) | `true` | yes |
+| TC17 | hand `[STF, Attack]`, `hasCard(Defuse)` | `false` | yes |

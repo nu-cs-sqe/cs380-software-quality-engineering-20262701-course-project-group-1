@@ -1,7 +1,9 @@
 package domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -290,5 +292,134 @@ class TurnManagerTest {
 
         assertEquals(1, turnManager.getCurrentIndex());
         assertEquals(2, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void addExtraDraw_beforePickStart_throwsIllegalStateException() {
+        TurnManager turnManager = new TurnManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                turnManager::addExtraDraw);
+        assertEquals("turnManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void addExtraDraw_thenOneEndTurn_samePlayerMidDraw() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+
+        turnManager.endTurn();
+
+        assertEquals(0, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+        assertTrue(turnManager.isMidDraw());
+    }
+
+    @Test
+    void addExtraDraw_thenTwoEndTurns_advancesAndNotMidDraw() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+
+        turnManager.endTurn();
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+        assertFalse(turnManager.isMidDraw());
+    }
+
+    @Test
+    void addExtraDraw_fourPlayersLastSeat_wrapsAfterTwoEndTurns() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(4, alwaysLast());
+        turnManager.addExtraDraw();
+
+        turnManager.endTurn();
+        turnManager.endTurn();
+
+        assertEquals(0, turnManager.getCurrentIndex());
+        assertFalse(turnManager.isMidDraw());
+    }
+
+    @Test
+    void addExtraDraw_whileOwingTwo_firstTurnUsesTwoDraws() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.attackNextPlayer();   // index 1, owes 2
+        turnManager.addExtraDraw();
+
+        turnManager.endTurn();
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void addExtraDraw_calledTwice_doesNotStack() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+        turnManager.addExtraDraw();
+
+        turnManager.endTurn();
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+    }
+
+    @Test
+    void addExtraDraw_thenAttack_extraDrawNotPassedOn() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+        turnManager.attackNextPlayer();   // index 1, owes 2
+
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
+
+    @Test
+    void isMidDraw_beforePickStart_throwsIllegalStateException() {
+        TurnManager turnManager = new TurnManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                turnManager::isMidDraw);
+        assertEquals("turnManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void isMidDraw_afterPickStart_isFalse() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+
+        assertFalse(turnManager.isMidDraw());
+    }
+
+    @Test
+    void isMidDraw_afterAddExtraDrawBeforeDrawing_isFalse() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+
+        assertFalse(turnManager.isMidDraw());
+    }
+
+    @Test
+    void pickStart_afterAddExtraDraw_clearsExtraDraw() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.addExtraDraw();
+
+        turnManager.pickStart(2, alwaysFirst());
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
     }
 }

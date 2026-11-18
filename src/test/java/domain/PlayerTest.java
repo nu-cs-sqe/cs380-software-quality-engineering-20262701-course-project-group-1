@@ -109,4 +109,38 @@ class PlayerTest {
 
         assertFalse(player.isAlive());
     }
+
+    @Test
+    void hasCard_emptyHand_returnsFalse() {
+        Player player = new Player("A");
+
+        assertFalse(player.hasCard(CardType.Defuse));
+    }
+
+    @Test
+    void hasCard_onlyCardMatches_returnsTrue() {
+        Player player = new Player("A");
+        player.addCard(new Card(CardType.Defuse));
+
+        assertTrue(player.hasCard(CardType.Defuse));
+    }
+
+    @Test
+    void hasCard_matchIsLastCard_returnsTrue() {
+        Player player = new Player("A");
+        player.addCard(new Card(CardType.See_The_Future));
+        player.addCard(new Card(CardType.Attack));
+        player.addCard(new Card(CardType.Defuse));
+
+        assertTrue(player.hasCard(CardType.Defuse));
+    }
+
+    @Test
+    void hasCard_noMatchingType_returnsFalse() {
+        Player player = new Player("A");
+        player.addCard(new Card(CardType.See_The_Future));
+        player.addCard(new Card(CardType.Attack));
+
+        assertFalse(player.hasCard(CardType.Defuse));
+    }
 }
