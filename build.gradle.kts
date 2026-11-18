@@ -14,6 +14,10 @@ application {
     mainClass.set("ui.Main")
 }
 
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+}
+
 // Google Java Style with 4-space indentation; see config/checkstyle/checkstyle.xml.
 checkstyle {
     toolVersion = "10.21.4"
