@@ -14,7 +14,7 @@ Made with assistance from GenAI.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC1 | `new GameLoop(manager, printer, scanner)` | constructs without exception | no |
+| TC1 | `new GameLoop(manager, printer, scanner)` | constructs without exception | yes |
 
 ---
 
@@ -27,9 +27,9 @@ Full interactive session. Tests feed scripted `Scanner` input and assert on prin
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
 | TC2 | input names `"A"`, `"B"` then players only draw until one eliminates (scripted top cards via test hooks / enough draws) | game ends; winner printed; `isGameOver()` true | no |
-| TC3 | names `"A"` only (then quit / invalid count path) | rejects player count outside 2–4; does not call a successful `startNewGame` with 1 player | no |
-| TC4 | names `"A"`, `"B"`, `"C"`, `"D"` | `startNewGame` with 4 players; setup printed | no |
-| TC5 | blank name among otherwise valid names | rejects blank name; game not started with that list | no |
+| TC3 | names `"A"` only (then quit / invalid count path) | rejects player count outside 2–4; does not call a successful `startNewGame` with 1 player | yes |
+| TC4 | names `"A"`, `"B"`, `"C"`, `"D"` | `startNewGame` with 4 players; setup printed | yes |
+| TC5 | blank name among otherwise valid names | rejects blank name; game not started with that list | yes |
 | TC6 | current player chooses hand index of Attack | `playAttack` effect; turn may move; next turn banner printed | no |
 | TC7 | current player chooses hand index of Shuffle | `playShuffle`; same player still current | no |
 | TC8 | current player chooses hand index of See_The_Future | `playSeeTheFuture`; peek printed via `printSeeTheFuture`; turn unchanged | no |
