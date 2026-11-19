@@ -114,5 +114,5 @@ Top of draw pile first. Does not mutate the list.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC16 | `printGambleResult(true)` | prints exactly `"Gamble Cat: lucky! Your turn ends without drawing"` | no |
-| TC17 | `printGambleResult(false)` | prints exactly `"Gamble Cat: unlucky! Draw two cards to end your turn"` | no |
+| TC16 | `printGambleResult(true)` | prints exactly `"Gamble Cat: lucky! Your turn ends without drawing"` | yes |
+| TC17 | `printGambleResult(false)` | prints exactly `"Gamble Cat: unlucky! Draw two cards to end your turn"` | yes |
