@@ -149,6 +149,9 @@ public class GameLoop {
                     List<Card> seen = gameManager.playSeeTheFuture();
                     printer.printSeeTheFuture(seen);
                     break;
+                case Gamble_Cat:
+                    printer.printGambleResult(gameManager.playGambleCat());
+                    break;
                 default:
                     printer.printMessage("Cannot play that card now");
                     break;

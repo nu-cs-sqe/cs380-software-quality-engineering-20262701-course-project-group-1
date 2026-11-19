@@ -316,6 +316,23 @@ class GameLoopTest {
         assertTrue(outputOf(out).contains("Press Enter"));
     }
 
+    @Test
+    void run_playGambleCatLucky_printsLuckyAndPassesTurn() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        ensureInHand(a, CardType.Gamble_Cat);
+        int index = indexOfType(a, CardType.Gamble_Cat);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, index + "\n\nq\n");
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        String printed = outputOf(out);
+        assertTrue(printed.contains("Gamble Cat: lucky! Your turn ends without drawing"));
+        assertTrue(printed.contains("Pass device to B"));
+    }
+
     private static int countType(List<Card> cards, CardType type) {
         int count = 0;
         for (Card card : cards) {
