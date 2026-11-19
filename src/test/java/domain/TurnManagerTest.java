@@ -432,4 +432,15 @@ class TurnManagerTest {
                 turnManager::eliminateCurrentPlayer);
         assertEquals("turnManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void eliminateCurrentPlayer_owingOne_nextPlayerTakesTurn() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(3, alwaysFirst());
+
+        turnManager.eliminateCurrentPlayer();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
 }

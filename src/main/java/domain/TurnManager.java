@@ -134,6 +134,7 @@ public class TurnManager {
      */
     public void eliminateCurrentPlayer() {
         requireStarted();
+        advanceToNextPlayer();
     }
 
     private void requireStarted() {
