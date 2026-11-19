@@ -42,4 +42,4 @@ Full interactive session. Tests feed scripted `Scanner` input and assert on prin
 | TC15 | after a turn ends and next player differs | hotseat pause prompt; previous hand not required to stay on screen (dev: at least a pass/Enter gate) | yes |
 | TC16 | 2 players, `"A"` starts, plays Gamble Cat by index, flip is lucky | prints the lucky line; current player is `"B"`; hand-off prompt for `"B"` shown | yes |
 | TC17 | 2 players, `"B"` starts, plays Gamble Cat by index, flip is unlucky, then draws twice (See the Future on top) | prints the unlucky line; still `"B"` after the first draw; current player is `"A"` after the second; hand-off prompt shown exactly once | yes |
-| TC18 | 2 players, `"B"` unlucky, draws once, then tries to play Attack by index | play rejected; still `"B"`; Attack still in hand | no |
+| TC18 | 2 players, `"B"` unlucky, draws once, then tries to play Attack by index | play rejected; still `"B"`; Attack still in hand | yes |

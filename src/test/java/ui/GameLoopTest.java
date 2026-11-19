@@ -352,6 +352,27 @@ class GameLoopTest {
         assertEquals(1, printed.split("Pass device to A", -1).length - 1);
     }
 
+    @Test
+    void run_playCardBetweenUnluckyDraws_rejectedAndTurnUnchanged() {
+        GameManager manager = GameManagerFixtures.alwaysLastPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getCurrentPlayer();
+        ensureInHand(b, CardType.Gamble_Cat);
+        b.addCard(new Card(CardType.Attack));
+        int gambleIndex = indexOfType(b, CardType.Gamble_Cat);
+        GameManagerFixtures.putOnTop(manager, new Card(CardType.See_The_Future));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GameLoop loop = loopWithInput(manager, out, gambleIndex + "\nd\n");
+        loop.runTurns();
+        int attackIndex = indexOfType(b, CardType.Attack);
+        int attacksBefore = countType(b.getHand(), CardType.Attack);
+
+        runTurnsWithInput(manager, out, attackIndex + "\nq\n");
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(attacksBefore, countType(b.getHand(), CardType.Attack));
+    }
+
     private static int countType(List<Card> cards, CardType type) {
         int count = 0;
         for (Card card : cards) {
