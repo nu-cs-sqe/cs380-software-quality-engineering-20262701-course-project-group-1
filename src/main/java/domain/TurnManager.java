@@ -134,6 +134,7 @@ public class TurnManager {
      */
     public void eliminateCurrentPlayer() {
         requireStarted();
+        turnsRemaining = NORMAL_TURNS;
         advanceToNextPlayer();
     }
 

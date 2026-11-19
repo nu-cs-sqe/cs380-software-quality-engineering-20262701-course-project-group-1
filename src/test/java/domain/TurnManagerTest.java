@@ -443,4 +443,16 @@ class TurnManagerTest {
         assertEquals(1, turnManager.getCurrentIndex());
         assertEquals(1, turnManager.getTurnsRemaining());
     }
+
+    @Test
+    void eliminateCurrentPlayer_whileOwingTwo_nextPlayerOwesOne() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(3, alwaysFirst());
+        turnManager.attackNextPlayer();   // index 1, owes 2
+
+        turnManager.eliminateCurrentPlayer();
+
+        assertEquals(2, turnManager.getCurrentIndex());
+        assertEquals(1, turnManager.getTurnsRemaining());
+    }
 }
