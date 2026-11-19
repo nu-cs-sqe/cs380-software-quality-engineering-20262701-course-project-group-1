@@ -19,6 +19,7 @@ public class TurnManager {
     private boolean underAttack = false;
     private boolean extraDraw = false;
     private boolean midDraw = false;
+    private boolean[] eliminated = new boolean[0];
 
     /**
      * Starts turn tracking with a randomly chosen first player.
@@ -36,6 +37,7 @@ public class TurnManager {
             throw new IllegalArgumentException(RANDOM_NULL);
         }
         this.playerCount = playerCount;
+        eliminated = new boolean[playerCount];
         currentIndex = random.nextInt(playerCount);
         turnsRemaining = NORMAL_TURNS;
         underAttack = false;
@@ -134,6 +136,7 @@ public class TurnManager {
      */
     public void eliminateCurrentPlayer() {
         requireStarted();
+        eliminated[currentIndex] = true;
         turnsRemaining = NORMAL_TURNS;
         underAttack = false;
         advanceToNextPlayer();
@@ -146,7 +149,12 @@ public class TurnManager {
     }
 
     private void advanceToNextPlayer() {
-        currentIndex = (currentIndex + 1) % playerCount;
+        for (int step = 0; step < playerCount; step++) {
+            currentIndex = (currentIndex + 1) % playerCount;
+            if (!eliminated[currentIndex]) {
+                break;
+            }
+        }
         extraDraw = false;
         midDraw = false;
     }

@@ -468,4 +468,16 @@ class TurnManagerTest {
         assertEquals(0, turnManager.getCurrentIndex());
         assertEquals(2, turnManager.getTurnsRemaining());
     }
+
+    @Test
+    void endTurn_wrapsOntoEliminatedSeat_skipsIt() {
+        TurnManager turnManager = new TurnManager();
+        turnManager.pickStart(3, alwaysFirst());
+        turnManager.eliminateCurrentPlayer();   // seat 0 out, index 1
+        turnManager.endTurn();                  // index 2
+
+        turnManager.endTurn();
+
+        assertEquals(1, turnManager.getCurrentIndex());
+    }
 }
