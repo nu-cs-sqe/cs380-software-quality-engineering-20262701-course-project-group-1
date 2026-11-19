@@ -26,6 +26,7 @@ public class GameManager {
     private static final int SEE_THE_FUTURE_SUPPLY = 10;
     private static final int ATTACK_SUPPLY = 5;
     private static final int SHUFFLE_SUPPLY = 5;
+    private static final int GAMBLE_CAT_SUPPLY = 4;
     private static final int SEE_THE_FUTURE_COUNT = 3;
     private static final int GAMBLE_CHOICES = 2;
 
@@ -304,6 +305,9 @@ public class GameManager {
         }
         for (int i = 0; i < SHUFFLE_SUPPLY; i++) {
             cards.add(new Card(CardType.Shuffle));
+        }
+        for (int i = 0; i < GAMBLE_CAT_SUPPLY; i++) {
+            cards.add(new Card(CardType.Gamble_Cat));
         }
         for (int i = 0; i < TOTAL_DEFUSES; i++) {
             cards.add(new Card(CardType.Defuse));
