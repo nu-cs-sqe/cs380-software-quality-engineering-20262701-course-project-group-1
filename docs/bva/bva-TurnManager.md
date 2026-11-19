@@ -24,6 +24,7 @@ Made with assistance from GenAI.
 | TC8 | `pickStart(2, null)` | throws `IllegalArgumentException` with message `"turnManager.random.null"` | yes |
 | TC9 | `pickStart(4, random)` with `Random` always `bound - 1`, then `pickStart(2, random)` with `Random` always `0` | `getCurrentIndex()` is `0` | yes |
 | TC14 | `pickStart(2, random)` after `attackNextPlayer()` left 2 turns owed | `getTurnsRemaining()` is `1` | yes |
+| TC47 | 3 players, index `0`, `eliminateCurrentPlayer()`, then `pickStart(3, random)` with `Random` always `bound - 1` (index `2`), then `endTurn()` | `getCurrentIndex()` is `0` (a new game clears eliminations) | no |
 
 ---
 
@@ -62,9 +63,8 @@ Made with assistance from GenAI.
 | TC18 | 2 players, index `0`, owes 1, `endTurn()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `1` | yes |
 | TC19 | 4 players, index `3`, owes 1, `endTurn()` | `getCurrentIndex()` is `0` (wraps), `getTurnsRemaining()` is `1` | yes |
 | TC20 | 2 players, index `1`, owes 2, `endTurn()` | `getCurrentIndex()` is `1` (same player), `getTurnsRemaining()` is `1` | yes |
-| TC40 | 3 players, index `0`, seat `1` inactive (`pickStart(3, random, seat -> seat != 1)`), `endTurn()` | `getCurrentIndex()` is `2` (seat `1` skipped) | no |
-| TC41 | 4 players, index `3`, seat `0` inactive, `endTurn()` | `getCurrentIndex()` is `1` (wraps past seat `0`) | no |
-| TC42 | 3 players, index `0`, seat `1` inactive, `attackNextPlayer()` | `getCurrentIndex()` is `2`; `getTurnsRemaining()` is `2` | no |
+| TC44 | 3 players, seat `0` eliminated, index `2`, `endTurn()` | `getCurrentIndex()` is `1` (wraps and skips seat `0`) | no |
+| TC45 | 3 players, seat `1` eliminated, index `0`, `endTurn()` | `getCurrentIndex()` is `2` (skips seat `1`) | no |
 
 ---
 
@@ -81,6 +81,7 @@ Made with assistance from GenAI.
 | TC25 | 2 players, index `1`, owes 1 left from an attack, `attackNextPlayer()` | `getCurrentIndex()` is `0`, `getTurnsRemaining()` is `3` (remaining 1 + 2) | yes |
 | TC26 | 2 players, attacked player serves both turns, then `attackNextPlayer()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `2` (no transfer once attack is over) | yes |
 | TC27 | `attackNextPlayer()`, then `pickStart(2, random)`, then `attackNextPlayer()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `2` (new game clears attack) | yes |
+| TC46 | 3 players, seat `1` eliminated, index `0`, `attackNextPlayer()` | `getCurrentIndex()` is `2` (skips seat `1`); `getTurnsRemaining()` is `2` | no |
 
 ---
 
@@ -114,14 +115,15 @@ Made with assistance from GenAI.
 
 ---
 
-## Method 8: `void endTurnAfterElimination()`
+## Method 8: `public void eliminateCurrentPlayer()`
 
-Called by `GameManager` when the current player explodes. Their owed turns end with them, the attack is over, and the next living player owes one turn.
+Called by `GameManager` when the current player explodes. Their seat is skipped by every later turn change, their owed turns end with them, and the next living player owes one turn.
 
 ##### All-combination or each-choice: each-choice
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC43 | `new TurnManager().endTurnAfterElimination()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | no |
-| TC44 | 3 players, index `1` owes 2 from an attack, `endTurnAfterElimination()` | `getCurrentIndex()` is `2`; `getTurnsRemaining()` is `1` (owed turns don't carry over) | no |
-| TC45 | 3 players, index `1` owes 2 from an attack, `endTurnAfterElimination()`, then `attackNextPlayer()` | `getCurrentIndex()` is `0`; `getTurnsRemaining()` is `2` (no turns transferred, because the attack ended with the eliminated player) | no |
+| TC40 | `new TurnManager().eliminateCurrentPlayer()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | no |
+| TC41 | 3 players, index `0`, owes 1, `eliminateCurrentPlayer()` | `getCurrentIndex()` is `1`; `getTurnsRemaining()` is `1` | no |
+| TC42 | 3 players, index `1` owes 2 from an attack, `eliminateCurrentPlayer()` | `getCurrentIndex()` is `2`; `getTurnsRemaining()` is `1` (owed turns don't carry over) | no |
+| TC43 | 3 players, index `1` owes 2 from an attack, `eliminateCurrentPlayer()`, then `attackNextPlayer()` | `getCurrentIndex()` is `0`; `getTurnsRemaining()` is `2` (the attack ended with the eliminated player) | no |
