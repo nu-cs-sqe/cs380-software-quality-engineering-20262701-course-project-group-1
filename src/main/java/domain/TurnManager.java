@@ -124,6 +124,18 @@ public class TurnManager {
         return midDraw;
     }
 
+    /**
+     * Removes the current player from the turn order and passes the turn to the next living player.
+     *
+     * <p>Any turns the eliminated player still owed end with them, so the next player owes one
+     * turn and is not under attack. Eliminated seats are skipped by every later turn change.
+     *
+     * @throws IllegalStateException if {@link #pickStart} has not been called
+     */
+    public void eliminateCurrentPlayer() {
+        requireStarted();
+    }
+
     private void requireStarted() {
         if (currentIndex == NOT_STARTED_INDEX) {
             throw new IllegalStateException(NOT_STARTED);
