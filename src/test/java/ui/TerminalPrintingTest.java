@@ -153,4 +153,13 @@ class TerminalPrintingTest {
 
         assertEquals("error\n", output());
     }
+
+    @Test
+    void printGambleResult_lucky_printsLuckyLine() {
+        printer.printGambleResult(true);
+
+        String expected = "Gamble Cat: lucky! Your turn ends without drawing"
+                + System.lineSeparator();
+        assertEquals(expected, buffer.toString(StandardCharsets.UTF_8));
+    }
 }

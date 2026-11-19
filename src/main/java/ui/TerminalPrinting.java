@@ -122,4 +122,15 @@ public class TerminalPrinting {
     public void printMessage(String message) {
         out.println(message);
     }
+
+    /**
+     * Prints the outcome of a Gamble Cat coin flip.
+     *
+     * @param turnEnded true if the flip was lucky and the turn ended without drawing
+     */
+    public void printGambleResult(boolean turnEnded) {
+        if (turnEnded) {
+            out.println("Gamble Cat: lucky! Your turn ends without drawing");
+        }
+    }
 }
