@@ -131,6 +131,8 @@ public class TerminalPrinting {
     public void printGambleResult(boolean turnEnded) {
         if (turnEnded) {
             out.println("Gamble Cat: lucky! Your turn ends without drawing");
+        } else {
+            out.println("Gamble Cat: unlucky! Draw two cards to end your turn");
         }
     }
 }
