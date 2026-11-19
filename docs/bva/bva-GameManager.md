@@ -241,3 +241,11 @@ Returns the sole remaining living player. Throws if the game is not over (keeps 
 | TC98 | after start, both alive | throws `IllegalStateException` with message `"gameManager.notOver"` | yes |
 | TC99 | 2 players, `"A"` eliminated | returns `"B"` | yes |
 | TC100 | 3 players, `"A"` and `"B"` eliminated | returns `"C"` | yes |
+
+## Method 16: `public int getDrawPileSize()`
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC104 | `getDrawPileSize()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
+| TC105 | after `startNewGame` with 4 players | equals `getDrawPile().size()` | no |
+| TC106 | 2 players, See the Future on top, `drawCard()` | one less than before the draw | no |

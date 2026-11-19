@@ -62,6 +62,9 @@ Made with assistance from GenAI.
 | TC18 | 2 players, index `0`, owes 1, `endTurn()` | `getCurrentIndex()` is `1`, `getTurnsRemaining()` is `1` | yes |
 | TC19 | 4 players, index `3`, owes 1, `endTurn()` | `getCurrentIndex()` is `0` (wraps), `getTurnsRemaining()` is `1` | yes |
 | TC20 | 2 players, index `1`, owes 2, `endTurn()` | `getCurrentIndex()` is `1` (same player), `getTurnsRemaining()` is `1` | yes |
+| TC40 | 3 players, index `0`, seat `1` inactive (`pickStart(3, random, seat -> seat != 1)`), `endTurn()` | `getCurrentIndex()` is `2` (seat `1` skipped) | no |
+| TC41 | 4 players, index `3`, seat `0` inactive, `endTurn()` | `getCurrentIndex()` is `1` (wraps past seat `0`) | no |
+| TC42 | 3 players, index `0`, seat `1` inactive, `attackNextPlayer()` | `getCurrentIndex()` is `2`; `getTurnsRemaining()` is `2` | no |
 
 ---
 
@@ -108,3 +111,17 @@ Made with assistance from GenAI.
 | TC37 | `isMidDraw()` after `addExtraDraw()` with no draw yet | `false` (penalty set, but drawing hasn't started) | yes |
 | TC38 | `isMidDraw()` after `addExtraDraw()` and one `endTurn()` | `true` | yes (implemented in TC29) |
 | TC39 | 2 players, `addExtraDraw()`, then `pickStart(2, random)` (index `0`), then `endTurn()` | index `1` (new game clears the extra draw) | yes |
+
+---
+
+## Method 8: `void endTurnAfterElimination()`
+
+Called by `GameManager` when the current player explodes. Their owed turns end with them, the attack is over, and the next living player owes one turn.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC43 | `new TurnManager().endTurnAfterElimination()` | throws `IllegalStateException` with message `"turnManager.notStarted"` | no |
+| TC44 | 3 players, index `1` owes 2 from an attack, `endTurnAfterElimination()` | `getCurrentIndex()` is `2`; `getTurnsRemaining()` is `1` (owed turns don't carry over) | no |
+| TC45 | 3 players, index `1` owes 2 from an attack, `endTurnAfterElimination()`, then `attackNextPlayer()` | `getCurrentIndex()` is `0`; `getTurnsRemaining()` is `2` (no turns transferred, because the attack ended with the eliminated player) | no |
