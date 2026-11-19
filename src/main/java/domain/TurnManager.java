@@ -85,6 +85,8 @@ public class TurnManager {
     /**
      * Uses up one of the current player's turns, moving to the next player when none are left.
      *
+     * <p>If an extra draw is owed, the first call only marks mid-draw and does not advance.
+     *
      * @throws IllegalStateException if {@link #pickStart} has not been called
      */
     public void endTurn() {
@@ -134,6 +136,17 @@ public class TurnManager {
         currentIndex = (currentIndex + 1) % playerCount;
         extraDraw = false;
         midDraw = false;
+    }
+
+    void advanceToNextSeat() {
+        requireStarted();
+        advanceToNextPlayer();
+    }
+
+    void resetTurnsToNormal() {
+        requireStarted();
+        turnsRemaining = NORMAL_TURNS;
+        underAttack = false;
     }
 
     private int turnsToTransfer() {

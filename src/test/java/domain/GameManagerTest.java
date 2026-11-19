@@ -61,6 +61,7 @@ class GameManagerTest {
         assertPlayersAlive(manager.getPlayers());
         assertStartingHands(manager.getPlayers());
         assertDrawPile(manager, 1, 4);
+        assertRoughCardSupply(manager, 1);
     }
 
     @Test
@@ -73,6 +74,7 @@ class GameManagerTest {
         assertPlayersAlive(manager.getPlayers());
         assertStartingHands(manager.getPlayers());
         assertDrawPile(manager, 3, 2);
+        assertRoughCardSupply(manager, 3);
     }
 
     @Test
@@ -180,8 +182,11 @@ class GameManagerTest {
             List<Card> hand = player.getHand();
             assertEquals(6, hand.size());
             assertEquals(1, countType(hand, CardType.Defuse));
-            assertEquals(5, countType(hand, CardType.See_The_Future));
             assertEquals(0, countType(hand, CardType.Exploding_Kitten));
+            int generics = countType(hand, CardType.See_The_Future)
+                    + countType(hand, CardType.Attack)
+                    + countType(hand, CardType.Shuffle);
+            assertEquals(5, generics);
         }
     }
 
@@ -189,6 +194,19 @@ class GameManagerTest {
         List<Card> pile = manager.getDrawPile();
         assertEquals(explodingKittens, countType(pile, CardType.Exploding_Kitten));
         assertEquals(defuses, countType(pile, CardType.Defuse));
+    }
+
+    private static void assertRoughCardSupply(GameManager manager, int explodingKittens) {
+        List<Card> all = new ArrayList<>();
+        for (Player player : manager.getPlayers()) {
+            all.addAll(player.getHand());
+        }
+        all.addAll(manager.getDrawPile());
+        assertEquals(10, countType(all, CardType.See_The_Future));
+        assertEquals(5, countType(all, CardType.Attack));
+        assertEquals(5, countType(all, CardType.Shuffle));
+        assertEquals(6, countType(all, CardType.Defuse));
+        assertEquals(explodingKittens, countType(all, CardType.Exploding_Kitten));
     }
 
     private static int countType(List<Card> cards, CardType type) {
@@ -498,6 +516,15 @@ class GameManagerTest {
     void playSeeTheFuture_twoPlayers_returnsTopThreeAndPileUnchanged() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        while (countType(a.getHand(), CardType.See_The_Future) > 0) {
+            a.removeCardOfType(CardType.See_The_Future);
+        }
+        a.addCard(new Card(CardType.See_The_Future));
+        a.addCard(new Card(CardType.See_The_Future));
+        a.addCard(new Card(CardType.See_The_Future));
+        a.addCard(new Card(CardType.See_The_Future));
+        a.addCard(new Card(CardType.See_The_Future));
         final List<Card> pileBefore = manager.getDrawPile();
 
         List<Card> seen = manager.playSeeTheFuture();
@@ -508,7 +535,6 @@ class GameManagerTest {
         }
         assertEquals(pileBefore, manager.getDrawPile());
         assertEquals(1, countType(manager.getDiscardPile(), CardType.See_The_Future));
-        Player a = manager.getPlayers().get(0);
         assertEquals(4, countType(a.getHand(), CardType.See_The_Future));
     }
 
@@ -516,6 +542,7 @@ class GameManagerTest {
     void playSeeTheFuture_fourPlayersFromLastSeat_turnDoesNotChange() {
         GameManager manager = new GameManager(alwaysLast());
         manager.startNewGame(List.of("A", "B", "C", "D"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.See_The_Future));
         final List<Card> pileBefore = manager.getDrawPile();
 
         List<Card> seen = manager.playSeeTheFuture();
@@ -534,6 +561,7 @@ class GameManagerTest {
         manager.startNewGame(List.of("A", "B"));
         manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
         manager.playAttack();                                   // B, owes 2
+        manager.getCurrentPlayer().addCard(new Card(CardType.See_The_Future));
 
         manager.playSeeTheFuture();
 
@@ -545,6 +573,7 @@ class GameManagerTest {
     void playSeeTheFuture_returnedListIsDefensiveCopy() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().addCard(new Card(CardType.See_The_Future));
         final List<Card> pileBefore = manager.getDrawPile();
 
         manager.playSeeTheFuture().clear();
@@ -635,6 +664,131 @@ class GameManagerTest {
         List<Card> discard = manager.getDiscardPile();
         assertSame(kitten, discard.get(discard.size() - 1));
         assertFalse(a.getHand().contains(kitten));
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void drawCard_skipsEliminatedNextPlayer() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getPlayers().get(1).eliminate();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+
+        manager.drawCard();
+
+        assertEquals("C", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void drawCard_explodeSkipsAlreadyEliminatedPlayer() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getPlayers().get(1).eliminate();
+        Player a = manager.getCurrentPlayer();
+        a.removeCardOfType(CardType.Defuse);
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+
+        manager.drawCard();
+
+        assertFalse(a.isAlive());
+        assertEquals("C", manager.getCurrentPlayer().getName());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void playAttack_skipsEliminatedNextPlayer() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getPlayers().get(1).eliminate();
+        manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
+
+        manager.playAttack();
+
+        assertEquals("C", manager.getCurrentPlayer().getName());
+        assertEquals(2, manager.getTurnsRemaining());
+    }
+
+    @Test
+    void isGameOver_beforeStart_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::isGameOver);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void isGameOver_afterStart_bothAlive_false() {
+        GameManager manager = new GameManager();
+        manager.startNewGame(List.of("A", "B"));
+
+        assertFalse(manager.isGameOver());
+    }
+
+    @Test
+    void isGameOver_onePlayerLeft_true() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().removeCardOfType(CardType.Defuse);
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+
+        manager.drawCard();
+
+        assertTrue(manager.isGameOver());
+    }
+
+    @Test
+    void isGameOver_threePlayersOneEliminated_false() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getPlayers().get(0).eliminate();
+
+        assertFalse(manager.isGameOver());
+    }
+
+    @Test
+    void getWinner_beforeStart_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::getWinner);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void getWinner_gameNotOver_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+        manager.startNewGame(List.of("A", "B"));
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::getWinner);
+        assertEquals("gameManager.notOver", ex.getMessage());
+    }
+
+    @Test
+    void getWinner_twoPlayersAfterEliminate_returnsSurvivor() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.getCurrentPlayer().removeCardOfType(CardType.Defuse);
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+
+        manager.drawCard();
+
+        assertEquals("B", manager.getWinner().getName());
+    }
+
+    @Test
+    void getWinner_threePlayersTwoEliminated_returnsSurvivor() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        manager.getPlayers().get(0).eliminate();
+        manager.getPlayers().get(1).eliminate();
+
+        assertEquals("C", manager.getWinner().getName());
     }
 
     @Test

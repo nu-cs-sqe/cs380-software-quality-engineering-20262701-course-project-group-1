@@ -14,6 +14,7 @@ public class GameManager {
     private static final String NOT_STARTED = "gameManager.notStarted";
     private static final String NOT_IN_HAND = "gameManager.play.notInHand";
     private static final String NO_KITTEN = "gameManager.defuse.noKitten";
+    private static final String NOT_OVER = "gameManager.notOver";
     private static final String MUST_FINISH_DRAWING = "gameManager.play.mustFinishDrawing";
     private static final String INVALID_REINSERT_INDEX = "gameManager.defuse.invalidIndex";
 
@@ -22,8 +23,9 @@ public class GameManager {
 
     private static final int TOTAL_DEFUSES = 6;
     private static final int STARTING_GENERIC_CARDS = 5;
-    private static final int GENERIC_SUPPLY = 20;
-
+    private static final int SEE_THE_FUTURE_SUPPLY = 10;
+    private static final int ATTACK_SUPPLY = 5;
+    private static final int SHUFFLE_SUPPLY = 5;
     private static final int SEE_THE_FUTURE_COUNT = 3;
     private static final int GAMBLE_CHOICES = 2;
 
@@ -91,6 +93,7 @@ public class GameManager {
     public void playAttack() {
         playFromHand(CardType.Attack);
         turnManager.attackNextPlayer();
+        skipEliminatedPlayers();
     }
 
     /**
@@ -126,7 +129,8 @@ public class GameManager {
      *
      * <p>A normal card goes into the hand and the turn ends. An Exploding Kitten stays in the
      * hand if the player has a Defuse, and the turn waits for it to be played. Without a Defuse,
-     * the player is eliminated and the Exploding Kitten goes to the discard pile.
+     * the player is eliminated, the Exploding Kitten goes to the discard pile, and the next
+     * living player becomes current. Dead seats are skipped after any turn advance.
      *
      * @return the card that was drawn
      * @throws IllegalStateException if the game has not started
@@ -138,11 +142,15 @@ public class GameManager {
         if (card.getTypeofCard() != CardType.Exploding_Kitten) {
             current.addCard(card);
             turnManager.endTurn();
+            skipEliminatedPlayers();
         } else if (current.hasCard(CardType.Defuse)) {
             current.addCard(card);
         } else {
             current.eliminate();
             discardPile.add(card);
+            turnManager.resetTurnsToNormal();
+            turnManager.advanceToNextSeat();
+            skipEliminatedPlayers();
         }
         return card;
     }
@@ -175,6 +183,7 @@ public class GameManager {
         discardPile.add(current.removeCardOfType(CardType.Defuse));
         deck.insertCardAt(kitten, reinsertIndex);
         turnManager.endTurn();
+        skipEliminatedPlayers();
     }
 
     public List<Card> getDiscardPile() {
@@ -206,10 +215,41 @@ public class GameManager {
         playFromHand(CardType.Gamble_Cat);
         if (random.nextInt(GAMBLE_CHOICES) == 0) {
             turnManager.endTurn();
+            skipEliminatedPlayers();
             return true;
         }
         turnManager.addExtraDraw();
         return false;
+    }
+
+    /**
+     * Returns whether the game has ended.
+     *
+     * @return true when at most one player is still alive
+     * @throws IllegalStateException if the game has not started
+     */
+    public boolean isGameOver() {
+        requireStarted();
+        return countAlive() <= 1;
+    }
+
+    /**
+     * Returns the only remaining living player.
+     *
+     * @return the winner
+     * @throws IllegalStateException if the game has not started or is not over
+     */
+    public Player getWinner() {
+        requireStarted();
+        if (!isGameOver()) {
+            throw new IllegalStateException(NOT_OVER);
+        }
+        for (Player player : players) {
+            if (player.isAlive()) {
+                return player;
+            }
+        }
+        throw new IllegalStateException(NOT_OVER);
     }
 
     private static void validatePlayerNames(List<String> playerNames) {
@@ -256,8 +296,14 @@ public class GameManager {
 
     private static List<Card> startingCards() {
         List<Card> cards = new ArrayList<>();
-        for (int i = 0; i < GENERIC_SUPPLY; i++) {
+        for (int i = 0; i < SEE_THE_FUTURE_SUPPLY; i++) {
             cards.add(new Card(CardType.See_The_Future));
+        }
+        for (int i = 0; i < ATTACK_SUPPLY; i++) {
+            cards.add(new Card(CardType.Attack));
+        }
+        for (int i = 0; i < SHUFFLE_SUPPLY; i++) {
+            cards.add(new Card(CardType.Shuffle));
         }
         for (int i = 0; i < TOTAL_DEFUSES; i++) {
             cards.add(new Card(CardType.Defuse));
@@ -269,6 +315,24 @@ public class GameManager {
         if (players.isEmpty()) {
             throw new IllegalStateException(NOT_STARTED);
         }
+    }
+
+    private void skipEliminatedPlayers() {
+        int guard = 0;
+        while (!getCurrentPlayer().isAlive() && countAlive() > 0 && guard < players.size()) {
+            turnManager.advanceToNextSeat();
+            guard++;
+        }
+    }
+
+    private int countAlive() {
+        int alive = 0;
+        for (Player player : players) {
+            if (player.isAlive()) {
+                alive++;
+            }
+        }
+        return alive;
     }
 
     private void playFromHand(CardType type) {

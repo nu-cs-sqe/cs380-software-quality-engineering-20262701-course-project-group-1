@@ -5,4 +5,9 @@
         <Class name="~.*Tests?"/>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
     </Match>
+    <!-- UI stores injected GameManager/Scanner/PrintStream by design. -->
+    <Match>
+        <Package name="ui"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
 </FindBugsFilter>

@@ -36,7 +36,7 @@
 2. [in progress] Connor: Implementation of Shuffle, Exploding Kitten, Draw
 3. [done] Yutong: draw pile setup with BVA and TDD (`getDrawPile`, [#14](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/14)), README update ([#25](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/25)), reviewed [#20](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/20)
 
-**Other**: Alternative win condition still being considered, base game cards all decided, custom cards are still tbd. 
+**Other**: Alternative win condition still being considered, base game cards all decided, custom cards are still tbd.
 
 # Week 6 (11/02/2026-11/08/2026)
 1. [75% done] Ethan: Player + TerminalPrinting, fix merge conflict with Yutong GameManager PR ([#20](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/20), [#24](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/24))
