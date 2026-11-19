@@ -333,6 +333,25 @@ class GameLoopTest {
         assertTrue(printed.contains("Pass device to B"));
     }
 
+    @Test
+    void run_playGambleCatUnlucky_printsUnluckyAndNeedsTwoDraws() {
+        GameManager manager = GameManagerFixtures.alwaysLastPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getCurrentPlayer();
+        ensureInHand(b, CardType.Gamble_Cat);
+        int index = indexOfType(b, CardType.Gamble_Cat);
+        GameManagerFixtures.putOnTop(manager, new Card(CardType.See_The_Future));
+        GameManagerFixtures.putOnTop(manager, new Card(CardType.See_The_Future));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, index + "\nd\nd\n\nq\n");
+
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        String printed = outputOf(out);
+        assertTrue(printed.contains("Gamble Cat: unlucky! Draw two cards to end your turn"));
+        assertEquals(1, printed.split("Pass device to A", -1).length - 1);
+    }
+
     private static int countType(List<Card> cards, CardType type) {
         int count = 0;
         for (Card card : cards) {

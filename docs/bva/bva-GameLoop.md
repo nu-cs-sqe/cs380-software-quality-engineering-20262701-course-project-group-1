@@ -40,6 +40,6 @@ Full interactive session. Tests feed scripted `Scanner` input and assert on prin
 | TC13 | play Defuse from hand menu while no kitten pending | illegal; error message printed; hand unchanged | yes |
 | TC14 | play index out of range / non-integer | error message; hand and turn unchanged | yes |
 | TC15 | after a turn ends and next player differs | hotseat pause prompt; previous hand not required to stay on screen (dev: at least a pass/Enter gate) | yes |
-| TC16 | 2 players, `"A"` starts, plays Gamble Cat by index, flip is lucky | prints the lucky line; current player is `"B"`; hand-off prompt for `"B"` shown | no |
-| TC17 | 2 players, `"B"` starts, plays Gamble Cat by index, flip is unlucky, then draws twice (See the Future on top) | prints the unlucky line; still `"B"` after the first draw; current player is `"A"` after the second; hand-off prompt shown exactly once | no |
+| TC16 | 2 players, `"A"` starts, plays Gamble Cat by index, flip is lucky | prints the lucky line; current player is `"B"`; hand-off prompt for `"B"` shown | yes |
+| TC17 | 2 players, `"B"` starts, plays Gamble Cat by index, flip is unlucky, then draws twice (See the Future on top) | prints the unlucky line; still `"B"` after the first draw; current player is `"A"` after the second; hand-off prompt shown exactly once | yes |
 | TC18 | 2 players, `"B"` unlucky, draws once, then tries to play Attack by index | play rejected; still `"B"`; Attack still in hand | no |
