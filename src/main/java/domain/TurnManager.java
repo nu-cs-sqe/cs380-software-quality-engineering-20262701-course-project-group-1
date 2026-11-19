@@ -10,8 +10,6 @@ public class TurnManager {
     private static final String PLAYER_COUNT_OUT_OF_RANGE = "turnManager.playerCount.outOfRange";
     private static final String RANDOM_NULL = "turnManager.random.null";
     private static final String NOT_STARTED = "turnManager.notStarted";
-    private static final int MIN_PLAYERS = 2;
-    private static final int MAX_PLAYERS = 4;
     private static final int NOT_STARTED_INDEX = -1;
     private static final int TURNS_FROM_ATTACK = 2;
     private static final int NORMAL_TURNS = 1;
@@ -31,7 +29,7 @@ public class TurnManager {
      *     {@code random} is null
      */
     public void pickStart(int playerCount, Random random) {
-        if (playerCount < MIN_PLAYERS || playerCount > MAX_PLAYERS) {
+        if (playerCount < GameRules.MIN_PLAYERS || playerCount > GameRules.MAX_PLAYERS) {
             throw new IllegalArgumentException(PLAYER_COUNT_OUT_OF_RANGE);
         }
         if (random == null) {

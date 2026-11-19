@@ -17,10 +17,6 @@ public class GameManager {
     private static final String NOT_OVER = "gameManager.notOver";
     private static final String MUST_FINISH_DRAWING = "gameManager.play.mustFinishDrawing";
     private static final String INVALID_REINSERT_INDEX = "gameManager.defuse.invalidIndex";
-
-    private static final int MIN_PLAYERS = 2;
-    private static final int MAX_PLAYERS = 4;
-
     private static final int TOTAL_DEFUSES = 6;
     private static final int STARTING_GENERIC_CARDS = 5;
     private static final int SEE_THE_FUTURE_SUPPLY = 10;
@@ -254,7 +250,7 @@ public class GameManager {
     }
 
     private static void validatePlayerNames(List<String> playerNames) {
-        if (playerNames.size() < MIN_PLAYERS || playerNames.size() > MAX_PLAYERS) {
+        if (playerNames.size() < GameRules.MIN_PLAYERS || playerNames.size() > GameRules.MAX_PLAYERS) {
             throw new IllegalArgumentException(PLAYER_COUNT_OUT_OF_RANGE);
         }
         for (String name : playerNames) {
