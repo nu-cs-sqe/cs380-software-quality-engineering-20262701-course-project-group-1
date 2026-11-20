@@ -296,9 +296,11 @@ public class GameManager {
         addCopies(cards, CardType.See_The_Future, SEE_THE_FUTURE_SUPPLY);
         addCopies(cards, CardType.Attack, ATTACK_SUPPLY);
         addCopies(cards, CardType.Shuffle, SHUFFLE_SUPPLY);
+        addCopies(cards, CardType.Gamble_Cat, GAMBLE_CAT_SUPPLY);
         addCopies(cards, CardType.Defuse, TOTAL_DEFUSES);
         return cards;
     }
+
 
     private void requireStarted() {
         if (players.isEmpty()) {
