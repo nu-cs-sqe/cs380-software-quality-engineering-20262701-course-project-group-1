@@ -88,7 +88,7 @@ Starting cards: **10** See_The_Future, **5** Attack, **5** Shuffle, **4** Gamble
 | TC24 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Attack, `playAttack()` | current player is `"A"` (wraps from last seat); turns remaining is `2` | yes |
 | TC25 | 3 players, `"A"` holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in `"A"`'s hand | yes |
 | TC26 | 3 players, `"A"` attacks `"B"`, then `"B"` plays Attack | current player is `"C"` (not back to `"A"`); turns remaining is `4` | yes |
-| TC73 | 3 players, `"B"` already eliminated, `"A"` holds Attack, `playAttack()` | current player is `"C"` (skips dead `"B"`); turns remaining is `2` | yes |
+| TC73 | 3 players, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`, `"A"` holds Attack, `playAttack()` | current player is `"C"` (skips dead `"B"`); turns remaining is `2` | yes |
 
 ---
 
@@ -163,8 +163,8 @@ Ends the current player's turn by drawing the top card of the draw pile. A norma
 | TC51 | 4 players, `"D"` starts, top card is See the Future, `drawCard()` | current player is `"A"` | yes          |
 | TC52 | 2 players, `"A"` has 1 Defuse, top card is Exploding Kitten, `drawCard()` | Exploding Kitten is in `"A"`'s hand; `"A"` is alive; current player is still `"A"` | yes          |
 | TC53 | 2 players, `"A"` has no Defuse, top card is Exploding Kitten, `drawCard()` | `"A"` is eliminated; Exploding Kitten is the last card of the discard pile and not in `"A"`'s hand; current player is `"B"`; turns remaining is `1` | yes |
-| TC63 | 3 players, `"A"` starts, `"B"` already eliminated, `"A"` draws non-EK | current player is `"C"` (skips dead `"B"`) | yes |
-| TC64 | 3 players, `"A"` starts with no Defuse, top is EK, `"B"` already eliminated | `"A"` eliminated; current player is `"C"`; turns remaining is `1` | yes |
+| TC63 | 3 players, `"A"` starts, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`, `"A"` draws non-EK | current player is `"C"` (skips dead `"B"`) | yes |
+| TC64 | 3 players, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`; `"A"` has no Defuse, top is EK | `"A"` eliminated; current player is `"C"`; turns remaining is `1` | yes |
 
 ---
 

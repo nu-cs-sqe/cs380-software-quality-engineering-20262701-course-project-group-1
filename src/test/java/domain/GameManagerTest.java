@@ -211,6 +211,19 @@ class GameManagerTest {
         assertEquals(explodingKittens, countType(all, CardType.Exploding_Kitten));
     }
 
+    /**
+     * In a 3-player game started at seat 0, plays until "B" explodes and it is "A"'s turn again.
+     */
+    private static void eliminateSecondPlayerThroughPlay(GameManager manager) {
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();                                     // A's turn ends; B's turn
+        manager.getCurrentPlayer().removeCardOfType(CardType.Defuse);
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+        manager.drawCard();                                     // B explodes; C's turn
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();                                     // C's turn ends; A's turn
+    }
+
     private static int countType(List<Card> cards, CardType type) {
         int count = 0;
         for (Card card : cards) {
@@ -674,7 +687,7 @@ class GameManagerTest {
     void drawCard_skipsEliminatedNextPlayer() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B", "C"));
-        manager.getPlayers().get(1).eliminate();
+        eliminateSecondPlayerThroughPlay(manager);
         manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
 
         manager.drawCard();
@@ -686,7 +699,7 @@ class GameManagerTest {
     void drawCard_explodeSkipsAlreadyEliminatedPlayer() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B", "C"));
-        manager.getPlayers().get(1).eliminate();
+        eliminateSecondPlayerThroughPlay(manager);
         Player a = manager.getCurrentPlayer();
         a.removeCardOfType(CardType.Defuse);
         manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
@@ -702,7 +715,7 @@ class GameManagerTest {
     void playAttack_skipsEliminatedNextPlayer() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B", "C"));
-        manager.getPlayers().get(1).eliminate();
+        eliminateSecondPlayerThroughPlay(manager);
         manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
 
         manager.playAttack();
