@@ -1198,4 +1198,12 @@ class GameManagerTest {
                 manager::getDrawPileSize);
         assertEquals("gameManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void getDrawPileSize_afterStart_matchesDrawPile() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+
+        assertEquals(manager.getDrawPile().size(), manager.getDrawPileSize());
+    }
 }

@@ -245,7 +245,7 @@ public class GameManager {
      */
     public int getDrawPileSize() {
         requireStarted();
-        return 0;
+        return deck.getDeckSize();
     }
 
     private static void validatePlayerNames(List<String> playerNames) {
