@@ -221,7 +221,7 @@ public class GameManager {
      */
     public boolean isGameOver() {
         requireStarted();
-        return countAlive() <= 1;
+        return alivePlayers().size() <= 1;
     }
 
     /**
@@ -231,16 +231,10 @@ public class GameManager {
      * @throws IllegalStateException if the game has not started or is not over
      */
     public Player getWinner() {
-        requireStarted();
         if (!isGameOver()) {
             throw new IllegalStateException(NOT_OVER);
         }
-        for (Player player : players) {
-            if (player.isAlive()) {
-                return player;
-            }
-        }
-        throw new IllegalStateException(NOT_OVER);
+        return alivePlayers().get(0);
     }
 
     private static void validatePlayerNames(List<String> playerNames) {
@@ -312,11 +306,11 @@ public class GameManager {
         }
     }
 
-    private int countAlive() {
-        int alive = 0;
+    private List<Player> alivePlayers() {
+        List<Player> alive = new ArrayList<>();
         for (Player player : players) {
             if (player.isAlive()) {
-                alive++;
+                alive.add(player);
             }
         }
         return alive;
