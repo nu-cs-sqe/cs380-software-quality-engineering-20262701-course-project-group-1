@@ -90,7 +90,6 @@ public class GameManager {
     public void playAttack() {
         playFromHand(CardType.Attack);
         turnManager.attackNextPlayer();
-        skipEliminatedPlayers();
     }
 
     /**
@@ -127,7 +126,7 @@ public class GameManager {
      * <p>A normal card goes into the hand and the turn ends. An Exploding Kitten stays in the
      * hand if the player has a Defuse, and the turn waits for it to be played. Without a Defuse,
      * the player is eliminated, the Exploding Kitten goes to the discard pile, and the next
-     * living player becomes current. Dead seats are skipped after any turn advance.
+     * living player becomes current.
      *
      * @return the card that was drawn
      * @throws IllegalStateException if the game has not started
@@ -139,15 +138,12 @@ public class GameManager {
         if (card.getTypeofCard() != CardType.Exploding_Kitten) {
             current.addCard(card);
             turnManager.endTurn();
-            skipEliminatedPlayers();
         } else if (current.hasCard(CardType.Defuse)) {
             current.addCard(card);
         } else {
             current.eliminate();
             discardPile.add(card);
-            turnManager.resetTurnsToNormal();
-            turnManager.advanceToNextSeat();
-            skipEliminatedPlayers();
+            turnManager.eliminateCurrentPlayer();
         }
         return card;
     }
@@ -180,7 +176,6 @@ public class GameManager {
         discardPile.add(current.removeCardOfType(CardType.Defuse));
         deck.insertCardAt(kitten, reinsertIndex);
         turnManager.endTurn();
-        skipEliminatedPlayers();
     }
 
     public List<Card> getDiscardPile() {
@@ -212,7 +207,6 @@ public class GameManager {
         playFromHand(CardType.Gamble_Cat);
         if (random.nextInt(GAMBLE_CHOICES) == 0) {
             turnManager.endTurn();
-            skipEliminatedPlayers();
             return true;
         }
         turnManager.addExtraDraw();
@@ -250,7 +244,8 @@ public class GameManager {
     }
 
     private static void validatePlayerNames(List<String> playerNames) {
-        if (playerNames.size() < GameRules.MIN_PLAYERS || playerNames.size() > GameRules.MAX_PLAYERS) {
+        if (playerNames.size() < GameRules.MIN_PLAYERS
+                || playerNames.size() > GameRules.MAX_PLAYERS) {
             throw new IllegalArgumentException(PLAYER_COUNT_OUT_OF_RANGE);
         }
         for (String name : playerNames) {
@@ -314,14 +309,6 @@ public class GameManager {
     private void requireStarted() {
         if (players.isEmpty()) {
             throw new IllegalStateException(NOT_STARTED);
-        }
-    }
-
-    private void skipEliminatedPlayers() {
-        int guard = 0;
-        while (!getCurrentPlayer().isAlive() && countAlive() > 0 && guard < players.size()) {
-            turnManager.advanceToNextSeat();
-            guard++;
         }
     }
 

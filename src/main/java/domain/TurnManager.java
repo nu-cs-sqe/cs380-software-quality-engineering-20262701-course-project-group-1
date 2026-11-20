@@ -159,17 +159,6 @@ public class TurnManager {
         midDraw = false;
     }
 
-    void advanceToNextSeat() {
-        requireStarted();
-        advanceToNextPlayer();
-    }
-
-    void resetTurnsToNormal() {
-        requireStarted();
-        turnsRemaining = NORMAL_TURNS;
-        underAttack = false;
-    }
-
     private int turnsToTransfer() {
         return underAttack ? turnsRemaining : 0;
     }
