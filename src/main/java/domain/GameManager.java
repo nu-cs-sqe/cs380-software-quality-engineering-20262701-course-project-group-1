@@ -293,21 +293,10 @@ public class GameManager {
 
     private static List<Card> startingCards() {
         List<Card> cards = new ArrayList<>();
-        for (int i = 0; i < SEE_THE_FUTURE_SUPPLY; i++) {
-            cards.add(new Card(CardType.See_The_Future));
-        }
-        for (int i = 0; i < ATTACK_SUPPLY; i++) {
-            cards.add(new Card(CardType.Attack));
-        }
-        for (int i = 0; i < SHUFFLE_SUPPLY; i++) {
-            cards.add(new Card(CardType.Shuffle));
-        }
-        for (int i = 0; i < GAMBLE_CAT_SUPPLY; i++) {
-            cards.add(new Card(CardType.Gamble_Cat));
-        }
-        for (int i = 0; i < TOTAL_DEFUSES; i++) {
-            cards.add(new Card(CardType.Defuse));
-        }
+        addCopies(cards, CardType.See_The_Future, SEE_THE_FUTURE_SUPPLY);
+        addCopies(cards, CardType.Attack, ATTACK_SUPPLY);
+        addCopies(cards, CardType.Shuffle, SHUFFLE_SUPPLY);
+        addCopies(cards, CardType.Defuse, TOTAL_DEFUSES);
         return cards;
     }
 
@@ -337,6 +326,12 @@ public class GameManager {
             throw new IllegalStateException(NOT_IN_HAND);
         }
         discardPile.add(current.removeCardOfType(type));
+    }
+
+    private static void addCopies(List<Card> cards, CardType type, int count) {
+        for (int i = 0; i < count; i++) {
+            cards.add(new Card(type));
+        }
     }
 
     // Used in GameManagerTest to put a known card on top of the draw pile
