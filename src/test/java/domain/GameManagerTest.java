@@ -185,7 +185,8 @@ class GameManagerTest {
             assertEquals(0, countType(hand, CardType.Exploding_Kitten));
             int generics = countType(hand, CardType.See_The_Future)
                     + countType(hand, CardType.Attack)
-                    + countType(hand, CardType.Shuffle);
+                    + countType(hand, CardType.Shuffle)
+                    + countType(hand, CardType.Gamble_Cat);
             assertEquals(5, generics);
         }
     }
@@ -205,8 +206,22 @@ class GameManagerTest {
         assertEquals(10, countType(all, CardType.See_The_Future));
         assertEquals(5, countType(all, CardType.Attack));
         assertEquals(5, countType(all, CardType.Shuffle));
+        assertEquals(4, countType(all, CardType.Gamble_Cat));
         assertEquals(6, countType(all, CardType.Defuse));
         assertEquals(explodingKittens, countType(all, CardType.Exploding_Kitten));
+    }
+
+    /**
+     * In a 3-player game started at seat 0, plays until "B" explodes and it is "A"'s turn again.
+     */
+    private static void eliminateSecondPlayerThroughPlay(GameManager manager) {
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();                                     // A's turn ends; B's turn
+        manager.getCurrentPlayer().removeCardOfType(CardType.Defuse);
+        manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
+        manager.drawCard();                                     // B explodes; C's turn
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();                                     // C's turn ends; A's turn
     }
 
     private static int countType(List<Card> cards, CardType type) {
@@ -547,7 +562,7 @@ class GameManagerTest {
 
         List<Card> seen = manager.playSeeTheFuture();
 
-        assertEquals(5, pileBefore.size());
+        assertEquals(9, pileBefore.size());
         for (int i = 0; i < 3; i++) {
             assertSame(pileBefore.get(i), seen.get(i));
         }
@@ -672,7 +687,7 @@ class GameManagerTest {
     void drawCard_skipsEliminatedNextPlayer() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B", "C"));
-        manager.getPlayers().get(1).eliminate();
+        eliminateSecondPlayerThroughPlay(manager);
         manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
 
         manager.drawCard();
@@ -684,7 +699,7 @@ class GameManagerTest {
     void drawCard_explodeSkipsAlreadyEliminatedPlayer() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B", "C"));
-        manager.getPlayers().get(1).eliminate();
+        eliminateSecondPlayerThroughPlay(manager);
         Player a = manager.getCurrentPlayer();
         a.removeCardOfType(CardType.Defuse);
         manager.placeOnTopOfDrawPile(new Card(CardType.Exploding_Kitten));
@@ -700,7 +715,7 @@ class GameManagerTest {
     void playAttack_skipsEliminatedNextPlayer() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B", "C"));
-        manager.getPlayers().get(1).eliminate();
+        eliminateSecondPlayerThroughPlay(manager);
         manager.getCurrentPlayer().addCard(new Card(CardType.Attack));
 
         manager.playAttack();
@@ -1172,5 +1187,35 @@ class GameManagerTest {
         List<Card> pile = manager.getDrawPile();
         assertSame(kitten, pile.get(pile.size() - 1));
         assertEquals("A", manager.getCurrentPlayer().getName());
+    }
+
+    @Test
+    void getDrawPileSize_beforeStart_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::getDrawPileSize);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void getDrawPileSize_afterStart_matchesDrawPile() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+
+        assertEquals(manager.getDrawPile().size(), manager.getDrawPileSize());
+    }
+
+    @Test
+    void getDrawPileSize_afterDraw_isOneSmaller() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        final int sizeBefore = manager.getDrawPileSize();
+
+        manager.drawCard();
+
+        assertEquals(sizeBefore - 1, manager.getDrawPileSize());
     }
 }

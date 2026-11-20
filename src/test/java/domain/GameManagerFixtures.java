@@ -33,4 +33,19 @@ public final class GameManagerFixtures {
     public static void putOnTop(GameManager manager, Card card) {
         manager.placeOnTopOfDrawPile(card);
     }
+
+    /**
+     * Returns a manager whose random choices always pick the last option: the last seat starts
+     * and Gamble Cat comes up unlucky.
+     *
+     * @return a new game manager
+     */
+    public static GameManager alwaysLastPlayer() {
+        return new GameManager(new Random() {
+            @Override
+            public int nextInt(int bound) {
+                return bound - 1;
+            }
+        });
+    }
 }

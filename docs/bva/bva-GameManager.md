@@ -20,14 +20,14 @@ Made with assistance from GenAI.
 
 ## Method 2: `public void startNewGame(List<String> playerNames)`
 
-Starting cards: **10** See_The_Future, **5** Attack, **5** Shuffle, **6** Defuse, then `(n-1)` Exploding Kittens inserted after dealing. Each player still receives 1 Defuse + 5 non-EK cards.
+Starting cards: **10** See_The_Future, **5** Attack, **5** Shuffle, **4** Gamble_Cat, **6** Defuse, then `(n-1)` Exploding Kittens inserted after dealing. Each player still receives 1 Defuse + 5 non-EK cards.
 
 ##### All-combination or each-choice: each-choice
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC2 | `startNewGame(List.of("A", "B"))` | 2 alive players named `"A"`, `"B"`; each hand is 6 cards (1 Defuse + 5 non-EK from {See_The_Future, Attack, Shuffle}, no EK); pile has 1 EK and 4 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 6 Defuse, 1 EK (rough deal mix; balance later) | yes |
-| TC3 | `startNewGame(List.of("A", "B", "C", "D"))` | 4 alive players; each hand same shape as TC2; pile has 3 EK and 2 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 6 Defuse, 3 EK | yes |
+| TC2 | `startNewGame(List.of("A", "B"))` | 2 alive players named `"A"`, `"B"`; each hand is 6 cards (1 Defuse + 5 non-EK from {See_The_Future, Attack, Shuffle, Gamble_Cat}, no EK); pile has 1 EK and 4 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 1 EK | yes |
+| TC3 | `startNewGame(List.of("A", "B", "C", "D"))` | 4 alive players; each hand same shape as TC2; pile has 3 EK and 2 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 3 EK | yes |
 | TC4 | `startNewGame(List.of("A"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC5 | `startNewGame(List.of("A", "B", "C", "D", "E"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
@@ -88,7 +88,7 @@ Starting cards: **10** See_The_Future, **5** Attack, **5** Shuffle, **6** Defuse
 | TC24 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Attack, `playAttack()` | current player is `"A"` (wraps from last seat); turns remaining is `2` | yes |
 | TC25 | 3 players, `"A"` holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in `"A"`'s hand | yes |
 | TC26 | 3 players, `"A"` attacks `"B"`, then `"B"` plays Attack | current player is `"C"` (not back to `"A"`); turns remaining is `4` | yes |
-| TC73 | 3 players, `"B"` already eliminated, `"A"` holds Attack, `playAttack()` | current player is `"C"` (skips dead `"B"`); turns remaining is `2` | yes |
+| TC73 | 3 players, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`, `"A"` holds Attack, `playAttack()` | current player is `"C"` (skips dead `"B"`); turns remaining is `2` | yes |
 
 ---
 
@@ -141,7 +141,7 @@ Starting cards: **10** See_The_Future, **5** Attack, **5** Shuffle, **6** Defuse
 | TC41 | `playSeeTheFuture()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
 | TC42 | 3 players, current player `"A"` has no See the Future (all 5 removed), `playSeeTheFuture()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile and discard pile unchanged | yes |
 | TC43 | 2 players, `"A"` holds 5 See the Future, `playSeeTheFuture()` | returns the top 3 cards of the draw pile, top first; draw pile unchanged (same 15 cards, same order); See the Future is the last card of the discard pile; `"A"` holds 4 See the Future | yes |
-| TC44 | 4 players, `Random` always `bound - 1` (`"D"` starts), draw pile has 5 cards, `playSeeTheFuture()` | returns the top 3 of the 5 cards; current player is still `"D"`; turns remaining is still `1` | yes |
+| TC44 | 4 players, `Random` always `bound - 1` (`"D"` starts), draw pile has 9 cards, `playSeeTheFuture()` | returns the top 3 of the 9 cards; current player is still `"D"`; turns remaining is still `1` | yes |
 | TC45 | 2 players, `"A"` attacks `"B"`, `"B"` plays See the Future | current player is still `"B"`; turns remaining is still `2` | yes |
 | TC46 | 2 players, `"A"` plays See the Future, then `.clear()` on the returned list | later `getDrawPile()` unchanged | yes |
 | TC47 | draw pile has fewer than 3 cards, `playSeeTheFuture()` | CAN'T SET: no way to draw from the pile through `GameManager` yet; add once a draw method exists (expected: returns all remaining cards) | no |
@@ -163,8 +163,8 @@ Ends the current player's turn by drawing the top card of the draw pile. A norma
 | TC51 | 4 players, `"D"` starts, top card is See the Future, `drawCard()` | current player is `"A"` | yes          |
 | TC52 | 2 players, `"A"` has 1 Defuse, top card is Exploding Kitten, `drawCard()` | Exploding Kitten is in `"A"`'s hand; `"A"` is alive; current player is still `"A"` | yes          |
 | TC53 | 2 players, `"A"` has no Defuse, top card is Exploding Kitten, `drawCard()` | `"A"` is eliminated; Exploding Kitten is the last card of the discard pile and not in `"A"`'s hand; current player is `"B"`; turns remaining is `1` | yes |
-| TC63 | 3 players, `"A"` starts, `"B"` already eliminated, `"A"` draws non-EK | current player is `"C"` (skips dead `"B"`) | yes |
-| TC64 | 3 players, `"A"` starts with no Defuse, top is EK, `"B"` already eliminated | `"A"` eliminated; current player is `"C"`; turns remaining is `1` | yes |
+| TC63 | 3 players, `"A"` starts, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`, `"A"` draws non-EK | current player is `"C"` (skips dead `"B"`) | yes |
+| TC64 | 3 players, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`; `"A"` has no Defuse, top is EK | `"A"` eliminated; current player is `"C"`; turns remaining is `1` | yes |
 
 ---
 
@@ -241,3 +241,11 @@ Returns the sole remaining living player. Throws if the game is not over (keeps 
 | TC98 | after start, both alive | throws `IllegalStateException` with message `"gameManager.notOver"` | yes |
 | TC99 | 2 players, `"A"` eliminated | returns `"B"` | yes |
 | TC100 | 3 players, `"A"` and `"B"` eliminated | returns `"C"` | yes |
+
+## Method 16: `public int getDrawPileSize()`
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC104 | `getDrawPileSize()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
+| TC105 | after `startNewGame` with 4 players | equals `getDrawPile().size()` | no |
+| TC106 | 2 players, See the Future on top, `drawCard()` | one less than before the draw | no |

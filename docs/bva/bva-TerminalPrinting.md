@@ -105,3 +105,14 @@ Top of draw pile first. Does not mutate the list.
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
 | TC15 | `"error"` | prints exactly `"error"` (plus newline) | yes |
+
+---
+
+## Method 10: `public void printGambleResult(boolean turnEnded)`
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC16 | `printGambleResult(true)` | prints exactly `"Gamble Cat: lucky! Your turn ends without drawing"` | yes |
+| TC17 | `printGambleResult(false)` | prints exactly `"Gamble Cat: unlucky! Draw two cards to end your turn"` | yes |

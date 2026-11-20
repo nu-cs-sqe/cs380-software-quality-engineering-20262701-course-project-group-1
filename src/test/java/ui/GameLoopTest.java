@@ -316,6 +316,63 @@ class GameLoopTest {
         assertTrue(outputOf(out).contains("Press Enter"));
     }
 
+    @Test
+    void run_playGambleCatLucky_printsLuckyAndPassesTurn() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        ensureInHand(a, CardType.Gamble_Cat);
+        int index = indexOfType(a, CardType.Gamble_Cat);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, index + "\n\nq\n");
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        String printed = outputOf(out);
+        assertTrue(printed.contains("Gamble Cat: lucky! Your turn ends without drawing"));
+        assertTrue(printed.contains("Pass device to B"));
+    }
+
+    @Test
+    void run_playGambleCatUnlucky_printsUnluckyAndNeedsTwoDraws() {
+        GameManager manager = GameManagerFixtures.alwaysLastPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getCurrentPlayer();
+        ensureInHand(b, CardType.Gamble_Cat);
+        int index = indexOfType(b, CardType.Gamble_Cat);
+        GameManagerFixtures.putOnTop(manager, new Card(CardType.See_The_Future));
+        GameManagerFixtures.putOnTop(manager, new Card(CardType.See_The_Future));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, index + "\nd\nd\n\nq\n");
+
+        assertEquals("A", manager.getCurrentPlayer().getName());
+        String printed = outputOf(out);
+        assertTrue(printed.contains("Gamble Cat: unlucky! Draw two cards to end your turn"));
+        assertEquals(1, printed.split("Pass device to A", -1).length - 1);
+    }
+
+    @Test
+    void run_playCardBetweenUnluckyDraws_rejectedAndTurnUnchanged() {
+        GameManager manager = GameManagerFixtures.alwaysLastPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getCurrentPlayer();
+        ensureInHand(b, CardType.Gamble_Cat);
+        b.addCard(new Card(CardType.Attack));
+        int gambleIndex = indexOfType(b, CardType.Gamble_Cat);
+        GameManagerFixtures.putOnTop(manager, new Card(CardType.See_The_Future));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GameLoop loop = loopWithInput(manager, out, gambleIndex + "\nd\n");
+        loop.runTurns();
+        int attackIndex = indexOfType(b, CardType.Attack);
+        int attacksBefore = countType(b.getHand(), CardType.Attack);
+
+        runTurnsWithInput(manager, out, attackIndex + "\nq\n");
+
+        assertEquals("B", manager.getCurrentPlayer().getName());
+        assertEquals(attacksBefore, countType(b.getHand(), CardType.Attack));
+    }
+
     private static int countType(List<Card> cards, CardType type) {
         int count = 0;
         for (Card card : cards) {

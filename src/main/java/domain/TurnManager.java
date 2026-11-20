@@ -10,8 +10,6 @@ public class TurnManager {
     private static final String PLAYER_COUNT_OUT_OF_RANGE = "turnManager.playerCount.outOfRange";
     private static final String RANDOM_NULL = "turnManager.random.null";
     private static final String NOT_STARTED = "turnManager.notStarted";
-    private static final int MIN_PLAYERS = 2;
-    private static final int MAX_PLAYERS = 4;
     private static final int NOT_STARTED_INDEX = -1;
     private static final int TURNS_FROM_ATTACK = 2;
     private static final int NORMAL_TURNS = 1;
@@ -21,6 +19,7 @@ public class TurnManager {
     private boolean underAttack = false;
     private boolean extraDraw = false;
     private boolean midDraw = false;
+    private boolean[] eliminated = new boolean[0];
 
     /**
      * Starts turn tracking with a randomly chosen first player.
@@ -31,13 +30,14 @@ public class TurnManager {
      *     {@code random} is null
      */
     public void pickStart(int playerCount, Random random) {
-        if (playerCount < MIN_PLAYERS || playerCount > MAX_PLAYERS) {
+        if (playerCount < GameRules.MIN_PLAYERS || playerCount > GameRules.MAX_PLAYERS) {
             throw new IllegalArgumentException(PLAYER_COUNT_OUT_OF_RANGE);
         }
         if (random == null) {
             throw new IllegalArgumentException(RANDOM_NULL);
         }
         this.playerCount = playerCount;
+        eliminated = new boolean[playerCount];
         currentIndex = random.nextInt(playerCount);
         turnsRemaining = NORMAL_TURNS;
         underAttack = false;
@@ -126,6 +126,22 @@ public class TurnManager {
         return midDraw;
     }
 
+    /**
+     * Removes the current player from the turn order and passes the turn to the next living player.
+     *
+     * <p>Any turns the eliminated player still owed end with them, so the next player owes one
+     * turn and is not under attack. Eliminated seats are skipped by every later turn change.
+     *
+     * @throws IllegalStateException if {@link #pickStart} has not been called
+     */
+    public void eliminateCurrentPlayer() {
+        requireStarted();
+        eliminated[currentIndex] = true;
+        turnsRemaining = NORMAL_TURNS;
+        underAttack = false;
+        advanceToNextPlayer();
+    }
+
     private void requireStarted() {
         if (currentIndex == NOT_STARTED_INDEX) {
             throw new IllegalStateException(NOT_STARTED);
@@ -133,20 +149,14 @@ public class TurnManager {
     }
 
     private void advanceToNextPlayer() {
-        currentIndex = (currentIndex + 1) % playerCount;
+        for (int step = 0; step < playerCount; step++) {
+            currentIndex = (currentIndex + 1) % playerCount;
+            if (!eliminated[currentIndex]) {
+                break;
+            }
+        }
         extraDraw = false;
         midDraw = false;
-    }
-
-    void advanceToNextSeat() {
-        requireStarted();
-        advanceToNextPlayer();
-    }
-
-    void resetTurnsToNormal() {
-        requireStarted();
-        turnsRemaining = NORMAL_TURNS;
-        underAttack = false;
     }
 
     private int turnsToTransfer() {
