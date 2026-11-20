@@ -1206,4 +1206,16 @@ class GameManagerTest {
 
         assertEquals(manager.getDrawPile().size(), manager.getDrawPileSize());
     }
+
+    @Test
+    void getDrawPileSize_afterDraw_isOneSmaller() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        final int sizeBefore = manager.getDrawPileSize();
+
+        manager.drawCard();
+
+        assertEquals(sizeBefore - 1, manager.getDrawPileSize());
+    }
 }
