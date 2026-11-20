@@ -1188,4 +1188,14 @@ class GameManagerTest {
         assertSame(kitten, pile.get(pile.size() - 1));
         assertEquals("A", manager.getCurrentPlayer().getName());
     }
+
+    @Test
+    void getDrawPileSize_beforeStart_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::getDrawPileSize);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
 }

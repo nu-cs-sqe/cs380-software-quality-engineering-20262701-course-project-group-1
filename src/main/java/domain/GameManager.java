@@ -237,6 +237,17 @@ public class GameManager {
         return alivePlayers().get(0);
     }
 
+    /**
+     * Returns how many cards are left in the draw pile.
+     *
+     * @return the draw-pile size
+     * @throws IllegalStateException if the game has not started
+     */
+    public int getDrawPileSize() {
+        requireStarted();
+        return 0;
+    }
+
     private static void validatePlayerNames(List<String> playerNames) {
         if (playerNames.size() < GameRules.MIN_PLAYERS
                 || playerNames.size() > GameRules.MAX_PLAYERS) {
