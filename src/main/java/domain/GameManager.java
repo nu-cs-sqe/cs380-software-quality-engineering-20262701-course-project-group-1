@@ -269,6 +269,9 @@ public class GameManager {
      */
     public Player playSpecialCatSet() {
         requireStarted();
+        if (turnManager.isMidDraw()) {
+            throw new IllegalStateException(MUST_FINISH_DRAWING);
+        }
         if (alivePlayers().size() != FINAL_TWO) {
             throw new IllegalStateException(CAT_SET_NEEDS_TWO);
         }
