@@ -1324,4 +1324,20 @@ class GameManagerTest {
         assertTrue(manager.getDiscardPile().isEmpty());
         assertTrue(manager.getPlayers().get(1).isAlive());
     }
+
+    @Test
+    void playSpecialCatSet_threePlayersOneEliminated_eliminatesLastOpponent() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        eliminateSecondPlayerThroughPlay(manager);
+        Player a = manager.getCurrentPlayer();
+        Player c = manager.getPlayers().get(2);
+        giveSpecialCats(a, 4);
+
+        Player eliminated = manager.playSpecialCatSet();
+
+        assertSame(c, eliminated);
+        assertTrue(manager.isGameOver());
+        assertSame(a, manager.getWinner());
+    }
 }
