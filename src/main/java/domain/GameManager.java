@@ -281,6 +281,9 @@ public class GameManager {
                 throw new IllegalStateException(CAT_SET_INCOMPLETE);
             }
         }
+        for (CardType cat : SPECIAL_CATS) {
+            discardPile.add(current.removeCardOfType(cat));
+        }
         Player opponent = opponentOf(current);
         opponent.eliminate();
         return opponent;
