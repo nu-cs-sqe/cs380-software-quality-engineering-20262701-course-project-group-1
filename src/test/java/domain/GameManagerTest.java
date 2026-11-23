@@ -14,6 +14,24 @@ import org.junit.jupiter.api.Test;
 
 class GameManagerTest {
 
+    private static void giveSpecialCats(Player player, int count) {
+        List<CardType> cats = List.of(
+                CardType.Special_Cat_1,
+                CardType.Special_Cat_2,
+                CardType.Special_Cat_3,
+                CardType.Special_Cat_4);
+        for (int i = 0; i < count; i++) {
+            player.addCard(new Card(cats.get(i)));
+        }
+    }
+
+    private static int countSpecialCats(List<Card> cards) {
+        return countType(cards, CardType.Special_Cat_1)
+                + countType(cards, CardType.Special_Cat_2)
+                + countType(cards, CardType.Special_Cat_3)
+                + countType(cards, CardType.Special_Cat_4);
+    }
+
     @Test
     void constructor_getPlayers_isEmpty() {
         GameManager manager = new GameManager();
@@ -562,7 +580,7 @@ class GameManagerTest {
 
         List<Card> seen = manager.playSeeTheFuture();
 
-        assertEquals(9, pileBefore.size());
+        assertEquals(13, pileBefore.size());
         for (int i = 0; i < 3; i++) {
             assertSame(pileBefore.get(i), seen.get(i));
         }
@@ -1217,5 +1235,21 @@ class GameManagerTest {
         manager.drawCard();
 
         assertEquals(sizeBefore - 1, manager.getDrawPileSize());
+    }
+
+    @Test
+    void startNewGame_twoPlayers_drawPileHasOneOfEachSpecialCat() {
+        GameManager manager = new GameManager();
+
+        manager.startNewGame(List.of("A", "B"));
+
+        List<Card> pile = manager.getDrawPile();
+        assertEquals(1, countType(pile, CardType.Special_Cat_1));
+        assertEquals(1, countType(pile, CardType.Special_Cat_2));
+        assertEquals(1, countType(pile, CardType.Special_Cat_3));
+        assertEquals(1, countType(pile, CardType.Special_Cat_4));
+        for (Player player : manager.getPlayers()) {
+            assertEquals(0, countSpecialCats(player.getHand()));
+        }
     }
 }

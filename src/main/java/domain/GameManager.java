@@ -25,6 +25,11 @@ public class GameManager {
     private static final int GAMBLE_CAT_SUPPLY = 4;
     private static final int SEE_THE_FUTURE_COUNT = 3;
     private static final int GAMBLE_CHOICES = 2;
+    private static final List<CardType> SPECIAL_CATS = List.of(
+            CardType.Special_Cat_1,
+            CardType.Special_Cat_2,
+            CardType.Special_Cat_3,
+            CardType.Special_Cat_4);
 
     private final List<Player> players = new ArrayList<>();
     private final List<Card> discardPile = new ArrayList<>();
@@ -267,6 +272,7 @@ public class GameManager {
         dealHands(defuses);
         returnLeftoverDefuses(defuses);
         addExplodingKittens(players.size() - 1);
+        addSpecialCats();
         deck.shuffleDeck();
     }
 
@@ -288,6 +294,12 @@ public class GameManager {
     private void addExplodingKittens(int count) {
         for (int i = 0; i < count; i++) {
             deck.addCard(new Card(CardType.Exploding_Kitten));
+        }
+    }
+
+    private void addSpecialCats() {
+        for (CardType cat : SPECIAL_CATS) {
+            deck.addCard(new Card(cat));
         }
     }
 
