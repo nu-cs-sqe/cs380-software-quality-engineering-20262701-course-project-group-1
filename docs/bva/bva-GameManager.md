@@ -20,7 +20,7 @@ Made with assistance from GenAI.
 
 ## Method 2: `public void startNewGame(List<String> playerNames)`
 
-Starting cards: **10** See_The_Future, **5** Attack, **5** Shuffle, **4** Gamble_Cat, **6** Defuse, then `(n-1)` Exploding Kittens inserted after dealing. Each player still receives 1 Defuse + 5 non-EK cards.
+Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, then (n-1) Exploding Kittens and one of each of the four special cats (Special_Cat_1 to Special_Cat_4) inserted after dealing, so the special cats are never in a starting hand. Each player still receives 1 Defuse + 5 non-EK cards.
 
 ##### All-combination or each-choice: each-choice
 
@@ -33,6 +33,8 @@ Starting cards: **10** See_The_Future, **5** Attack, **5** Shuffle, **4** Gamble
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC7 | `startNewGame(List.of("", "B"))` | throws `IllegalArgumentException` with message `"gameManager.playerName.blank"` | yes |
 | TC34 | `startNewGame(List.of("A", "B"))` again after `"A"` played Attack | `getDiscardPile()` is empty; `getTurnsRemaining()` is `1` | yes |
+| TC107 | startNewGame(List.of("A", "B")) | draw pile has exactly one each of Special_Cat_1, Special_Cat_2, Special_Cat_3, Special_Cat_4; no hand has any special cat | no |
+| TC108 | startNewGame(List.of("A", "B", "C", "D")) | draw pile has 4 special cats; no hand has any special cat | no |
 
 ---
 
@@ -141,7 +143,7 @@ Starting cards: **10** See_The_Future, **5** Attack, **5** Shuffle, **4** Gamble
 | TC41 | `playSeeTheFuture()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
 | TC42 | 3 players, current player `"A"` has no See the Future (all 5 removed), `playSeeTheFuture()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile and discard pile unchanged | yes |
 | TC43 | 2 players, `"A"` holds 5 See the Future, `playSeeTheFuture()` | returns the top 3 cards of the draw pile, top first; draw pile unchanged (same 15 cards, same order); See the Future is the last card of the discard pile; `"A"` holds 4 See the Future | yes |
-| TC44 | 4 players, `Random` always `bound - 1` (`"D"` starts), draw pile has 9 cards, `playSeeTheFuture()` | returns the top 3 of the 9 cards; current player is still `"D"`; turns remaining is still `1` | yes |
+| TC44 | 4 players, `Random` always `bound - 1` (`"D"` starts), draw pile has 13 cards (9 plus the 4 special cats), `playSeeTheFuture()` | returns the top 3 of the 13 cards; current player is still `"D"`; turns remaining is still `1` | yes |
 | TC45 | 2 players, `"A"` attacks `"B"`, `"B"` plays See the Future | current player is still `"B"`; turns remaining is still `2` | yes |
 | TC46 | 2 players, `"A"` plays See the Future, then `.clear()` on the returned list | later `getDrawPile()` unchanged | yes |
 | TC47 | draw pile has fewer than 3 cards, `playSeeTheFuture()` | CAN'T SET: no way to draw from the pile through `GameManager` yet; add once a draw method exists (expected: returns all remaining cards) | no |
@@ -249,3 +251,22 @@ Returns the sole remaining living player. Throws if the game is not over (keeps 
 | TC104 | `getDrawPileSize()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
 | TC105 | after `startNewGame` with 4 players | equals `getDrawPile().size()` | no |
 | TC106 | 2 players, See the Future on top, `drawCard()` | one less than before the draw | no |
+
+---
+
+## Method 17: `public Player playSpecialCatSet()`
+
+Alternate win. The current player plays all four special cats at once; the only other living player is eliminated and the current player wins. Only allowed when exactly two players are alive. The four cats go to the discard pile. Like other card plays, it is rejected between the two draws of an unlucky Gamble Cat.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC109 | 2 players, `"A"` current, holds all four special cats, `playSpecialCatSet()` | returns `"B"`; `"B"` eliminated; `isGameOver()` is `true`; winner is `"A"`; the 4 cats are in the discard pile and not in `"A"`'s hand | no |
+| TC110 | playSpecialCatSet() before startNewGame | throws IllegalStateException with message "gameManager.notStarted" | no |
+| TC111 | 3 players all alive, `"A"` holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.needTwoPlayers"`; hand and discard pile unchanged; game not over | no |
+| TC112 | 2 players, `"A"` holds only 3 of the 4 special cats, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.incomplete"`; hand and discard pile unchanged; `"B"` alive | no |
+| TC113 | 3 players, `"B"` eliminated earlier by an Exploding Kitten, back to `"A"`, `"A"` holds all four, `playSpecialCatSet()` | returns `"C"`; game over; winner is `"A"` (counts living players, not seats) | no |
+| TC114 | 4 players all alive, `"A"` holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.needTwoPlayers"` | no |
+| TC115 | 2 players, `"B"` unlucky Gamble Cat, has drawn once, holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; hand unchanged; `"A"` alive | no |
+
