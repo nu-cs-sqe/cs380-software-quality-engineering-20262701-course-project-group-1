@@ -30,6 +30,8 @@ public class GameManager {
             CardType.Special_Cat_2,
             CardType.Special_Cat_3,
             CardType.Special_Cat_4);
+    private static final String CAT_SET_NEEDS_TWO = "gameManager.catSet.needTwoPlayers";
+    private static final int FINAL_TWO = 2;
 
     private final List<Player> players = new ArrayList<>();
     private final List<Card> discardPile = new ArrayList<>();
@@ -266,6 +268,9 @@ public class GameManager {
      */
     public Player playSpecialCatSet() {
         requireStarted();
+        if (alivePlayers().size() != FINAL_TWO) {
+            throw new IllegalStateException(CAT_SET_NEEDS_TWO);
+        }
         Player current = getCurrentPlayer();
         for (CardType cat : SPECIAL_CATS) {
             discardPile.add(current.removeCardOfType(cat));
