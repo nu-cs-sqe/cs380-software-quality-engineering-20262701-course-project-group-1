@@ -1252,4 +1252,16 @@ class GameManagerTest {
             assertEquals(0, countSpecialCats(player.getHand()));
         }
     }
+
+    @Test
+    void startNewGame_fourPlayers_drawPileHasOneOfEachSpecialCat() {
+        GameManager manager = new GameManager();
+
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+
+        assertEquals(4, countSpecialCats(manager.getDrawPile()));
+        for (Player player : manager.getPlayers()) {
+            assertEquals(0, countSpecialCats(player.getHand()));
+        }
+    }
 }
