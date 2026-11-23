@@ -1308,4 +1308,20 @@ class GameManagerTest {
         assertTrue(manager.getDiscardPile().isEmpty());
         assertFalse(manager.isGameOver());
     }
+
+    @Test
+    void playSpecialCatSet_twoPlayersOnlyThreeCats_throwsAndHandUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        giveSpecialCats(a, 3);
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSpecialCatSet);
+        assertEquals("gameManager.catSet.incomplete", ex.getMessage());
+        assertEquals(3, countSpecialCats(a.getHand()));
+        assertTrue(manager.getDiscardPile().isEmpty());
+        assertTrue(manager.getPlayers().get(1).isAlive());
+    }
 }
