@@ -152,6 +152,12 @@ public class GameLoop {
                 case Gamble_Cat:
                     printer.printGambleResult(gameManager.playGambleCat());
                     break;
+                case Special_Cat_1:
+                case Special_Cat_2:
+                case Special_Cat_3:
+                case Special_Cat_4:
+                    printer.printEliminated(gameManager.playSpecialCatSet());
+                    break;
                 default:
                     printer.printMessage("Cannot play that card now");
                     break;
