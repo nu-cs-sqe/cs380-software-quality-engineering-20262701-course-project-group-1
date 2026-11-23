@@ -33,8 +33,8 @@ Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC7 | `startNewGame(List.of("", "B"))` | throws `IllegalArgumentException` with message `"gameManager.playerName.blank"` | yes |
 | TC34 | `startNewGame(List.of("A", "B"))` again after `"A"` played Attack | `getDiscardPile()` is empty; `getTurnsRemaining()` is `1` | yes |
-| TC107 | startNewGame(List.of("A", "B")) | draw pile has exactly one each of Special_Cat_1, Special_Cat_2, Special_Cat_3, Special_Cat_4; no hand has any special cat | no |
-| TC108 | startNewGame(List.of("A", "B", "C", "D")) | draw pile has 4 special cats; no hand has any special cat | no |
+| TC107 | startNewGame(List.of("A", "B")) | draw pile has exactly one each of Special_Cat_1, Special_Cat_2, Special_Cat_3, Special_Cat_4; no hand has any special cat | yes |
+| TC108 | startNewGame(List.of("A", "B", "C", "D")) | draw pile has 4 special cats; no hand has any special cat | yes |
 
 ---
 
@@ -248,9 +248,9 @@ Returns the sole remaining living player. Throws if the game is not over (keeps 
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC104 | `getDrawPileSize()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
-| TC105 | after `startNewGame` with 4 players | equals `getDrawPile().size()` | no |
-| TC106 | 2 players, See the Future on top, `drawCard()` | one less than before the draw | no |
+| TC104 | `getDrawPileSize()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
+| TC105 | after `startNewGame` with 4 players | equals `getDrawPile().size()` | yes |
+| TC106 | 2 players, See the Future on top, `drawCard()` | one less than before the draw | yes |
 
 ---
 
@@ -262,11 +262,11 @@ Alternate win. The current player plays all four special cats at once; the only 
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC109 | 2 players, `"A"` current, holds all four special cats, `playSpecialCatSet()` | returns `"B"`; `"B"` eliminated; `isGameOver()` is `true`; winner is `"A"`; the 4 cats are in the discard pile and not in `"A"`'s hand | no |
-| TC110 | playSpecialCatSet() before startNewGame | throws IllegalStateException with message "gameManager.notStarted" | no |
-| TC111 | 3 players all alive, `"A"` holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.needTwoPlayers"`; hand and discard pile unchanged; game not over | no |
-| TC112 | 2 players, `"A"` holds only 3 of the 4 special cats, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.incomplete"`; hand and discard pile unchanged; `"B"` alive | no |
-| TC113 | 3 players, `"B"` eliminated earlier by an Exploding Kitten, back to `"A"`, `"A"` holds all four, `playSpecialCatSet()` | returns `"C"`; game over; winner is `"A"` (counts living players, not seats) | no |
-| TC114 | 4 players all alive, `"A"` holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.needTwoPlayers"` | no |
-| TC115 | 2 players, `"B"` unlucky Gamble Cat, has drawn once, holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; hand unchanged; `"A"` alive | no |
+| TC109 | 2 players, `"A"` current, holds all four special cats, `playSpecialCatSet()` | returns `"B"`; `"B"` eliminated; `isGameOver()` is `true`; winner is `"A"`; the 4 cats are in the discard pile and not in `"A"`'s hand | yes |
+| TC110 | playSpecialCatSet() before startNewGame | throws IllegalStateException with message "gameManager.notStarted" | yes |
+| TC111 | 3 players all alive, `"A"` holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.needTwoPlayers"`; hand and discard pile unchanged; game not over | yes |
+| TC112 | 2 players, `"A"` holds only 3 of the 4 special cats, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.incomplete"`; hand and discard pile unchanged; `"B"` alive | yes |
+| TC113 | 3 players, `"B"` eliminated earlier by an Exploding Kitten, back to `"A"`, `"A"` holds all four, `playSpecialCatSet()` | returns `"C"`; game over; winner is `"A"` (counts living players, not seats) | yes |
+| TC114 | 4 players all alive, `"A"` holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.needTwoPlayers"` | yes |
+| TC115 | 2 players, `"B"` unlucky Gamble Cat, has drawn once, holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; hand unchanged; `"A"` alive | yes |
 
