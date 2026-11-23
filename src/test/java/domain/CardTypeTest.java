@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.api.Test;
 
 class CardTypeTest {
 
@@ -16,5 +17,10 @@ class CardTypeTest {
     })
     void toString_specialCat_isDisplayName(CardType type, String expected) {
         assertEquals(expected, type.toString());
+    }
+
+    @Test
+    void toString_regularCard_isConstantName() {
+        assertEquals("See_The_Future", CardType.See_The_Future.toString());
     }
 }
