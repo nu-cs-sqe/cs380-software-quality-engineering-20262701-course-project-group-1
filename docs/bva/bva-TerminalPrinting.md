@@ -52,7 +52,7 @@ Numbered list, index starting at `0`. Empty hand prints a single empty-hand line
 | TC6 | hand `[Defuse, Attack]` | prints `"0: Defuse"`, `"1: Attack"` | yes |
 | TC7 | empty hand | prints `"Hand empty"` | yes |
 | TC8 | hand `[See_The_Future, Shuffle, Defuse]` | prints `"0: See_The_Future"`, `"1: Shuffle"`, `"2: Defuse"` | yes |
-| TC18 | hand `[Special_Cat_1]` | prints exactly `"0: Fire Cat"` (the display name, not the constant) | no |
+| TC18 | hand `[Special_Cat_1]` | prints exactly `"0: Fire Cat"` (the display name, not the constant) | yes |
 ---
 
 ## Method 5: `public void printDiscardTop(List<Card> discardPile)`

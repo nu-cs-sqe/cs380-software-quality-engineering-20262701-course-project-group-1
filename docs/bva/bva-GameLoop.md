@@ -43,5 +43,5 @@ Full interactive session. Tests feed scripted `Scanner` input and assert on prin
 | TC16 | 2 players, `"A"` starts, plays Gamble Cat by index, flip is lucky | prints the lucky line; current player is `"B"`; hand-off prompt for `"B"` shown | yes |
 | TC17 | 2 players, `"B"` starts, plays Gamble Cat by index, flip is unlucky, then draws twice (See the Future on top) | prints the unlucky line; still `"B"` after the first draw; current player is `"A"` after the second; hand-off prompt shown exactly once | yes |
 | TC18 | 2 players, `"B"` unlucky, draws once, then tries to play Attack by index | play rejected; still `"B"`; Attack still in hand | yes |
-| TC19 | 2 players, `"A"` holds all four special cats, chooses the hand index of one of them | prints `"B eliminated"` and `"A won"`; game over; winner is `"A"` | no |
-| TC20 | 3 players all alive, `"A"` holds all four special cats, chooses the hand index of one, then `q` | play rejected; game not over; still `"A"`; all four cats still in hand | no |
+| TC19 | 2 players, `"A"` holds all four special cats, chooses the hand index of one of them | prints `"B eliminated"` and `"A won"`; game over; winner is `"A"` | yes |
+| TC20 | 3 players all alive, `"A"` holds all four special cats, chooses the hand index of one, then `q` | play rejected; game not over; still `"A"`; all four cats still in hand | yes |
