@@ -10,8 +10,8 @@
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC1 | `CardType.Special_Cat_1.toString()` | `"Laser Pointer Cat"` | no |
-| TC2 | `CardType.Special_Cat_2.toString()` | `"Box Fort Cat"` | no |
-| TC3 | `CardType.Special_Cat_3.toString()` | `"Zoomies Cat"` | no |
-| TC4 | `CardType.Special_Cat_4.toString()` | `"Shelf Knocker Cat"` | no |
+| TC1 | `CardType.Special_Cat_1.toString()` | `"Fire Cat"` | no |
+| TC2 | `CardType.Special_Cat_2.toString()` | `"Water Cat"` | no |
+| TC3 | `CardType.Special_Cat_3.toString()` | `"Earth Cat"` | no |
+| TC4 | `CardType.Special_Cat_4.toString()` | `"Air Cat"` | no |
 | TC5 | `CardType.See_The_Future.toString()` (a card with no display name) | `"See_The_Future"` (the constant name, unchanged) | no |
