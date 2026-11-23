@@ -1282,4 +1282,14 @@ class GameManagerTest {
         assertEquals(0, countSpecialCats(a.getHand()));
         assertEquals(4, countSpecialCats(manager.getDiscardPile()));
     }
+
+    @Test
+    void playSpecialCatSet_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSpecialCatSet);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
 }

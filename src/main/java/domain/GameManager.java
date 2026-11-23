@@ -265,6 +265,7 @@ public class GameManager {
      *     player does not hold all four special cats
      */
     public Player playSpecialCatSet() {
+        requireStarted();
         Player current = getCurrentPlayer();
         for (CardType cat : SPECIAL_CATS) {
             discardPile.add(current.removeCardOfType(cat));
