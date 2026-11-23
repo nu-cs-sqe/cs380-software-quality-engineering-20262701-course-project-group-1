@@ -253,6 +253,27 @@ public class GameManager {
         return deck.getDeckSize();
     }
 
+    /**
+     * Plays all four special cats from the current player's hand to eliminate the only other
+     * living player, which wins the game.
+     *
+     * <p>Only allowed when exactly two players are alive. The four cats go to the discard pile.
+     *
+     * @return the player who was eliminated
+     * @throws IllegalStateException if the game has not started, the current player is between
+     *     the two draws of an unlucky Gamble Cat, more than two players are alive, or the current
+     *     player does not hold all four special cats
+     */
+    public Player playSpecialCatSet() {
+        Player current = getCurrentPlayer();
+        for (CardType cat : SPECIAL_CATS) {
+            discardPile.add(current.removeCardOfType(cat));
+        }
+        Player opponent = opponentOf(current);
+        opponent.eliminate();
+        return opponent;
+    }
+
     private static void validatePlayerNames(List<String> playerNames) {
         if (playerNames.size() < GameRules.MIN_PLAYERS
                 || playerNames.size() > GameRules.MAX_PLAYERS) {
@@ -346,6 +367,12 @@ public class GameManager {
         for (int i = 0; i < count; i++) {
             cards.add(new Card(type));
         }
+    }
+
+    private Player opponentOf(Player current) {
+        List<Player> others = alivePlayers();
+        others.remove(current);
+        return others.get(0);
     }
 
     // Used in GameManagerTest to put a known card on top of the draw pile

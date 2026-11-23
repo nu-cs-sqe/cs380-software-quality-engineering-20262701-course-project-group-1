@@ -1264,4 +1264,22 @@ class GameManagerTest {
             assertEquals(0, countSpecialCats(player.getHand()));
         }
     }
+
+    @Test
+    void playSpecialCatSet_twoPlayersAllFourCats_opponentEliminatedAndCurrentWins() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        giveSpecialCats(a, 4);
+
+        Player eliminated = manager.playSpecialCatSet();
+
+        assertSame(b, eliminated);
+        assertFalse(b.isAlive());
+        assertTrue(manager.isGameOver());
+        assertSame(a, manager.getWinner());
+        assertEquals(0, countSpecialCats(a.getHand()));
+        assertEquals(4, countSpecialCats(manager.getDiscardPile()));
+    }
 }
