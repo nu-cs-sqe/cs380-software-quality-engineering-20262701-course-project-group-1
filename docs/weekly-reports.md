@@ -48,11 +48,22 @@
 # Week 7 (11/09/2026-11/15/2026)
 
 **Progress**:
-1. [done] Connor: Attack ([#28](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/28)), Shuffle ([#39](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/39)), See the Future ([#41](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/41)); Google Java Style with Checkstyle and SpotBugs; JaCoCo and PIT ([#43](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/43))
+1. [done] Connor: Gamble Cat ([#47](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/47)), Player Refactor ([#48](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/48)), UI Integration ([#55](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/55))
 2. [90% done] Ethan: Defuse card rebuilt on top of `drawCard()` (`playDefuse`, [#35](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/35)); reviewed and merged [#32](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/32)
 3. [70% done] Yutong: Exploding Kitten: `Player.eliminate()` and `GameManager.drawCard()` with BVA and TDD ([#32](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/32), merged); reviewed [#43](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/43)
 
 **Other**: Instructor Week 7 code review is in `docs/instructor-codereview.md`. Alternative win condition (#30) still needs an owner.
+
+# Week 8 (11/16/2026-11/22/2026)
+
+**Progress**:
+1. [done] Connor: Attack ([#28](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/28)), Shuffle ([#39](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/39)), See the Future ([#41](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/41)); Google Java Style with Checkstyle and SpotBugs; JaCoCo and PIT ([#43](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/43))
+2. [done] Ethan: Defuse card rebuilt on top of `drawCard()` (`playDefuse`, [#35](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/35)); reviewed and merged [#32](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/32), Terminal Printing/UI ([#24](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/24))
+3. [done] Yutong: Exploding Kitten: `Player.eliminate()` and `GameManager.drawCard()` with BVA and TDD ([#32](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-1/pull/32), merged)
+4. [50%] Yutong: Cat Cards, Nope
+5. [50%] Ethan: Skip, Custom Card
+
+**Other**: Working through implementing all playable cards, both win conditions have been added, refactoring of classes/methods will be done once everything has been merged to minimize merge conflict.
 
 # One section per week until the last week of class (the week before the Finals week)
 
