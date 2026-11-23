@@ -1340,4 +1340,16 @@ class GameManagerTest {
         assertTrue(manager.isGameOver());
         assertSame(a, manager.getWinner());
     }
+
+    @Test
+    void playSpecialCatSet_fourPlayersAlive_throwsIllegalStateException() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        giveSpecialCats(manager.getCurrentPlayer(), 4);
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSpecialCatSet);
+        assertEquals("gameManager.catSet.needTwoPlayers", ex.getMessage());
+    }
 }
