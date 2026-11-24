@@ -270,3 +270,34 @@ Alternate win. The current player plays all four special cats at once; the only 
 | TC114 | 4 players all alive, `"A"` holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.needTwoPlayers"` | yes |
 | TC115 | 2 players, `"B"` unlucky Gamble Cat, has drawn once, holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; hand unchanged; `"A"` alive | yes |
 
+---
+
+## Method 18: `public void playNope(Player player)`
+
+Any living player (not only the current player) plays a Nope from their hand. The Nope goes to the discard pile and the "noped" flag flips: one Nope stops the action that is about to happen, a second Nope stops the first Nope, and so on. A Nope cannot be played between the two draws of an unlucky Gamble Cat, since there is no action to stop.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC116 | `playNope(player)` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
+| TC117 | 2 players, `"A"` current, `"B"` has no Nope, `playNope(B)` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; discard pile unchanged; `isNoped()` is `false` | no |
+| TC118 | 2 players, `"A"` current, `"B"` holds 1 Nope, `playNope(B)` | Nope is the last card of the discard pile and not in `"B"`'s hand; `isNoped()` is `true`; current player is still `"A"`; turns remaining is `1` | no |
+| TC119 | 2 players, `"B"` holds 2 Nopes, `playNope(B)` | exactly one Nope on the discard pile; one Nope still in `"B"`'s hand | no |
+| TC120 | 2 players, `"B"` and `"A"` each hold 1 Nope, `playNope(B)` then `playNope(A)` | `isNoped()` is `false` (a Nope on a Nope); both Nopes on the discard pile | no |
+| TC121 | 3 players, `"B"` eliminated earlier, `"B"` holds a Nope, `playNope(B)` | throws `IllegalStateException` with message `"gameManager.nope.eliminated"`; Nope still in `"B"`'s hand; `isNoped()` is `false` | no |
+| TC122 | 2 players, `"B"` unlucky Gamble Cat and has drawn once, `"A"` holds a Nope, `playNope(A)` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; Nope still in `"A"`'s hand | no |
+
+---
+
+## Method 19: `public boolean isNoped()`
+
+Returns whether the action about to happen has been stopped by a Nope.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC123 | 2 players, right after `startNewGame` | `false` | no |
+| TC124 | 2 players, `"B"` plays a Nope, then `startNewGame` again | `false` (a new game clears the flag) | no |
+| — | after one Nope / after a Nope on a Nope | see TC118 / TC120 | — |
