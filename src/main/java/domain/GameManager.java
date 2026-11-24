@@ -33,6 +33,7 @@ public class GameManager {
     private static final String CAT_SET_NEEDS_TWO = "gameManager.catSet.needTwoPlayers";
     private static final int FINAL_TWO = 2;
     private static final String CAT_SET_INCOMPLETE = "gameManager.catSet.incomplete";
+    private static final String NOPE_ELIMINATED = "gameManager.nope.eliminated";
 
     private final List<Player> players = new ArrayList<>();
     private final List<Card> discardPile = new ArrayList<>();
@@ -298,6 +299,12 @@ public class GameManager {
      */
     public void playNope(Player player) {
         requireStarted();
+        if (!player.isAlive()) {
+            throw new IllegalStateException(NOPE_ELIMINATED);
+        }
+        if (turnManager.isMidDraw()) {
+            throw new IllegalStateException(MUST_FINISH_DRAWING);
+        }
         if (!player.hasCard(CardType.Nope)) {
             throw new IllegalStateException(NOT_IN_HAND);
         }

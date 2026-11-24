@@ -1448,4 +1448,41 @@ class GameManagerTest {
         assertFalse(manager.isNoped());
         assertEquals(2, countType(manager.getDiscardPile(), CardType.Nope));
     }
+
+    @Test
+    void playNope_eliminatedPlayer_throwsAndNopeKept() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        eliminateSecondPlayerThroughPlay(manager);
+        Player b = manager.getPlayers().get(1);
+        b.addCard(new Card(CardType.Nope));
+        int nopesBefore = countType(b.getHand(), CardType.Nope);
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> manager.playNope(b));
+        assertEquals("gameManager.nope.eliminated", ex.getMessage());
+        assertEquals(nopesBefore, countType(b.getHand(), CardType.Nope));
+        assertFalse(manager.isNoped());
+    }
+
+    @Test
+    void playNope_unluckyMidDraw_throwsAndNopeKept() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getCurrentPlayer();
+        Player a = manager.getPlayers().get(0);
+        b.addCard(new Card(CardType.Gamble_Cat));
+        manager.playGambleCat();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();
+        a.addCard(new Card(CardType.Nope));
+        int nopesBefore = countType(a.getHand(), CardType.Nope);
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> manager.playNope(a));
+        assertEquals("gameManager.play.mustFinishDrawing", ex.getMessage());
+        assertEquals(nopesBefore, countType(a.getHand(), CardType.Nope));
+    }
 }
