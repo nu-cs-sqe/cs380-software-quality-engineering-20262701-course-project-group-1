@@ -1398,4 +1398,23 @@ class GameManagerTest {
         assertTrue(manager.getDiscardPile().isEmpty());
         assertFalse(manager.isNoped());
     }
+
+    @Test
+    void playNope_otherPlayerHoldsNope_nopeDiscardedAndActionNoped() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        b.addCard(new Card(CardType.Nope));
+        int nopesBefore = countType(b.getHand(), CardType.Nope);
+
+        manager.playNope(b);
+
+        List<Card> discard = manager.getDiscardPile();
+        assertEquals(CardType.Nope, discard.get(discard.size() - 1).getTypeofCard());
+        assertEquals(nopesBefore - 1, countType(b.getHand(), CardType.Nope));
+        assertTrue(manager.isNoped());
+        assertSame(a, manager.getCurrentPlayer());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
 }
