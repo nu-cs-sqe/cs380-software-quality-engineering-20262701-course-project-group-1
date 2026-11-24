@@ -91,7 +91,8 @@ Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 
 | TC25 | 3 players, `"A"` holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in `"A"`'s hand | yes |
 | TC26 | 3 players, `"A"` attacks `"B"`, then `"B"` plays Attack | current player is `"C"` (not back to `"A"`); turns remaining is `4` | yes |
 | TC73 | 3 players, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`, `"A"` holds Attack, `playAttack()` | current player is `"C"` (skips dead `"B"`); turns remaining is `2` | yes |
-
+| TC125 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, then `playAttack()` | Attack is on the discard pile and not in `"A"`'s hand; current player is still `"A"`; turns remaining is `1`; `isNoped()` is `false` | no |
+| TC126 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, `"A"` plays a Nope back, then `playAttack()` | the Attack happens: current player is `"B"`; turns remaining is `2`; `isNoped()` is `false` | no |
 ---
 
 ## Method 7: `public List<Card> getDiscardPile()`
@@ -131,7 +132,7 @@ Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 
 | TC38 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Shuffle, `playShuffle()` | current player is still `"D"`; turns remaining is still `1` | yes |
 | TC39 | 3 players, `"A"` holds 2 Shuffles, `playShuffle()` | exactly one Shuffle removed; one still in `"A"`'s hand | yes |
 | TC40 | 2 players, `"A"` attacks `"B"`, `"B"` holds 1 Shuffle, `playShuffle()` | current player is still `"B"`; turns remaining is still `2` | yes |
-
+| TC127 | 2 players, `"A"` holds Shuffle, `"B"` plays a Nope, then `playShuffle()` | draw pile order unchanged; Shuffle is on the discard pile; `isNoped()` is `false` | no |
 ---
 
 ## Method 10: `public List<Card> playSeeTheFuture()`
@@ -147,7 +148,7 @@ Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 
 | TC45 | 2 players, `"A"` attacks `"B"`, `"B"` plays See the Future | current player is still `"B"`; turns remaining is still `2` | yes |
 | TC46 | 2 players, `"A"` plays See the Future, then `.clear()` on the returned list | later `getDrawPile()` unchanged | yes |
 | TC47 | draw pile has fewer than 3 cards, `playSeeTheFuture()` | CAN'T SET: no way to draw from the pile through `GameManager` yet; add once a draw method exists (expected: returns all remaining cards) | no |
-
+| TC128 | 2 players, `"A"` holds See the Future, `"B"` plays a Nope, then `playSeeTheFuture()` | returns an empty list; See the Future is on the discard pile; `isNoped()` is `false` | no |
 
 ---
 
@@ -213,7 +214,7 @@ Custom card. Plays a Gamble Cat from the current player's hand, then picks an ou
 | TC90 | 2 players, `Random` is an EasyMock mock: setup returns `0` (`"A"` starts), then exactly one `nextInt(2)` returning `1`, `playGambleCat()` | returns `false`; current player is still `"A"`; mock verifies exactly one `nextInt(2)` call | yes |
 | TC91 | 2 players, `Random` is an EasyMock mock: setup returns `0` (`"A"` starts), then exactly one `nextInt(2)` returning `0`, `playGambleCat()` | returns `true`; current player is `"B"`; mock verifies exactly one `nextInt(2)` call | yes |
 | TC92 | 2 players, `"B"` unlucky, first draw See the Future, second draw Exploding Kitten with Defuse, `playDefuse(bottom)` | Defuse allowed mid-draw; Exploding Kitten is the bottom card of the draw pile; current player is `"A"` | yes |
-
+| TC129 | 2 players, `"A"` holds Gamble Cat, `Random` would give lucky, `"B"` plays a Nope, then `playGambleCat()` | returns `false`; current player is still `"A"`; then one `drawCard()` makes `"B"` current (no extra draw); `isNoped()` is `false` | no |
 ---
 
 ## Method 14: `public boolean isGameOver()`
