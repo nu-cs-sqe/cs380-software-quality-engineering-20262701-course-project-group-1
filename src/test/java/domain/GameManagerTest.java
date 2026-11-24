@@ -1506,4 +1506,24 @@ class GameManagerTest {
 
         assertFalse(manager.isNoped());
     }
+
+    @Test
+    void playAttack_noped_attackDiscardedAndTurnUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        a.addCard(new Card(CardType.Attack));
+        int attacksBefore = countType(a.getHand(), CardType.Attack);
+        b.addCard(new Card(CardType.Nope));
+        manager.playNope(b);
+
+        manager.playAttack();
+
+        assertEquals(attacksBefore - 1, countType(a.getHand(), CardType.Attack));
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.Attack));
+        assertSame(a, manager.getCurrentPlayer());
+        assertEquals(1, manager.getTurnsRemaining());
+        assertFalse(manager.isNoped());
+    }
 }

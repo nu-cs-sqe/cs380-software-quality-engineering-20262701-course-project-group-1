@@ -93,14 +93,15 @@ public class GameManager {
      * Plays an Attack card from the current player's hand.
      *
      * <p>The card goes to the discard pile and the next player must take two turns, plus any
-     * turns the current player still owed from an earlier attack.
+     * turns the current player still owed from an earlier attack. A Noped Attack has no effect.
      *
      * @throws IllegalStateException if the game has not started or the current player has no
      *     Attack card
      */
     public void playAttack() {
-        playFromHand(CardType.Attack);
-        turnManager.attackNextPlayer();
+        if (playFromHand(CardType.Attack)) {
+            turnManager.attackNextPlayer();
+        }
     }
 
     /**
@@ -396,7 +397,7 @@ public class GameManager {
         return alive;
     }
 
-    private void playFromHand(CardType type) {
+    private boolean playFromHand(CardType type) {
         requireStarted();
         if (turnManager.isMidDraw()) {
             throw new IllegalStateException(MUST_FINISH_DRAWING);
@@ -406,6 +407,9 @@ public class GameManager {
             throw new IllegalStateException(NOT_IN_HAND);
         }
         discardPile.add(current.removeCardOfType(type));
+        boolean takesEffect = !noped;
+        noped = false;
+        return takesEffect;
     }
 
     private static void addCopies(List<Card> cards, CardType type, int count) {

@@ -83,16 +83,16 @@ Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC20 | `playAttack()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
-| TC21 | 3 players, current player `"A"` has no Attack, `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand and current player unchanged | yes |
-| TC22 | 2 players, `"A"` holds 1 Attack, `playAttack()` | Attack removed from `"A"`'s hand and on top of discard pile; current player is `"B"`; turns remaining is `2` | yes |
-| TC23 | 4 players, `Random` always `0` (`"A"` starts), `"A"` holds 1 Attack, `playAttack()` | current player is `"B"` (next seat, not `"C"` or `"D"`); turns remaining is `2` | yes |
-| TC24 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Attack, `playAttack()` | current player is `"A"` (wraps from last seat); turns remaining is `2` | yes |
-| TC25 | 3 players, `"A"` holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in `"A"`'s hand | yes |
-| TC26 | 3 players, `"A"` attacks `"B"`, then `"B"` plays Attack | current player is `"C"` (not back to `"A"`); turns remaining is `4` | yes |
-| TC73 | 3 players, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`, `"A"` holds Attack, `playAttack()` | current player is `"C"` (skips dead `"B"`); turns remaining is `2` | yes |
-| TC125 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, then `playAttack()` | Attack is on the discard pile and not in `"A"`'s hand; current player is still `"A"`; turns remaining is `1`; `isNoped()` is `false` | no |
-| TC126 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, `"A"` plays a Nope back, then `playAttack()` | the Attack happens: current player is `"B"`; turns remaining is `2`; `isNoped()` is `false` | no |
+| TC20 | `playAttack()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes          |
+| TC21 | 3 players, current player `"A"` has no Attack, `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand and current player unchanged | yes          |
+| TC22 | 2 players, `"A"` holds 1 Attack, `playAttack()` | Attack removed from `"A"`'s hand and on top of discard pile; current player is `"B"`; turns remaining is `2` | yes          |
+| TC23 | 4 players, `Random` always `0` (`"A"` starts), `"A"` holds 1 Attack, `playAttack()` | current player is `"B"` (next seat, not `"C"` or `"D"`); turns remaining is `2` | yes          |
+| TC24 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Attack, `playAttack()` | current player is `"A"` (wraps from last seat); turns remaining is `2` | yes          |
+| TC25 | 3 players, `"A"` holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in `"A"`'s hand | yes          |
+| TC26 | 3 players, `"A"` attacks `"B"`, then `"B"` plays Attack | current player is `"C"` (not back to `"A"`); turns remaining is `4` | yes          |
+| TC73 | 3 players, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`, `"A"` holds Attack, `playAttack()` | current player is `"C"` (skips dead `"B"`); turns remaining is `2` | yes          |
+| TC125 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, then `playAttack()` | Attack is on the discard pile and not in `"A"`'s hand; current player is still `"A"`; turns remaining is `1`; `isNoped()` is `false` | yes          |
+| TC126 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, `"A"` plays a Nope back, then `playAttack()` | the Attack happens: current player is `"B"`; turns remaining is `2`; `isNoped()` is `false` | no           |
 ---
 
 ## Method 7: `public List<Card> getDiscardPile()`
