@@ -293,10 +293,12 @@ public class GameManager {
     }
 
     /**
-     * Plays a Nope from a player's hand.
+     * Plays a Nope from any living player's hand. A second Nope cancels the first.
      *
      * @param player the player who plays the Nope
-     * @throws IllegalStateException if the game has not started
+     * @throws IllegalStateException if the game has not started, the player is eliminated, the
+     *     current player is between the two draws of an unlucky Gamble Cat, or the player has no
+     *     Nope
      */
     public void playNope(Player player) {
         requireStarted();

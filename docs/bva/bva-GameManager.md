@@ -4,7 +4,7 @@ This file holds the BVA analysis for every public method of the `GameManager` cl
 
 
 
-Made with assistance from GenAI. 
+Made with assistance from GenAI.
 
 ---
 
@@ -298,6 +298,6 @@ Returns whether the action about to happen has been stopped by a Nope.
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC123 | 2 players, right after `startNewGame` | `false` | no |
-| TC124 | 2 players, `"B"` plays a Nope, then `startNewGame` again | `false` (a new game clears the flag) | no |
-| — | after one Nope / after a Nope on a Nope | see TC118 / TC120 | — |
+| TC123 | 2 players, right after `startNewGame` | `false` | yes          |
+| TC124 | 2 players, `"B"` plays a Nope, then `startNewGame` again | `false` (a new game clears the flag) | yes          |
+| — | after one Nope / after a Nope on a Nope | see TC118 / TC120 | —            |
