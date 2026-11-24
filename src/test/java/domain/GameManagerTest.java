@@ -1381,4 +1381,21 @@ class GameManagerTest {
                 () -> manager.playNope(new Player("A")));
         assertEquals("gameManager.notStarted", ex.getMessage());
     }
+
+    @Test
+    void playNope_playerHasNoNope_throwsAndNothingChanges() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getPlayers().get(1);
+        while (b.hasCard(CardType.Nope)) {
+            b.removeCardOfType(CardType.Nope);
+        }
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> manager.playNope(b));
+        assertEquals("gameManager.play.notInHand", ex.getMessage());
+        assertTrue(manager.getDiscardPile().isEmpty());
+        assertFalse(manager.isNoped());
+    }
 }

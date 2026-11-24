@@ -39,6 +39,7 @@ public class GameManager {
     private final TurnManager turnManager = new TurnManager();
     private final Random random;
     private Deck deck;
+    private boolean noped;
 
     /**
      * Creates a game manager that uses a new {@link Random} for shuffling and turn order.
@@ -297,6 +298,13 @@ public class GameManager {
      */
     public void playNope(Player player) {
         requireStarted();
+        if (!player.hasCard(CardType.Nope)) {
+            throw new IllegalStateException(NOT_IN_HAND);
+        }
+    }
+
+    public boolean isNoped() {
+        return noped;
     }
 
     private static void validatePlayerNames(List<String> playerNames) {
