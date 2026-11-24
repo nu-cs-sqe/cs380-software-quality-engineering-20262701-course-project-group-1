@@ -14,6 +14,24 @@ import org.junit.jupiter.api.Test;
 
 class GameManagerTest {
 
+    private static void giveSpecialCats(Player player, int count) {
+        List<CardType> cats = List.of(
+                CardType.Special_Cat_1,
+                CardType.Special_Cat_2,
+                CardType.Special_Cat_3,
+                CardType.Special_Cat_4);
+        for (int i = 0; i < count; i++) {
+            player.addCard(new Card(cats.get(i)));
+        }
+    }
+
+    private static int countSpecialCats(List<Card> cards) {
+        return countType(cards, CardType.Special_Cat_1)
+                + countType(cards, CardType.Special_Cat_2)
+                + countType(cards, CardType.Special_Cat_3)
+                + countType(cards, CardType.Special_Cat_4);
+    }
+
     @Test
     void constructor_getPlayers_isEmpty() {
         GameManager manager = new GameManager();
@@ -562,7 +580,7 @@ class GameManagerTest {
 
         List<Card> seen = manager.playSeeTheFuture();
 
-        assertEquals(9, pileBefore.size());
+        assertEquals(13, pileBefore.size());
         for (int i = 0; i < 3; i++) {
             assertSame(pileBefore.get(i), seen.get(i));
         }
@@ -1217,5 +1235,140 @@ class GameManagerTest {
         manager.drawCard();
 
         assertEquals(sizeBefore - 1, manager.getDrawPileSize());
+    }
+
+    @Test
+    void startNewGame_twoPlayers_drawPileHasOneOfEachSpecialCat() {
+        GameManager manager = new GameManager();
+
+        manager.startNewGame(List.of("A", "B"));
+
+        List<Card> pile = manager.getDrawPile();
+        assertEquals(1, countType(pile, CardType.Special_Cat_1));
+        assertEquals(1, countType(pile, CardType.Special_Cat_2));
+        assertEquals(1, countType(pile, CardType.Special_Cat_3));
+        assertEquals(1, countType(pile, CardType.Special_Cat_4));
+        for (Player player : manager.getPlayers()) {
+            assertEquals(0, countSpecialCats(player.getHand()));
+        }
+    }
+
+    @Test
+    void startNewGame_fourPlayers_drawPileHasOneOfEachSpecialCat() {
+        GameManager manager = new GameManager();
+
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+
+        assertEquals(4, countSpecialCats(manager.getDrawPile()));
+        for (Player player : manager.getPlayers()) {
+            assertEquals(0, countSpecialCats(player.getHand()));
+        }
+    }
+
+    @Test
+    void playSpecialCatSet_twoPlayersAllFourCats_opponentEliminatedAndCurrentWins() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        giveSpecialCats(a, 4);
+
+        Player eliminated = manager.playSpecialCatSet();
+
+        assertSame(b, eliminated);
+        assertFalse(b.isAlive());
+        assertTrue(manager.isGameOver());
+        assertSame(a, manager.getWinner());
+        assertEquals(0, countSpecialCats(a.getHand()));
+        assertEquals(4, countSpecialCats(manager.getDiscardPile()));
+    }
+
+    @Test
+    void playSpecialCatSet_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSpecialCatSet);
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
+
+    @Test
+    void playSpecialCatSet_threePlayersAlive_throwsAndHandUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        Player a = manager.getCurrentPlayer();
+        giveSpecialCats(a, 4);
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSpecialCatSet);
+        assertEquals("gameManager.catSet.needTwoPlayers", ex.getMessage());
+        assertEquals(4, countSpecialCats(a.getHand()));
+        assertTrue(manager.getDiscardPile().isEmpty());
+        assertFalse(manager.isGameOver());
+    }
+
+    @Test
+    void playSpecialCatSet_twoPlayersOnlyThreeCats_throwsAndHandUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        giveSpecialCats(a, 3);
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSpecialCatSet);
+        assertEquals("gameManager.catSet.incomplete", ex.getMessage());
+        assertEquals(3, countSpecialCats(a.getHand()));
+        assertTrue(manager.getDiscardPile().isEmpty());
+        assertTrue(manager.getPlayers().get(1).isAlive());
+    }
+
+    @Test
+    void playSpecialCatSet_threePlayersOneEliminated_eliminatesLastOpponent() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C"));
+        eliminateSecondPlayerThroughPlay(manager);
+        Player a = manager.getCurrentPlayer();
+        Player c = manager.getPlayers().get(2);
+        giveSpecialCats(a, 4);
+
+        Player eliminated = manager.playSpecialCatSet();
+
+        assertSame(c, eliminated);
+        assertTrue(manager.isGameOver());
+        assertSame(a, manager.getWinner());
+    }
+
+    @Test
+    void playSpecialCatSet_fourPlayersAlive_throwsIllegalStateException() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B", "C", "D"));
+        giveSpecialCats(manager.getCurrentPlayer(), 4);
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSpecialCatSet);
+        assertEquals("gameManager.catSet.needTwoPlayers", ex.getMessage());
+    }
+
+    @Test
+    void playSpecialCatSet_unluckyMidDraw_throwsAndHandUnchanged() {
+        GameManager manager = new GameManager(alwaysLast());
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getCurrentPlayer();
+        b.addCard(new Card(CardType.Gamble_Cat));
+        giveSpecialCats(b, 4);
+        manager.playGambleCat();
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                manager::playSpecialCatSet);
+        assertEquals("gameManager.play.mustFinishDrawing", ex.getMessage());
+        assertEquals(4, countSpecialCats(b.getHand()));
+        assertTrue(manager.getPlayers().get(0).isAlive());
     }
 }

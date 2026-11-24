@@ -27,6 +27,7 @@ Made with assistance from GenAI.
 | TC2 | 2 players `"A"`, `"B"`; current `"A"` | prints `"A alive"`, `"B alive"`, `"Current turn: A"` | yes |
 | TC3 | 4 players `"A"`, `"B"`, `"C"`, `"D"`; current `"D"` | prints `"A alive"`, `"B alive"`, `"C alive"`, `"D alive"`, `"Current turn: D"` | yes |
 
+
 ---
 
 ## Method 3: `public void printTurn(Player current, int turnsRemaining, int drawPileSize)`
@@ -51,7 +52,7 @@ Numbered list, index starting at `0`. Empty hand prints a single empty-hand line
 | TC6 | hand `[Defuse, Attack]` | prints `"0: Defuse"`, `"1: Attack"` | yes |
 | TC7 | empty hand | prints `"Hand empty"` | yes |
 | TC8 | hand `[See_The_Future, Shuffle, Defuse]` | prints `"0: See_The_Future"`, `"1: Shuffle"`, `"2: Defuse"` | yes |
-
+| TC18 | hand `[Special_Cat_1]` | prints exactly `"0: Fire Cat"` (the display name, not the constant) | yes |
 ---
 
 ## Method 5: `public void printDiscardTop(List<Card> discardPile)`

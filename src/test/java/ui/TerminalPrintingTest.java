@@ -171,4 +171,11 @@ class TerminalPrintingTest {
                 + System.lineSeparator();
         assertEquals(expected, buffer.toString(StandardCharsets.UTF_8));
     }
+
+    @Test
+    void printHand_specialCat_printsDisplayName() {
+        printer.printHand(List.of(new Card(CardType.Special_Cat_1)));
+
+        assertEquals("0: Fire Cat\n", output());
+    }
 }

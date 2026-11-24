@@ -25,6 +25,14 @@ public class GameManager {
     private static final int GAMBLE_CAT_SUPPLY = 4;
     private static final int SEE_THE_FUTURE_COUNT = 3;
     private static final int GAMBLE_CHOICES = 2;
+    private static final List<CardType> SPECIAL_CATS = List.of(
+            CardType.Special_Cat_1,
+            CardType.Special_Cat_2,
+            CardType.Special_Cat_3,
+            CardType.Special_Cat_4);
+    private static final String CAT_SET_NEEDS_TWO = "gameManager.catSet.needTwoPlayers";
+    private static final int FINAL_TWO = 2;
+    private static final String CAT_SET_INCOMPLETE = "gameManager.catSet.incomplete";
 
     private final List<Player> players = new ArrayList<>();
     private final List<Card> discardPile = new ArrayList<>();
@@ -248,6 +256,39 @@ public class GameManager {
         return deck.getDeckSize();
     }
 
+    /**
+     * Plays all four special cats from the current player's hand to eliminate the only other
+     * living player, which wins the game.
+     *
+     * <p>Only allowed when exactly two players are alive. The four cats go to the discard pile.
+     *
+     * @return the player who was eliminated
+     * @throws IllegalStateException if the game has not started, the current player is between
+     *     the two draws of an unlucky Gamble Cat, more than two players are alive, or the current
+     *     player does not hold all four special cats
+     */
+    public Player playSpecialCatSet() {
+        requireStarted();
+        if (turnManager.isMidDraw()) {
+            throw new IllegalStateException(MUST_FINISH_DRAWING);
+        }
+        if (alivePlayers().size() != FINAL_TWO) {
+            throw new IllegalStateException(CAT_SET_NEEDS_TWO);
+        }
+        Player current = getCurrentPlayer();
+        for (CardType cat : SPECIAL_CATS) {
+            if (!current.hasCard(cat)) {
+                throw new IllegalStateException(CAT_SET_INCOMPLETE);
+            }
+        }
+        for (CardType cat : SPECIAL_CATS) {
+            discardPile.add(current.removeCardOfType(cat));
+        }
+        Player opponent = opponentOf(current);
+        opponent.eliminate();
+        return opponent;
+    }
+
     private static void validatePlayerNames(List<String> playerNames) {
         if (playerNames.size() < GameRules.MIN_PLAYERS
                 || playerNames.size() > GameRules.MAX_PLAYERS) {
@@ -267,6 +308,7 @@ public class GameManager {
         dealHands(defuses);
         returnLeftoverDefuses(defuses);
         addExplodingKittens(players.size() - 1);
+        addSpecialCats();
         deck.shuffleDeck();
     }
 
@@ -288,6 +330,12 @@ public class GameManager {
     private void addExplodingKittens(int count) {
         for (int i = 0; i < count; i++) {
             deck.addCard(new Card(CardType.Exploding_Kitten));
+        }
+    }
+
+    private void addSpecialCats() {
+        for (CardType cat : SPECIAL_CATS) {
+            deck.addCard(new Card(cat));
         }
     }
 
@@ -334,6 +382,12 @@ public class GameManager {
         for (int i = 0; i < count; i++) {
             cards.add(new Card(type));
         }
+    }
+
+    private Player opponentOf(Player current) {
+        List<Player> others = alivePlayers();
+        others.remove(current);
+        return others.get(0);
     }
 
     // Used in GameManagerTest to put a known card on top of the draw pile

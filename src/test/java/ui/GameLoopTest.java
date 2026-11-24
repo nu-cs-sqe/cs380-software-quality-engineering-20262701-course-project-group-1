@@ -373,6 +373,48 @@ class GameLoopTest {
         assertEquals(attacksBefore, countType(b.getHand(), CardType.Attack));
     }
 
+    @Test
+    void run_playSpecialCat_twoPlayersFullSet_printsEliminatedAndWinner() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        giveAllSpecialCats(a);
+        int index = indexOfType(a, CardType.Special_Cat_2);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, index + "\n");
+
+        assertTrue(manager.isGameOver());
+        assertSame(a, manager.getWinner());
+        String printed = outputOf(out);
+        assertTrue(printed.contains("B eliminated\n"));
+        assertTrue(printed.contains("A won\n"));
+    }
+
+    @Test
+    void run_playSpecialCat_threePlayersAlive_rejectedAndCatsKept() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B", "C"));
+        Player a = manager.getCurrentPlayer();
+        giveAllSpecialCats(a);
+        int index = indexOfType(a, CardType.Special_Cat_1);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, index + "\nq\n");
+
+        assertFalse(manager.isGameOver());
+        assertSame(a, manager.getCurrentPlayer());
+        assertEquals(1, countType(a.getHand(), CardType.Special_Cat_1));
+        assertEquals(1, countType(a.getHand(), CardType.Special_Cat_4));
+    }
+
+    private static void giveAllSpecialCats(Player player) {
+        player.addCard(new Card(CardType.Special_Cat_1));
+        player.addCard(new Card(CardType.Special_Cat_2));
+        player.addCard(new Card(CardType.Special_Cat_3));
+        player.addCard(new Card(CardType.Special_Cat_4));
+    }
+
     private static int countType(List<Card> cards, CardType type) {
         int count = 0;
         for (Card card : cards) {
