@@ -1526,4 +1526,23 @@ class GameManagerTest {
         assertEquals(1, manager.getTurnsRemaining());
         assertFalse(manager.isNoped());
     }
+
+    @Test
+    void playAttack_nopeOnANope_attackHappens() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        a.addCard(new Card(CardType.Attack));
+        a.addCard(new Card(CardType.Nope));
+        b.addCard(new Card(CardType.Nope));
+        manager.playNope(b);
+        manager.playNope(a);
+
+        manager.playAttack();
+
+        assertSame(b, manager.getCurrentPlayer());
+        assertEquals(2, manager.getTurnsRemaining());
+        assertFalse(manager.isNoped());
+    }
 }

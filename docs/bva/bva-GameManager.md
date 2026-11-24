@@ -92,7 +92,7 @@ Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 
 | TC26 | 3 players, `"A"` attacks `"B"`, then `"B"` plays Attack | current player is `"C"` (not back to `"A"`); turns remaining is `4` | yes          |
 | TC73 | 3 players, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`, `"A"` holds Attack, `playAttack()` | current player is `"C"` (skips dead `"B"`); turns remaining is `2` | yes          |
 | TC125 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, then `playAttack()` | Attack is on the discard pile and not in `"A"`'s hand; current player is still `"A"`; turns remaining is `1`; `isNoped()` is `false` | yes          |
-| TC126 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, `"A"` plays a Nope back, then `playAttack()` | the Attack happens: current player is `"B"`; turns remaining is `2`; `isNoped()` is `false` | no           |
+| TC126 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, `"A"` plays a Nope back, then `playAttack()` | the Attack happens: current player is `"B"`; turns remaining is `2`; `isNoped()` is `false` | yes          |
 ---
 
 ## Method 7: `public List<Card> getDiscardPile()`
