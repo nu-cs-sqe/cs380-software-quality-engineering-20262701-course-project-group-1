@@ -1485,4 +1485,12 @@ class GameManagerTest {
         assertEquals("gameManager.play.mustFinishDrawing", ex.getMessage());
         assertEquals(nopesBefore, countType(a.getHand(), CardType.Nope));
     }
+
+    @Test
+    void isNoped_afterStartNewGame_isFalse() {
+        GameManager manager = new GameManager();
+        manager.startNewGame(List.of("A", "B"));
+
+        assertFalse(manager.isNoped());
+    }
 }
