@@ -302,7 +302,7 @@ public class GameManager {
             throw new IllegalStateException(NOT_IN_HAND);
         }
         discardPile.add(player.removeCardOfType(CardType.Nope));
-        noped = true;
+        noped = !noped;
     }
 
     public boolean isNoped() {

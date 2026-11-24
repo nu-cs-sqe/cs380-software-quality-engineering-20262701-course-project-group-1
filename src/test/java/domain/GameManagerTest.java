@@ -1432,4 +1432,20 @@ class GameManagerTest {
         assertEquals(1, countType(manager.getDiscardPile(), CardType.Nope));
         assertEquals(nopesBefore - 1, countType(b.getHand(), CardType.Nope));
     }
+
+    @Test
+    void playNope_nopeOnANope_notNoped() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        a.addCard(new Card(CardType.Nope));
+        b.addCard(new Card(CardType.Nope));
+
+        manager.playNope(b);
+        manager.playNope(a);
+
+        assertFalse(manager.isNoped());
+        assertEquals(2, countType(manager.getDiscardPile(), CardType.Nope));
+    }
 }
