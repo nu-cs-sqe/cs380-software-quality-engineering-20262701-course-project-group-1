@@ -1493,4 +1493,17 @@ class GameManagerTest {
 
         assertFalse(manager.isNoped());
     }
+
+    @Test
+    void isNoped_nopedThenNewGame_isFalse() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getPlayers().get(1);
+        b.addCard(new Card(CardType.Nope));
+        manager.playNope(b);
+
+        manager.startNewGame(List.of("A", "B"));
+
+        assertFalse(manager.isNoped());
+    }
 }

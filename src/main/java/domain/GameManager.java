@@ -64,6 +64,7 @@ public class GameManager {
         validatePlayerNames(playerNames);
         players.clear();
         discardPile.clear();
+        noped = false;
         for (String name : playerNames) {
             players.add(new Player(name));
         }
