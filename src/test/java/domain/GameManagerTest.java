@@ -1417,4 +1417,19 @@ class GameManagerTest {
         assertSame(a, manager.getCurrentPlayer());
         assertEquals(1, manager.getTurnsRemaining());
     }
+
+    @Test
+    void playNope_holdsTwoNopes_onlyOneDiscarded() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player b = manager.getPlayers().get(1);
+        b.addCard(new Card(CardType.Nope));
+        b.addCard(new Card(CardType.Nope));
+        int nopesBefore = countType(b.getHand(), CardType.Nope);
+
+        manager.playNope(b);
+
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.Nope));
+        assertEquals(nopesBefore - 1, countType(b.getHand(), CardType.Nope));
+    }
 }
