@@ -1545,4 +1545,22 @@ class GameManagerTest {
         assertEquals(2, manager.getTurnsRemaining());
         assertFalse(manager.isNoped());
     }
+
+    @Test
+    void playShuffle_noped_drawPileUnchanged() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        a.addCard(new Card(CardType.Shuffle));
+        b.addCard(new Card(CardType.Nope));
+        final List<Card> pileBefore = manager.getDrawPile();
+        manager.playNope(b);
+
+        manager.playShuffle();
+
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.Shuffle));
+        assertFalse(manager.isNoped());
+    }
 }

@@ -107,14 +107,15 @@ public class GameManager {
     /**
      * Plays a Shuffle card from the current player's hand and shuffles the draw pile.
      *
-     * <p>The current player keeps their turn.
+     * <p>The current player keeps their turn. A Noped Shuffle has no effect.
      *
      * @throws IllegalStateException if the game has not started or the current player has no
      *     Shuffle card
      */
     public void playShuffle() {
-        playFromHand(CardType.Shuffle);
-        deck.shuffleDeck();
+        if (playFromHand(CardType.Shuffle)) {
+            deck.shuffleDeck();
+        }
     }
 
     /**
@@ -123,7 +124,8 @@ public class GameManager {
      *
      * <p>The draw pile is not changed and the current player keeps their turn.
      *
-     * @return the top three cards of the draw pile, top card first
+     * @return the top three cards of the draw pile, top card first, or an empty list if the
+     *     card was Noped
      * @throws IllegalStateException if the game has not started or the current player has no
      *     See the Future card
      */
