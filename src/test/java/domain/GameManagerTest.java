@@ -1371,4 +1371,14 @@ class GameManagerTest {
         assertEquals(4, countSpecialCats(b.getHand()));
         assertTrue(manager.getPlayers().get(0).isAlive());
     }
+
+    @Test
+    void playNope_beforeStartNewGame_throwsIllegalStateException() {
+        GameManager manager = new GameManager();
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> manager.playNope(new Player("A")));
+        assertEquals("gameManager.notStarted", ex.getMessage());
+    }
 }

@@ -280,13 +280,13 @@ Any living player (not only the current player) plays a Nope from their hand. Th
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC116 | `playNope(player)` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | no |
-| TC117 | 2 players, `"A"` current, `"B"` has no Nope, `playNope(B)` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; discard pile unchanged; `isNoped()` is `false` | no |
-| TC118 | 2 players, `"A"` current, `"B"` holds 1 Nope, `playNope(B)` | Nope is the last card of the discard pile and not in `"B"`'s hand; `isNoped()` is `true`; current player is still `"A"`; turns remaining is `1` | no |
-| TC119 | 2 players, `"B"` holds 2 Nopes, `playNope(B)` | exactly one Nope on the discard pile; one Nope still in `"B"`'s hand | no |
-| TC120 | 2 players, `"B"` and `"A"` each hold 1 Nope, `playNope(B)` then `playNope(A)` | `isNoped()` is `false` (a Nope on a Nope); both Nopes on the discard pile | no |
-| TC121 | 3 players, `"B"` eliminated earlier, `"B"` holds a Nope, `playNope(B)` | throws `IllegalStateException` with message `"gameManager.nope.eliminated"`; Nope still in `"B"`'s hand; `isNoped()` is `false` | no |
-| TC122 | 2 players, `"B"` unlucky Gamble Cat and has drawn once, `"A"` holds a Nope, `playNope(A)` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; Nope still in `"A"`'s hand | no |
+| TC116 | `playNope(player)` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes          |
+| TC117 | 2 players, `"A"` current, `"B"` has no Nope, `playNope(B)` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; discard pile unchanged; `isNoped()` is `false` | no           |
+| TC118 | 2 players, `"A"` current, `"B"` holds 1 Nope, `playNope(B)` | Nope is the last card of the discard pile and not in `"B"`'s hand; `isNoped()` is `true`; current player is still `"A"`; turns remaining is `1` | no           |
+| TC119 | 2 players, `"B"` holds 2 Nopes, `playNope(B)` | exactly one Nope on the discard pile; one Nope still in `"B"`'s hand | no           |
+| TC120 | 2 players, `"B"` and `"A"` each hold 1 Nope, `playNope(B)` then `playNope(A)` | `isNoped()` is `false` (a Nope on a Nope); both Nopes on the discard pile | no           |
+| TC121 | 3 players, `"B"` eliminated earlier, `"B"` holds a Nope, `playNope(B)` | throws `IllegalStateException` with message `"gameManager.nope.eliminated"`; Nope still in `"B"`'s hand; `isNoped()` is `false` | no           |
+| TC122 | 2 players, `"B"` unlucky Gamble Cat and has drawn once, `"A"` holds a Nope, `playNope(A)` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; Nope still in `"A"`'s hand | no           |
 
 ---
 

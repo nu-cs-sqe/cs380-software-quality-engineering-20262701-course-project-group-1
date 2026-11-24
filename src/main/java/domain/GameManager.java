@@ -289,6 +289,16 @@ public class GameManager {
         return opponent;
     }
 
+    /**
+     * Plays a Nope from a player's hand.
+     *
+     * @param player the player who plays the Nope
+     * @throws IllegalStateException if the game has not started
+     */
+    public void playNope(Player player) {
+        requireStarted();
+    }
+
     private static void validatePlayerNames(List<String> playerNames) {
         if (playerNames.size() < GameRules.MIN_PLAYERS
                 || playerNames.size() > GameRules.MAX_PLAYERS) {
