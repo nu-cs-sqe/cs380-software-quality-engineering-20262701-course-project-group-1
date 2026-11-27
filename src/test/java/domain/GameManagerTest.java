@@ -1563,4 +1563,23 @@ class GameManagerTest {
         assertEquals(1, countType(manager.getDiscardPile(), CardType.Shuffle));
         assertFalse(manager.isNoped());
     }
+
+    @Test
+    void playSeeTheFuture_noped_returnsEmptyList() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        a.addCard(new Card(CardType.See_The_Future));
+        b.addCard(new Card(CardType.Nope));
+        final List<Card> pileBefore = manager.getDrawPile();
+        manager.playNope(b);
+
+        List<Card> seen = manager.playSeeTheFuture();
+
+        assertTrue(seen.isEmpty());
+        assertEquals(pileBefore, manager.getDrawPile());
+        assertEquals(1, countType(manager.getDiscardPile(), CardType.See_The_Future));
+        assertFalse(manager.isNoped());
+    }
 }

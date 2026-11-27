@@ -130,7 +130,9 @@ public class GameManager {
      *     See the Future card
      */
     public List<Card> playSeeTheFuture() {
-        playFromHand(CardType.See_The_Future);
+        if (!playFromHand(CardType.See_The_Future)) {
+            return new ArrayList<>();
+        }
         return deck.peekTopofDeck(SEE_THE_FUTURE_COUNT);
     }
 
