@@ -45,8 +45,8 @@ Full interactive session. Tests feed scripted `Scanner` input and assert on prin
 | TC18 | 2 players, `"B"` unlucky, draws once, then tries to play Attack by index | play rejected; still `"B"`; Attack still in hand | yes          |
 | TC19 | 2 players, `"A"` holds all four special cats, chooses the hand index of one of them | prints `"B eliminated"` and `"A won"`; game over; winner is `"A"` | yes          |
 | TC20 | 3 players all alive, `"A"` holds all four special cats, chooses the hand index of one, then `q` | play rejected; game not over; still `"A"`; all four cats still in hand | yes          |
-| TC21 | 2 players, `"A"` plays Attack by index, `"B"` holds a Nope, input `"B"` then Enter | prints the Nope prompt, `"B played Nope"` and `"Attack was Noped"`; still `"A"`; turns remaining `1` | no           |
-| TC22 | 2 players, `"A"` plays Attack by index, both hold a Nope, input `"B"`, then `"A"`, then Enter | the Attack happens: current player is `"B"`; turns remaining `2` | no           |
+| TC21 | 2 players, `"A"` plays Attack by index, `"B"` holds a Nope, input `"B"` | prints the Nope prompt, `"B played Nope"` and `"Attack was Noped"`; still `"A"`; turns remaining `1` | yes          |
+| TC22 | 2 players, `"A"` plays Attack by index, both hold a Nope, input `"B"`, then `"A"` | the Attack happens: current player is `"B"`; turns remaining `2` | no           |
 | TC23 | 2 players, `"A"` plays Shuffle by index, nobody else holds a Nope | no Nope prompt printed; still `"A"` | yes          |
 | TC24 | 2 players, `"A"` plays Attack by index, `"B"` holds a Nope, input `"Z"` (no such player) then Enter | prints `"No such player"`; the Attack happens: current player is `"B"` | no           |
-| TC25 | 2 players, `"A"` plays Gamble Cat by index (flip would be lucky), `"B"` holds a Nope, input `"B"` then Enter | prints `"Gamble_Cat was Noped"`; no lucky or unlucky line; still `"A"` | no           |
+| TC25 | 2 players, `"A"` plays Gamble Cat by index (flip would be lucky), `"B"` holds a Nope, input `"B"` | prints `"Gamble_Cat was Noped"`; no lucky or unlucky line; still `"A"` | no           |

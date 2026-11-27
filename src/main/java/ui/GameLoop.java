@@ -117,7 +117,11 @@ public class GameLoop {
             return true;
         }
         String seatName = current.getName();
-        playHandIndex(hand.get(index).getTypeofCard());
+        CardType type = hand.get(index).getTypeofCard();
+        if (isNopeable(type)) {
+            offerNopes();
+        }
+        playHandIndex(type);
         pauseForHotseat(seatName);
         return true;
     }
@@ -136,7 +140,49 @@ public class GameLoop {
         }
     }
 
+    private static boolean isNopeable(CardType type) {
+        return type == CardType.Attack
+                || type == CardType.Shuffle
+                || type == CardType.See_The_Future
+                || type == CardType.Gamble_Cat;
+    }
+
+    private void offerNopes() {
+        while (someoneHoldsNope()) {
+            printer.printMessage(
+                    "Nope? Enter a player name to play Nope, or press Enter to skip:");
+            if (!in.hasNextLine()) {
+                return;
+            }
+            String name = in.nextLine().trim();
+            if (name.isEmpty()) {
+                return;
+            }
+            playNopeFor(name);
+        }
+    }
+
+    private boolean someoneHoldsNope() {
+        for (Player player : gameManager.getPlayers()) {
+            if (player.isAlive() && player.hasCard(CardType.Nope)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void playNopeFor(String name) {
+        for (Player player : gameManager.getPlayers()) {
+            if (player.getName().equals(name)) {
+                gameManager.playNope(player);
+                printer.printMessage(name + " played Nope");
+                return;
+            }
+        }
+    }
+
     private void playHandIndex(CardType type) {
+        boolean noped = gameManager.isNoped();
         try {
             switch (type) {
                 case Attack:
@@ -161,6 +207,9 @@ public class GameLoop {
                 default:
                     printer.printMessage("Cannot play that card now");
                     break;
+            }
+            if (noped) {
+                printer.printMessage(type + " was Noped");
             }
         } catch (IllegalStateException ex) {
             printer.printMessage(ex.getMessage());

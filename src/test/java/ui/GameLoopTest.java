@@ -432,6 +432,29 @@ class GameLoopTest {
         assertSame(a, manager.getCurrentPlayer());
     }
 
+    @Test
+    void run_playAttack_otherPlayerNopes_attackCancelled() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        removeAllOfType(a, CardType.Nope);
+        removeAllOfType(b, CardType.Nope);
+        b.addCard(new Card(CardType.Nope));
+        ensureInHand(a, CardType.Attack);
+        int index = indexOfType(a, CardType.Attack);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, index + "\nB\nq\n");
+
+        String printed = outputOf(out);
+        assertTrue(printed.contains("Nope?"));
+        assertTrue(printed.contains("B played Nope"));
+        assertTrue(printed.contains("Attack was Noped"));
+        assertSame(a, manager.getCurrentPlayer());
+        assertEquals(1, manager.getTurnsRemaining());
+    }
+
     private static void giveAllSpecialCats(Player player) {
         player.addCard(new Card(CardType.Special_Cat_1));
         player.addCard(new Card(CardType.Special_Cat_2));
