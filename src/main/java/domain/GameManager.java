@@ -213,14 +213,17 @@ public class GameManager {
      * Plays a Gamble Cat from the current player's hand and flips a coin.
      *
      * <p>Lucky: the turn ends immediately without drawing, like a Skip. Unlucky: the turn only
-     * ends after two draws in a row, and no cards can be played between them.
+     * ends after two draws in a row, and no cards can be played between them. A Noped Gamble
+     * Cat has no effect.
      *
      * @return true if the turn ended
      * @throws IllegalStateException if the game has not started or the current player has no
      *     Gamble Cat
      */
     public boolean playGambleCat() {
-        playFromHand(CardType.Gamble_Cat);
+        if (!playFromHand(CardType.Gamble_Cat)) {
+            return false;
+        }
         if (random.nextInt(GAMBLE_CHOICES) == 0) {
             turnManager.endTurn();
             return true;

@@ -1582,4 +1582,24 @@ class GameManagerTest {
         assertEquals(1, countType(manager.getDiscardPile(), CardType.See_The_Future));
         assertFalse(manager.isNoped());
     }
+
+    @Test
+    void playGambleCat_noped_noLuckyOrUnluckyEffect() {
+        GameManager manager = new GameManager(alwaysFirst());
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        a.addCard(new Card(CardType.Gamble_Cat));
+        b.addCard(new Card(CardType.Nope));
+        manager.playNope(b);
+
+        boolean turnEnded = manager.playGambleCat();
+
+        assertFalse(turnEnded);
+        assertSame(a, manager.getCurrentPlayer());
+        assertFalse(manager.isNoped());
+        manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
+        manager.drawCard();
+        assertSame(b, manager.getCurrentPlayer());
+    }
 }
