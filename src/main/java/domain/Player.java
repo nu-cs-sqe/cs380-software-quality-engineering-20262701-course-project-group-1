@@ -31,7 +31,7 @@ public class Player {
     }
 
     /**
-     * Marks this player as out of the game.
+     * Takes this player out of the game. Calling it again has no effect.
      */
     public void eliminate() {
         alive = false;

@@ -4,7 +4,7 @@ This file holds the BVA analysis for every public method of the `GameManager` cl
 
 
 
-Made with assistance from GenAI. 
+Made with assistance from GenAI.
 
 ---
 
@@ -20,14 +20,14 @@ Made with assistance from GenAI.
 
 ## Method 2: `public void startNewGame(List<String> playerNames)`
 
-Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, then (n-1) Exploding Kittens and one of each of the four special cats (Special_Cat_1 to Special_Cat_4) inserted after dealing, so the special cats are never in a starting hand. Each player still receives 1 Defuse + 5 non-EK cards.
+Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 4 Nope, 6 Defuse, then (n-1) Exploding Kittens and one of each of the four special cats (Special_Cat_1 to Special_Cat_4) inserted after dealing, so the special cats are never in a starting hand. Each player still receives 1 Defuse + 5 non-EK cards.
 
 ##### All-combination or each-choice: each-choice
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC2 | `startNewGame(List.of("A", "B"))` | 2 alive players named `"A"`, `"B"`; each hand is 6 cards (1 Defuse + 5 non-EK from {See_The_Future, Attack, Shuffle, Gamble_Cat}, no EK); pile has 1 EK and 4 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 1 EK | yes |
-| TC3 | `startNewGame(List.of("A", "B", "C", "D"))` | 4 alive players; each hand same shape as TC2; pile has 3 EK and 2 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 3 EK | yes |
+| TC2 | `startNewGame(List.of("A", "B"))` | 2 alive players named `"A"`, `"B"`; each hand is 6 cards (1 Defuse + 5 non-EK from {See_The_Future, Attack, Shuffle, Gamble_Cat, Nope}, no EK); pile has 1 EK and 4 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 4 Nope, 6 Defuse, 1 EK | yes |
+| TC3 | `startNewGame(List.of("A", "B", "C", "D"))` | 4 alive players; each hand same shape as TC2; pile has 3 EK and 2 Defuse; across hands+pile: 10 STF, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 4 Nope, 6 Defuse, 3 EK | yes |
 | TC4 | `startNewGame(List.of("A"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC5 | `startNewGame(List.of("A", "B", "C", "D", "E"))` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
 | TC6 | `startNewGame(List.of())` | throws `IllegalArgumentException` with message `"gameManager.playerCount.outOfRange"` | yes |
@@ -83,15 +83,16 @@ Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC20 | `playAttack()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
-| TC21 | 3 players, current player `"A"` has no Attack, `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand and current player unchanged | yes |
-| TC22 | 2 players, `"A"` holds 1 Attack, `playAttack()` | Attack removed from `"A"`'s hand and on top of discard pile; current player is `"B"`; turns remaining is `2` | yes |
-| TC23 | 4 players, `Random` always `0` (`"A"` starts), `"A"` holds 1 Attack, `playAttack()` | current player is `"B"` (next seat, not `"C"` or `"D"`); turns remaining is `2` | yes |
-| TC24 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Attack, `playAttack()` | current player is `"A"` (wraps from last seat); turns remaining is `2` | yes |
-| TC25 | 3 players, `"A"` holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in `"A"`'s hand | yes |
-| TC26 | 3 players, `"A"` attacks `"B"`, then `"B"` plays Attack | current player is `"C"` (not back to `"A"`); turns remaining is `4` | yes |
-| TC73 | 3 players, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`, `"A"` holds Attack, `playAttack()` | current player is `"C"` (skips dead `"B"`); turns remaining is `2` | yes |
-
+| TC20 | `playAttack()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes          |
+| TC21 | 3 players, current player `"A"` has no Attack, `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand and current player unchanged | yes          |
+| TC22 | 2 players, `"A"` holds 1 Attack, `playAttack()` | Attack removed from `"A"`'s hand and on top of discard pile; current player is `"B"`; turns remaining is `2` | yes          |
+| TC23 | 4 players, `Random` always `0` (`"A"` starts), `"A"` holds 1 Attack, `playAttack()` | current player is `"B"` (next seat, not `"C"` or `"D"`); turns remaining is `2` | yes          |
+| TC24 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Attack, `playAttack()` | current player is `"A"` (wraps from last seat); turns remaining is `2` | yes          |
+| TC25 | 3 players, `"A"` holds 2 Attacks, `playAttack()` | exactly one Attack removed; one still in `"A"`'s hand | yes          |
+| TC26 | 3 players, `"A"` attacks `"B"`, then `"B"` plays Attack | current player is `"C"` (not back to `"A"`); turns remaining is `4` | yes          |
+| TC73 | 3 players, `"B"` eliminated earlier by drawing an Exploding Kitten with no Defuse, back to `"A"`, `"A"` holds Attack, `playAttack()` | current player is `"C"` (skips dead `"B"`); turns remaining is `2` | yes          |
+| TC125 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, then `playAttack()` | Attack is on the discard pile and not in `"A"`'s hand; current player is still `"A"`; turns remaining is `1`; `isNoped()` is `false` | yes          |
+| TC126 | 2 players, `"A"` holds Attack, `"B"` plays a Nope, `"A"` plays a Nope back, then `playAttack()` | the Attack happens: current player is `"B"`; turns remaining is `2`; `isNoped()` is `false` | yes          |
 ---
 
 ## Method 7: `public List<Card> getDiscardPile()`
@@ -125,29 +126,29 @@ Starting cards: 10 See_The_Future, 5 Attack, 5 Shuffle, 4 Gamble_Cat, 6 Defuse, 
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC35 | `playShuffle()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
-| TC36 | 3 players, current player `"A"` has no Shuffle, `playShuffle()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile and discard pile unchanged | yes |
-| TC37 | 2 players, `Random` always `0`, `"A"` holds 1 Shuffle, `playShuffle()` | Shuffle removed from `"A"`'s hand and is the last card of the discard pile; draw pile has the same 5 cards, rotated by one (old top card is now at the bottom) | yes |
-| TC38 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Shuffle, `playShuffle()` | current player is still `"D"`; turns remaining is still `1` | yes |
-| TC39 | 3 players, `"A"` holds 2 Shuffles, `playShuffle()` | exactly one Shuffle removed; one still in `"A"`'s hand | yes |
-| TC40 | 2 players, `"A"` attacks `"B"`, `"B"` holds 1 Shuffle, `playShuffle()` | current player is still `"B"`; turns remaining is still `2` | yes |
-
+| TC35 | `playShuffle()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes          |
+| TC36 | 3 players, current player `"A"` has no Shuffle, `playShuffle()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile and discard pile unchanged | yes          |
+| TC37 | 2 players, `Random` always `0`, `"A"` holds 1 Shuffle, `playShuffle()` | Shuffle removed from `"A"`'s hand and is the last card of the discard pile; draw pile has the same 5 cards, rotated by one (old top card is now at the bottom) | yes          |
+| TC38 | 4 players, `Random` always `bound - 1` (`"D"` starts), `"D"` holds 1 Shuffle, `playShuffle()` | current player is still `"D"`; turns remaining is still `1` | yes          |
+| TC39 | 3 players, `"A"` holds 2 Shuffles, `playShuffle()` | exactly one Shuffle removed; one still in `"A"`'s hand | yes          |
+| TC40 | 2 players, `"A"` attacks `"B"`, `"B"` holds 1 Shuffle, `playShuffle()` | current player is still `"B"`; turns remaining is still `2` | yes          |
+| TC127 | 2 players, `"A"` holds Shuffle, `"B"` plays a Nope, then `playShuffle()` | draw pile order unchanged; Shuffle is on the discard pile; `isNoped()` is `false` | yes          |
 ---
 
 ## Method 10: `public List<Card> playSeeTheFuture()`
 
 ##### All-combination or each-choice: each-choice
 
-| Test Case # | System under test | Expected output | Implemented? |
-|-------------|-------------------|-----------------|--------------|
-| TC41 | `playSeeTheFuture()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
-| TC42 | 3 players, current player `"A"` has no See the Future (all 5 removed), `playSeeTheFuture()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile and discard pile unchanged | yes |
-| TC43 | 2 players, `"A"` holds 5 See the Future, `playSeeTheFuture()` | returns the top 3 cards of the draw pile, top first; draw pile unchanged (same 15 cards, same order); See the Future is the last card of the discard pile; `"A"` holds 4 See the Future | yes |
-| TC44 | 4 players, `Random` always `bound - 1` (`"D"` starts), draw pile has 13 cards (9 plus the 4 special cats), `playSeeTheFuture()` | returns the top 3 of the 13 cards; current player is still `"D"`; turns remaining is still `1` | yes |
-| TC45 | 2 players, `"A"` attacks `"B"`, `"B"` plays See the Future | current player is still `"B"`; turns remaining is still `2` | yes |
-| TC46 | 2 players, `"A"` plays See the Future, then `.clear()` on the returned list | later `getDrawPile()` unchanged | yes |
-| TC47 | draw pile has fewer than 3 cards, `playSeeTheFuture()` | CAN'T SET: no way to draw from the pile through `GameManager` yet; add once a draw method exists (expected: returns all remaining cards) | no |
-
+| Test Case # | System under test | Expected output                                                                                                                                                                         | Implemented? |
+|-------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| TC41 | `playSeeTheFuture()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"`                                                                                                                  | yes          |
+| TC42 | 3 players, current player `"A"` has no See the Future (all 5 removed), `playSeeTheFuture()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile and discard pile unchanged                                                                  | yes          |
+| TC43 | 2 players, `"A"` holds 5 See the Future, `playSeeTheFuture()` | returns the top 3 cards of the draw pile, top first; draw pile unchanged (same 27 cards, same order); See the Future is the last card of the discard pile; `"A"` holds 4 See the Future | yes          |
+| TC44 | 4 players, `Random` always `bound - 1` (`"D"` starts), draw pile has 17 cards (13 plus the 4 special cats), `playSeeTheFuture()` | returns the top 3 of the 17 cards; current player is still `"D"`; turns remaining is still `1`                                                                                          | yes          |
+| TC45 | 2 players, `"A"` attacks `"B"`, `"B"` plays See the Future | current player is still `"B"`; turns remaining is still `2`                                                                                                                             | yes          |
+| TC46 | 2 players, `"A"` plays See the Future, then `.clear()` on the returned list | later `getDrawPile()` unchanged                                                                                                                                                         | yes          |
+| TC47 | draw pile has fewer than 3 cards, `playSeeTheFuture()` | CAN'T SET: no way to draw from the pile through `GameManager` yet; add once a draw method exists (expected: returns all remaining cards)                                                | no           |
+| TC128 | 2 players, `"A"` holds See the Future, `"B"` plays a Nope, then `playSeeTheFuture()` | returns an empty list; See the Future is on the discard pile; `isNoped()` is `false`                                                                                                    | yes          |
 
 ---
 
@@ -198,22 +199,22 @@ Custom card. Plays a Gamble Cat from the current player's hand, then picks an ou
 
 | Test Case # | System under test | Expected output | Implemented? |
 |-------------|-------------------|-----------------|--------------|
-| TC78 | `playGambleCat()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes |
-| TC79 | 3 players, current player `"A"` has no Gamble Cat, `playGambleCat()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile, discard pile and current player unchanged | yes |
-| TC80 | 2 players, `Random` always `0` (`"A"` starts, lucky), `playGambleCat()` | returns `true`; Gamble Cat is the last card of the discard pile; current player is `"B"`; draw pile unchanged | yes |
-| TC81 | 4 players, `Random` always `0` (`"A"` starts, lucky), `playGambleCat()` | returns `true`; current player is `"B"` (next seat, not `"C"` or `"D"`) | yes |
-| TC82 | 4 players, `Random` always `bound - 1` (`"D"` starts, unlucky), `playGambleCat()` | returns `false`; current player is still `"D"`; turns remaining `1`; draw pile unchanged | yes |
-| TC83 | 4 players, `"D"` unlucky, then `drawCard()` twice (top two See the Future) | after first draw: still `"D"`; after second draw: current player is `"A"` (wraps) | yes |
-| TC84 | 2 players, `"B"` unlucky and holds an Attack, `drawCard()` once, then `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; still `"B"`; Attack still in hand | yes |
-| TC85 | 2 players, `"B"` unlucky, first draw Exploding Kitten with Defuse, `playDefuse(<bottom index>)`, then `drawCard()` (See the Future) | after Defuse: still `"B"`; after the second draw: current player is `"A"` | yes |
-| TC86 | 2 players, `Random` always `0`, `"A"` attacks `"B"`, `"B"` plays Gamble Cat (lucky) | returns `true`; still `"B"`; turns remaining `1` (cancels one owed turn) | yes |
-| TC87 | 2 players, `Random` always `bound - 1`, `"B"` attacks `"A"`, `"A"` plays Gamble Cat (unlucky), then `drawCard()` twice | still `"A"`; turns remaining `1` | yes |
-| TC88 | 2 players, `"B"` unlucky, then `playAttack()` before drawing | allowed; current player is `"A"`; turns remaining `2`; one `drawCard()` by `"A"` leaves `"A"` owing 1 (extra draw not passed on) | yes |
-| TC89 | 3 players, `"A"` holds 2 Gamble Cats, `playGambleCat()` | exactly one Gamble Cat removed; one still in `"A"`'s hand | yes |
-| TC90 | 2 players, `Random` is an EasyMock mock: setup returns `0` (`"A"` starts), then exactly one `nextInt(2)` returning `1`, `playGambleCat()` | returns `false`; current player is still `"A"`; mock verifies exactly one `nextInt(2)` call | yes |
-| TC91 | 2 players, `Random` is an EasyMock mock: setup returns `0` (`"A"` starts), then exactly one `nextInt(2)` returning `0`, `playGambleCat()` | returns `true`; current player is `"B"`; mock verifies exactly one `nextInt(2)` call | yes |
-| TC92 | 2 players, `"B"` unlucky, first draw See the Future, second draw Exploding Kitten with Defuse, `playDefuse(bottom)` | Defuse allowed mid-draw; Exploding Kitten is the bottom card of the draw pile; current player is `"A"` | yes |
-
+| TC78 | `playGambleCat()` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes          |
+| TC79 | 3 players, current player `"A"` has no Gamble Cat, `playGambleCat()` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; hand, draw pile, discard pile and current player unchanged | yes          |
+| TC80 | 2 players, `Random` always `0` (`"A"` starts, lucky), `playGambleCat()` | returns `true`; Gamble Cat is the last card of the discard pile; current player is `"B"`; draw pile unchanged | yes          |
+| TC81 | 4 players, `Random` always `0` (`"A"` starts, lucky), `playGambleCat()` | returns `true`; current player is `"B"` (next seat, not `"C"` or `"D"`) | yes          |
+| TC82 | 4 players, `Random` always `bound - 1` (`"D"` starts, unlucky), `playGambleCat()` | returns `false`; current player is still `"D"`; turns remaining `1`; draw pile unchanged | yes          |
+| TC83 | 4 players, `"D"` unlucky, then `drawCard()` twice (top two See the Future) | after first draw: still `"D"`; after second draw: current player is `"A"` (wraps) | yes          |
+| TC84 | 2 players, `"B"` unlucky and holds an Attack, `drawCard()` once, then `playAttack()` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; still `"B"`; Attack still in hand | yes          |
+| TC85 | 2 players, `"B"` unlucky, first draw Exploding Kitten with Defuse, `playDefuse(<bottom index>)`, then `drawCard()` (See the Future) | after Defuse: still `"B"`; after the second draw: current player is `"A"` | yes          |
+| TC86 | 2 players, `Random` always `0`, `"A"` attacks `"B"`, `"B"` plays Gamble Cat (lucky) | returns `true`; still `"B"`; turns remaining `1` (cancels one owed turn) | yes          |
+| TC87 | 2 players, `Random` always `bound - 1`, `"B"` attacks `"A"`, `"A"` plays Gamble Cat (unlucky), then `drawCard()` twice | still `"A"`; turns remaining `1` | yes          |
+| TC88 | 2 players, `"B"` unlucky, then `playAttack()` before drawing | allowed; current player is `"A"`; turns remaining `2`; one `drawCard()` by `"A"` leaves `"A"` owing 1 (extra draw not passed on) | yes          |
+| TC89 | 3 players, `"A"` holds 2 Gamble Cats, `playGambleCat()` | exactly one Gamble Cat removed; one still in `"A"`'s hand | yes          |
+| TC90 | 2 players, `Random` is an EasyMock mock: setup returns `0` (`"A"` starts), then exactly one `nextInt(2)` returning `1`, `playGambleCat()` | returns `false`; current player is still `"A"`; mock verifies exactly one `nextInt(2)` call | yes          |
+| TC91 | 2 players, `Random` is an EasyMock mock: setup returns `0` (`"A"` starts), then exactly one `nextInt(2)` returning `0`, `playGambleCat()` | returns `true`; current player is `"B"`; mock verifies exactly one `nextInt(2)` call | yes          |
+| TC92 | 2 players, `"B"` unlucky, first draw See the Future, second draw Exploding Kitten with Defuse, `playDefuse(bottom)` | Defuse allowed mid-draw; Exploding Kitten is the bottom card of the draw pile; current player is `"A"` | yes          |
+| TC129 | 2 players, `"A"` holds Gamble Cat, `Random` would give lucky, `"B"` plays a Nope, then `playGambleCat()` | returns `false`; current player is still `"A"`; then one `drawCard()` makes `"B"` current (no extra draw); `isNoped()` is `false` | yes          |
 ---
 
 ## Method 14: `public boolean isGameOver()`
@@ -270,3 +271,34 @@ Alternate win. The current player plays all four special cats at once; the only 
 | TC114 | 4 players all alive, `"A"` holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.catSet.needTwoPlayers"` | yes |
 | TC115 | 2 players, `"B"` unlucky Gamble Cat, has drawn once, holds all four, `playSpecialCatSet()` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; hand unchanged; `"A"` alive | yes |
 
+---
+
+## Method 18: `public void playNope(Player player)`
+
+Any living player (not only the current player) plays a Nope from their hand. The Nope goes to the discard pile and the "noped" flag flips: one Nope stops the action that is about to happen, a second Nope stops the first Nope, and so on. A Nope cannot be played between the two draws of an unlucky Gamble Cat, since there is no action to stop.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC116 | `playNope(player)` before `startNewGame` | throws `IllegalStateException` with message `"gameManager.notStarted"` | yes          |
+| TC117 | 2 players, `"A"` current, `"B"` has no Nope, `playNope(B)` | throws `IllegalStateException` with message `"gameManager.play.notInHand"`; discard pile unchanged; `isNoped()` is `false` | yes          |
+| TC118 | 2 players, `"A"` current, `"B"` holds 1 Nope, `playNope(B)` | Nope is the last card of the discard pile and not in `"B"`'s hand; `isNoped()` is `true`; current player is still `"A"`; turns remaining is `1` | yes          |
+| TC119 | 2 players, `"B"` holds 2 Nopes, `playNope(B)` | exactly one Nope on the discard pile; one Nope still in `"B"`'s hand | yes          |
+| TC120 | 2 players, `"B"` and `"A"` each hold 1 Nope, `playNope(B)` then `playNope(A)` | `isNoped()` is `false` (a Nope on a Nope); both Nopes on the discard pile | yes          |
+| TC121 | 3 players, `"B"` eliminated earlier, `"B"` holds a Nope, `playNope(B)` | throws `IllegalStateException` with message `"gameManager.nope.eliminated"`; Nope still in `"B"`'s hand; `isNoped()` is `false` | yes          |
+| TC122 | 2 players, `"B"` unlucky Gamble Cat and has drawn once, `"A"` holds a Nope, `playNope(A)` | throws `IllegalStateException` with message `"gameManager.play.mustFinishDrawing"`; Nope still in `"A"`'s hand | yes          |
+
+---
+
+## Method 19: `public boolean isNoped()`
+
+Returns whether the action about to happen has been stopped by a Nope.
+
+##### All-combination or each-choice: each-choice
+
+| Test Case # | System under test | Expected output | Implemented? |
+|-------------|-------------------|-----------------|--------------|
+| TC123 | 2 players, right after `startNewGame` | `false` | yes          |
+| TC124 | 2 players, `"B"` plays a Nope, then `startNewGame` again | `false` (a new game clears the flag) | yes          |
+| — | after one Nope / after a Nope on a Nope | see TC118 / TC120 | —            |

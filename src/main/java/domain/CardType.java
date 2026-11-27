@@ -13,6 +13,7 @@ public enum CardType {
     Attack,
     Shuffle,
     Gamble_Cat,
+    Nope,
     Special_Cat_1("Fire Cat"),
     Special_Cat_2("Water Cat"),
     Special_Cat_3("Earth Cat"),

@@ -23,6 +23,7 @@ public class GameManager {
     private static final int ATTACK_SUPPLY = 5;
     private static final int SHUFFLE_SUPPLY = 5;
     private static final int GAMBLE_CAT_SUPPLY = 4;
+    private static final int NOPE_SUPPLY = 4;
     private static final int SEE_THE_FUTURE_COUNT = 3;
     private static final int GAMBLE_CHOICES = 2;
     private static final List<CardType> SPECIAL_CATS = List.of(
@@ -33,12 +34,14 @@ public class GameManager {
     private static final String CAT_SET_NEEDS_TWO = "gameManager.catSet.needTwoPlayers";
     private static final int FINAL_TWO = 2;
     private static final String CAT_SET_INCOMPLETE = "gameManager.catSet.incomplete";
+    private static final String NOPE_ELIMINATED = "gameManager.nope.eliminated";
 
     private final List<Player> players = new ArrayList<>();
     private final List<Card> discardPile = new ArrayList<>();
     private final TurnManager turnManager = new TurnManager();
     private final Random random;
     private Deck deck;
+    private boolean noped;
 
     /**
      * Creates a game manager that uses a new {@link Random} for shuffling and turn order.
@@ -62,6 +65,7 @@ public class GameManager {
         validatePlayerNames(playerNames);
         players.clear();
         discardPile.clear();
+        noped = false;
         for (String name : playerNames) {
             players.add(new Player(name));
         }
@@ -90,27 +94,29 @@ public class GameManager {
      * Plays an Attack card from the current player's hand.
      *
      * <p>The card goes to the discard pile and the next player must take two turns, plus any
-     * turns the current player still owed from an earlier attack.
+     * turns the current player still owed from an earlier attack. A Noped Attack has no effect.
      *
      * @throws IllegalStateException if the game has not started or the current player has no
      *     Attack card
      */
     public void playAttack() {
-        playFromHand(CardType.Attack);
-        turnManager.attackNextPlayer();
+        if (playFromHand(CardType.Attack)) {
+            turnManager.attackNextPlayer();
+        }
     }
 
     /**
      * Plays a Shuffle card from the current player's hand and shuffles the draw pile.
      *
-     * <p>The current player keeps their turn.
+     * <p>The current player keeps their turn. A Noped Shuffle has no effect.
      *
      * @throws IllegalStateException if the game has not started or the current player has no
      *     Shuffle card
      */
     public void playShuffle() {
-        playFromHand(CardType.Shuffle);
-        deck.shuffleDeck();
+        if (playFromHand(CardType.Shuffle)) {
+            deck.shuffleDeck();
+        }
     }
 
     /**
@@ -119,12 +125,15 @@ public class GameManager {
      *
      * <p>The draw pile is not changed and the current player keeps their turn.
      *
-     * @return the top three cards of the draw pile, top card first
+     * @return the top three cards of the draw pile, top card first, or an empty list if the
+     *     card was Noped
      * @throws IllegalStateException if the game has not started or the current player has no
      *     See the Future card
      */
     public List<Card> playSeeTheFuture() {
-        playFromHand(CardType.See_The_Future);
+        if (!playFromHand(CardType.See_The_Future)) {
+            return new ArrayList<>();
+        }
         return deck.peekTopofDeck(SEE_THE_FUTURE_COUNT);
     }
 
@@ -205,14 +214,17 @@ public class GameManager {
      * Plays a Gamble Cat from the current player's hand and flips a coin.
      *
      * <p>Lucky: the turn ends immediately without drawing, like a Skip. Unlucky: the turn only
-     * ends after two draws in a row, and no cards can be played between them.
+     * ends after two draws in a row, and no cards can be played between them. A Noped Gamble
+     * Cat has no effect.
      *
      * @return true if the turn ended
      * @throws IllegalStateException if the game has not started or the current player has no
      *     Gamble Cat
      */
     public boolean playGambleCat() {
-        playFromHand(CardType.Gamble_Cat);
+        if (!playFromHand(CardType.Gamble_Cat)) {
+            return false;
+        }
         if (random.nextInt(GAMBLE_CHOICES) == 0) {
             turnManager.endTurn();
             return true;
@@ -289,6 +301,33 @@ public class GameManager {
         return opponent;
     }
 
+    /**
+     * Plays a Nope from any living player's hand. A second Nope cancels the first.
+     *
+     * @param player the player who plays the Nope
+     * @throws IllegalStateException if the game has not started, the player is eliminated, the
+     *     current player is between the two draws of an unlucky Gamble Cat, or the player has no
+     *     Nope
+     */
+    public void playNope(Player player) {
+        requireStarted();
+        if (!player.isAlive()) {
+            throw new IllegalStateException(NOPE_ELIMINATED);
+        }
+        if (turnManager.isMidDraw()) {
+            throw new IllegalStateException(MUST_FINISH_DRAWING);
+        }
+        if (!player.hasCard(CardType.Nope)) {
+            throw new IllegalStateException(NOT_IN_HAND);
+        }
+        discardPile.add(player.removeCardOfType(CardType.Nope));
+        noped = !noped;
+    }
+
+    public boolean isNoped() {
+        return noped;
+    }
+
     private static void validatePlayerNames(List<String> playerNames) {
         if (playerNames.size() < GameRules.MIN_PLAYERS
                 || playerNames.size() > GameRules.MAX_PLAYERS) {
@@ -345,6 +384,7 @@ public class GameManager {
         addCopies(cards, CardType.Attack, ATTACK_SUPPLY);
         addCopies(cards, CardType.Shuffle, SHUFFLE_SUPPLY);
         addCopies(cards, CardType.Gamble_Cat, GAMBLE_CAT_SUPPLY);
+        addCopies(cards, CardType.Nope, NOPE_SUPPLY);
         addCopies(cards, CardType.Defuse, TOTAL_DEFUSES);
         return cards;
     }
@@ -366,7 +406,7 @@ public class GameManager {
         return alive;
     }
 
-    private void playFromHand(CardType type) {
+    private boolean playFromHand(CardType type) {
         requireStarted();
         if (turnManager.isMidDraw()) {
             throw new IllegalStateException(MUST_FINISH_DRAWING);
@@ -376,6 +416,9 @@ public class GameManager {
             throw new IllegalStateException(NOT_IN_HAND);
         }
         discardPile.add(current.removeCardOfType(type));
+        boolean takesEffect = !noped;
+        noped = false;
+        return takesEffect;
     }
 
     private static void addCopies(List<Card> cards, CardType type, int count) {

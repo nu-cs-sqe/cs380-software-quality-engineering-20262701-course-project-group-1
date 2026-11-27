@@ -51,6 +51,12 @@ class GameLoopTest {
         }
     }
 
+    private static void removeAllOfType(Player player, CardType type) {
+        while (player.hasCard(type)) {
+            player.removeCardOfType(type);
+        }
+    }
+
     private static void runTurnsWithInput(
             GameManager manager, ByteArrayOutputStream out, String turnInput) {
         GameLoop loop = loopWithInput(manager, out, turnInput);
@@ -406,6 +412,47 @@ class GameLoopTest {
         assertSame(a, manager.getCurrentPlayer());
         assertEquals(1, countType(a.getHand(), CardType.Special_Cat_1));
         assertEquals(1, countType(a.getHand(), CardType.Special_Cat_4));
+    }
+
+    @Test
+    void run_playShuffle_nobodyHoldsNope_noNopePrompt() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        removeAllOfType(a, CardType.Nope);
+        removeAllOfType(b, CardType.Nope);
+        ensureInHand(a, CardType.Shuffle);
+        int index = indexOfType(a, CardType.Shuffle);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, index + "\nq\n");
+
+        assertFalse(outputOf(out).contains("Nope?"));
+        assertSame(a, manager.getCurrentPlayer());
+    }
+
+    @Test
+    void run_playAttack_otherPlayerNopes_attackCancelled() {
+        GameManager manager = GameManagerFixtures.alwaysFirstPlayer();
+        manager.startNewGame(List.of("A", "B"));
+        Player a = manager.getCurrentPlayer();
+        Player b = manager.getPlayers().get(1);
+        removeAllOfType(a, CardType.Nope);
+        removeAllOfType(b, CardType.Nope);
+        b.addCard(new Card(CardType.Nope));
+        ensureInHand(a, CardType.Attack);
+        int index = indexOfType(a, CardType.Attack);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        runTurnsWithInput(manager, out, index + "\nB\nq\n");
+
+        String printed = outputOf(out);
+        assertTrue(printed.contains("Nope?"));
+        assertTrue(printed.contains("B played Nope"));
+        assertTrue(printed.contains("Attack was Noped"));
+        assertSame(a, manager.getCurrentPlayer());
+        assertEquals(1, manager.getTurnsRemaining());
     }
 
     private static void giveAllSpecialCats(Player player) {
