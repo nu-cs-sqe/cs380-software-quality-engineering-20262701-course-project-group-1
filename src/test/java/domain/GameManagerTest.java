@@ -633,7 +633,7 @@ class GameManagerTest {
         Card top = new Card(CardType.See_The_Future);
         manager.placeOnTopOfDrawPile(top);
         int pileBefore = manager.getDrawPile().size();
-        Player a = manager.getCurrentPlayer();
+        final Player a = manager.getCurrentPlayer();
 
         Card drawn = manager.drawCard();
 
@@ -1405,7 +1405,7 @@ class GameManagerTest {
     void playNope_otherPlayerHoldsNope_nopeDiscardedAndActionNoped() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B"));
-        Player a = manager.getCurrentPlayer();
+        final Player a = manager.getCurrentPlayer();
         Player b = manager.getPlayers().get(1);
         b.addCard(new Card(CardType.Nope));
         int nopesBefore = countType(b.getHand(), CardType.Nope);
@@ -1436,7 +1436,7 @@ class GameManagerTest {
     }
 
     @Test
-    void playNope_nopeOnANope_notNoped() {
+    void playNope_nopeOnNope_notNoped() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B"));
         Player a = manager.getCurrentPlayer();
@@ -1473,7 +1473,7 @@ class GameManagerTest {
         GameManager manager = new GameManager(alwaysLast());
         manager.startNewGame(List.of("A", "B"));
         Player b = manager.getCurrentPlayer();
-        Player a = manager.getPlayers().get(0);
+        final Player a = manager.getPlayers().get(0);
         b.addCard(new Card(CardType.Gamble_Cat));
         manager.playGambleCat();
         manager.placeOnTopOfDrawPile(new Card(CardType.See_The_Future));
@@ -1516,7 +1516,7 @@ class GameManagerTest {
         Player a = manager.getCurrentPlayer();
         Player b = manager.getPlayers().get(1);
         a.addCard(new Card(CardType.Attack));
-        int attacksBefore = countType(a.getHand(), CardType.Attack);
+        final int attacksBefore = countType(a.getHand(), CardType.Attack);
         b.addCard(new Card(CardType.Nope));
         manager.playNope(b);
 
@@ -1530,10 +1530,10 @@ class GameManagerTest {
     }
 
     @Test
-    void playAttack_nopeOnANope_attackHappens() {
+    void playAttack_nopeOnNope_attackHappens() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B"));
-        Player a = manager.getCurrentPlayer();
+        final Player a = manager.getCurrentPlayer();
         Player b = manager.getPlayers().get(1);
         a.addCard(new Card(CardType.Attack));
         a.addCard(new Card(CardType.Nope));
@@ -1552,7 +1552,7 @@ class GameManagerTest {
     void playShuffle_noped_drawPileUnchanged() {
         GameManager manager = new GameManager(alwaysFirst());
         manager.startNewGame(List.of("A", "B"));
-        Player a = manager.getCurrentPlayer();
+        final Player a = manager.getCurrentPlayer();
         Player b = manager.getPlayers().get(1);
         a.addCard(new Card(CardType.Shuffle));
         b.addCard(new Card(CardType.Nope));

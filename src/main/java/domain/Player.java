@@ -30,6 +30,9 @@ public class Player {
         return alive;
     }
 
+    /**
+     * Takes this player out of the game. Calling it again has no effect.
+     */
     public void eliminate() {
         alive = false;
     }
