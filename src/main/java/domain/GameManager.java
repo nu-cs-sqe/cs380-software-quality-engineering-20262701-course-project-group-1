@@ -23,6 +23,7 @@ public class GameManager {
     private static final int ATTACK_SUPPLY = 5;
     private static final int SHUFFLE_SUPPLY = 5;
     private static final int GAMBLE_CAT_SUPPLY = 4;
+    private static final int NOPE_SUPPLY = 4;
     private static final int SEE_THE_FUTURE_COUNT = 3;
     private static final int GAMBLE_CHOICES = 2;
     private static final List<CardType> SPECIAL_CATS = List.of(
@@ -383,6 +384,7 @@ public class GameManager {
         addCopies(cards, CardType.Attack, ATTACK_SUPPLY);
         addCopies(cards, CardType.Shuffle, SHUFFLE_SUPPLY);
         addCopies(cards, CardType.Gamble_Cat, GAMBLE_CAT_SUPPLY);
+        addCopies(cards, CardType.Nope, NOPE_SUPPLY);
         addCopies(cards, CardType.Defuse, TOTAL_DEFUSES);
         return cards;
     }

@@ -204,7 +204,8 @@ class GameManagerTest {
             int generics = countType(hand, CardType.See_The_Future)
                     + countType(hand, CardType.Attack)
                     + countType(hand, CardType.Shuffle)
-                    + countType(hand, CardType.Gamble_Cat);
+                    + countType(hand, CardType.Gamble_Cat)
+                    + countType(hand, CardType.Nope);
             assertEquals(5, generics);
         }
     }
@@ -225,6 +226,7 @@ class GameManagerTest {
         assertEquals(5, countType(all, CardType.Attack));
         assertEquals(5, countType(all, CardType.Shuffle));
         assertEquals(4, countType(all, CardType.Gamble_Cat));
+        assertEquals(4, countType(all, CardType.Nope));
         assertEquals(6, countType(all, CardType.Defuse));
         assertEquals(explodingKittens, countType(all, CardType.Exploding_Kitten));
     }
@@ -580,7 +582,7 @@ class GameManagerTest {
 
         List<Card> seen = manager.playSeeTheFuture();
 
-        assertEquals(13, pileBefore.size());
+        assertEquals(17, pileBefore.size());
         for (int i = 0; i < 3; i++) {
             assertSame(pileBefore.get(i), seen.get(i));
         }
